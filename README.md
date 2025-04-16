@@ -10,8 +10,10 @@ Today’s creator platforms are controlled by centralized entities that decide w
 
 - **Decentralization**: VidVerse is built around the Blockchain and IPFS, which means that no single entity controls the platform. Media content will be stored on IPFS, ensuring that it is censorship-resistant and accessible to everyone. This ensures that creators have full ownership of their content and can interact with their audience without intermediaries.
 
+- **Tokenized Content**: VidVerse will allow creators to tokenize their content, enabling them to license their videos as NFTs and wider access to content on NFT marketplaces. This gives creators more control over their content and allows them to monetize it in new ways.
+
 - **Easy onboarding & Gasless interactions**: VidVerse uses Nero Chain's Account Abstraction (AA) and Paymaster to enable easy onboarding through secure social logins, programmable authorizations, and gasless interactions. Creators and viewers can interact with the platform without worrying about gas fees or complex wallet setups. This makes it easier for creators to engage with their audience and for viewers to access content.
--
+
 - **Content Moderation**: VidVerse will use a decentralized moderation system that allows the community to vote on content. This ensures that the platform remains free from harmful or inappropriate content while giving creators the freedom to express themselves. Also, moderation system is planned to ensure video social dynamics(likes, comments, etc.) are not manipulated by bots or malicious actors.
 
 - **Ad-free**: VidVerse is ad-free. No ads, no tracking, and no data collection. Enjoy a clean and private viewing experience. This also means that creators can monetize their content in a fairer way, without relying on ad revenue.
@@ -25,18 +27,42 @@ By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVer
 ## Core Features
 
 - **Decentralized Storage**: All videos are stored on IPFS, ensuring censorship resistance and permanence
+
+- **Tokenized Content**: Creators can tokenize their videos as NFTs, allowing them to license their content and access wider audiences through NFT marketplaces.
+
 - **Gasless Interactions**: Users can upload, tip, like, and comment without paying gas, thanks to Nero Chain’s paymaster and account abstraction.
+
 - **Social Logins**: Users can log in using their social media accounts, making it easy to onboard new users.
+
 - **Direct Creator Support**: Viewers can tip creators directly, ensuring that creators receive the full amount without any intermediaries.
+
 - **Creator channels**: Each creator has a personalized profile page showcasing uploaded content, tip stats, and social interactions.
+
 - **Video social dynamics**: Users can like, comment, and share videos, creating a social experience around video content.
+
 - **Decentralized moderation**: The community can vote on content moderation, ensuring that the platform remains free from harmful or inappropriate content.
 
 ## Architecture
 
 ## Roadmap
 
-### Phase 1: MVP
+### Phase 1: MVP (2 Months)
+
+- Core smartcontracts for video upload, edit, tokenization (ERC721), and user channels(profiles).
+- Social logins and smartwallets integration
+- Basic Paymaster and Account abstraction platform integration.
+- Subgraph implementation for video metadata and user interactions.
+- Basic UI for video upload, viewing, search, filtering.
+
+### Phase 2: Advanced Features (3 Months)
+
+- Video social dynamics (likes, comments, tips) implementation.
+- Integrate live streaming capabilities using services like Push, Livepeer, or Huddle01.
+- Community voting & Content moderation system integration.
+- Enhanced user engagement features, notiifications, analytics for creators and viewers.
+- Advanced searching, recommendation, and filtering features.
+- Enhanced UI/UX for creators and viewers.
+- Integration of analytics dashboard for real-time insights.
 
 ## References
 
