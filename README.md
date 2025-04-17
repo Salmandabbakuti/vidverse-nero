@@ -44,6 +44,72 @@ By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVer
 
 ## Architecture
 
+### How it works
+
+#### 1. User Onboarding
+
+- Users visits VidVerse and are prompted to log in using their social accounts(Google, GitHub etc.) or connect their crypto wallets.
+- Once logged in, users are assigned a smart wallet on the NERO chain, which is powered by Nero Chain Account Abstraction Platform.
+- A tour is provided to help users understand the platform's features and functionalities.
+- Users can complete their profile and start uploading videos.
+
+#### 2. Video Uploading
+
+- Users can upload videos through a simple interface, which allows them to upload video, thumbnail, and to add titles, descriptions, category and tags, etc..
+- The video and thumbnail are uploaded to IPFS, and the metadata is stored in smartcontract on the NERO chain.
+- The video is tokenized as an ERC721 NFT (with rich onchain metadata of video) which is minted to the creator's wallet.
+
+#### 3. Browsing Videos, Tipping, and Interacting(Likes, Comments)
+
+- Users can browse videos through a simple interface, which allows them to search, filter by category, and sort videos by various criteria(e.g., most recent, most popular, etc.).
+- Upon clicking on a video, users can view the video, its metadata, and interact with it by liking, commenting, and tipping the creator.
+- Users can also share videos on social media platforms to increase visibility and engagement.
+- Users can also view the creator's profile page, which showcases their uploaded content, tip stats, and social interactions(likes, comments, etc.).
+- Viewers can also see Video NFT on various marketplaces(e.g., OpenSea) from video page
+
+#### Creator Experience Flow
+
+```mermaid
+graph TD
+    A[Creator Visits VidVerse] --> B{Onboarding}
+    B -->|Social Login| C[Assign Smart Wallet - NERO Chain]
+    B -->|Login with wallet| C
+    C --> D[Tour + Profile Setup]
+    D --> E[Video Upload Interface]
+    E --> F[Upload Video, Thumbnail, Metadata]
+    F --> G[Store video, thumbnail on IPFS]
+    G --> H[Store Video hash, metadata in smartcontract on Nero Chain]
+    H --> I[Mint ERC721 Video NFT to Creator]
+    I --> J[View uploaded content in Channel Page & Videos List]
+```
+
+#### Viewer Experience Flow
+
+```mermaid
+graph TD
+    A[Viewer Visits VidVerse] --> B{Onboarding}
+    B -->|Social Login| C[Assign Smart Wallet - NERO Chain]
+    B -->|Login with wallet| C
+    C --> D[Tour + Profile Setup]
+    D --> E[Video Browsing Interface]
+    E --> F[Search / Filter Videos]
+    F --> G[Watch Video + View Metadata]
+    G --> H[Like / Comment / Tip/ Share]
+    H --> I[Visit Creator Profile]
+    I --> J[View Uploaded Content / Stats]
+    G --> K[View Video NFT on Marketplaces e.g. OpenSea]
+```
+
+### Technology Stack
+
+- **Frontend**: React.js, Next.js, Antdesign
+- **Web3Client**: Wagmi, ethers.js
+- **Storage**: IPFS, Pinata
+- **Smart contracts**: Solidity, Openzeppelin, Hardhat
+- **Data Indexing**: Goldsky's Mirror, TheGraph(Once Nero chain is supported)
+- **Blockchain**: NERO Chain (EVM compatible)
+- **Smartwallets/AA & Paymaster**: NERO Chain's AA UserOp SDK and Paymaster APIs
+
 ## Roadmap
 
 ### Phase 1: MVP (2 Months)
