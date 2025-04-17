@@ -94,8 +94,8 @@ graph TD
     D --> E[Video Browsing Interface]
     E --> F[Search / Filter Videos]
     F --> G[Watch Video + View Metadata]
+    G --> I[Visit Creator Profile]
     G --> H[Like / Comment / Tip/ Share]
-    H --> I[Visit Creator Profile]
     I --> J[View Uploaded Content / Stats]
     G --> K[View Video NFT on Marketplaces e.g. OpenSea]
 ```
