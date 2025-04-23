@@ -44,6 +44,8 @@ By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVer
 
 ## Architecture
 
+![vidverse5](https://github.com/user-attachments/assets/cb29e309-8fd5-481f-9dc8-5af0d88af336)
+
 ### How it works
 
 #### 1. User Onboarding
