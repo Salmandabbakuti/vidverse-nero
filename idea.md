@@ -42,26 +42,65 @@ By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVer
 
 - **Decentralized moderation**: The community can vote on content moderation, ensuring that the platform remains free from harmful or inappropriate content.
 
-## Getting Started
-
-### 1. Deploying the Smart Contracts
-
-This project is scaffolded using [hardhat](https://hardhat.org/docs). Please refer to the documentation for more information on folder structure and configuration.
-
-> Copy the `.env.example` file to `.env` and update the environment variables with your own values.
-
-```bash
-
-npm install
-
-npx hardhat compile
-
-npx hardhat ignition deploy ./ignition/modules/VidVerse.ts --network neroTestnet
-```
-
 ## Architecture
 
 ![vidverse5](https://github.com/user-attachments/assets/cb29e309-8fd5-481f-9dc8-5af0d88af336)
+
+### How it works
+
+#### 1. User Onboarding
+
+- Users visits VidVerse and are prompted to log in using their social accounts(Google, GitHub etc.) or connect their crypto wallets.
+- Once logged in, users are assigned a smart wallet on the NERO chain, which is powered by Nero Chain Account Abstraction Platform.
+- A tour is provided to help users understand the platform's features and functionalities.
+- Users can complete their profile and start uploading videos.
+
+#### 2. Video Uploading
+
+- Users can upload videos through a simple interface, which allows them to upload video, thumbnail, and to add titles, descriptions, category and tags, etc..
+- The video and thumbnail are uploaded to IPFS, and the metadata is stored in smartcontract on the NERO chain.
+- The video is tokenized as an ERC721 NFT (with rich onchain metadata of video) which is minted to the creator's wallet.
+
+#### 3. Browsing Videos, Tipping, and Interacting(Likes, Comments)
+
+- Users can browse videos through a simple interface, which allows them to search, filter by category, and sort videos by various criteria(e.g., most recent, most popular, etc.).
+- Upon clicking on a video, users can view the video, its metadata, and interact with it by liking, commenting, and tipping the creator.
+- Users can also share videos on social media platforms to increase visibility and engagement.
+- Users can also view the creator's profile page, which showcases their uploaded content, tip stats, and social interactions(likes, comments, etc.).
+- Viewers can also see Video NFT on various marketplaces(e.g., OpenSea) from video page
+
+#### Creator Experience Flow
+
+```mermaid
+graph TD
+    A[Creator Visits VidVerse] --> B{Onboarding}
+    B -->|Social Login| C[Assign Smart Wallet - NERO Chain]
+    B -->|Login with wallet| C
+    C --> D[Tour + Profile Setup]
+    D --> E[Video Upload Interface]
+    E --> F[Upload Video, Thumbnail, Metadata]
+    F --> G[Store video, thumbnail on IPFS]
+    G --> H[Store Video hash, metadata in smartcontract on Nero Chain]
+    H --> I[Mint ERC721 Video NFT to Creator]
+    I --> J[View uploaded content in Channel Page & Videos List]
+```
+
+#### Viewer Experience Flow
+
+```mermaid
+graph TD
+    A[Viewer Visits VidVerse] --> B{Onboarding}
+    B -->|Social Login| C[Assign Smart Wallet - NERO Chain]
+    B -->|Login with wallet| C
+    C --> D[Tour + Profile Setup]
+    D --> E[Video Browsing Interface]
+    E --> F[Search / Filter Videos]
+    F --> G[Watch Video + View Metadata]
+    G --> I[Visit Creator Profile]
+    G --> H[Like / Comment / Tip/ Share]
+    I --> J[View Uploaded Content / Stats]
+    G --> K[View Video NFT on Marketplaces e.g. OpenSea]
+```
 
 ### Technology Stack
 
