@@ -59,19 +59,57 @@ npx hardhat compile
 npx hardhat ignition deploy ./ignition/modules/VidVerse.ts --network neroTestnet
 ```
 
+### 2. Deploying Subgraph
+
+> Subgraph will be deployed to NERO Chain's hosted Sandbox environment. Please refer to the [Graph Node documentation](https://thegraph.com/docs/en/indexing/tooling/graph-node/) for more information on how to set up your environment. Update `package.json` scripts to point to your local Graph Node if you are running one.
+
+```bash
+
+cd subgraph
+
+npm install
+
+npm run codegen
+
+npm run create-remote # create a new subgraph on the sandbox environment
+
+npm run deploy-remote # deploy the subgraph to the sandbox environment
+```
+
+### 3.Running the Client
+
+> Copy the `.env.example` file to `.env` and update the environment variables with your own values.
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
 ## Architecture
 
 ![vidverse5](https://github.com/user-attachments/assets/cb29e309-8fd5-481f-9dc8-5af0d88af336)
 
 ### Technology Stack
 
-- **Frontend**: React.js, Next.js, Antdesign
-- **Web3Client**: Wagmi, ethers.js
-- **Storage**: IPFS, Pinata
-- **Smart contracts**: Solidity, Openzeppelin, Hardhat
-- **Data Indexing**: Goldsky's Mirror, TheGraph(Once Nero chain is supported)
 - **Blockchain**: NERO Chain (EVM compatible)
+- **Smart contracts**: Solidity, Openzeppelin, Hardhat
+- **Frontend**: React.js, Next.js, Antdesign
+- **Wallet Integration**: Thirdweb, ethers.js
 - **Smartwallets/AA & Paymaster**: NERO Chain's AA UserOp SDK and Paymaster APIs
+- **Web3Client**: ethers.js, viem
+- **Storage**: IPFS, Thirdweb Storage
+- **Data Indexing**: TheGraph(NERO Chain Subgraph Sandbox Node)
+
+## Changelog
+
+### v0.1.0
+
+- Initial release with basic features(Video List, Upload Video, Watch, Channels, Tips, Subgraph integration)
+- Basic smart contracts for video upload, edit, tokenization (ERC721), and user channels(profiles).
+- Basic UI for video upload, edit, tipping, viewing, search, filtering.
+- Basic Paymaster and Account abstraction platform integration using NERO Chain's AA UserOp SDK and Paymaster APIs.
+- Basic subgraph implementation for video metadata and user interactions.
 
 ## Roadmap
 
@@ -99,6 +137,10 @@ npx hardhat ignition deploy ./ignition/modules/VidVerse.ts --network neroTestnet
 - [Key Features - Nero Chain](https://docs.nerochain.io/en/getting-started/key-features)
 - [Dapp Architecture - Nero Chain](https://docs.nerochain.io/en/getting-started/nero-dapp-architecture)
 - [Native Account Abstraction - Nero Chain](https://docs.nerochain.io/en/core-concepts/native-account-abstraction/nativeAccountAbstractionSupport)
+- [Creating a Dapp - Nero Chain](https://docs.nerochain.io/en/tutorials/low-level/create-first-dapp)
+- [Thirdweb Connect](https://portal.thirdweb.com/react/v5)
+- [Thirdweb storage](https://portal.thirdweb.com/typescript/v5/storage)
+- [Graph Node Docs](https://thegraph.com/docs/en/indexing/tooling/graph-node/)
 
 ## Safety & Security
 
