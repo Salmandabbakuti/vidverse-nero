@@ -1,4 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Web3Provider from "@/app/components/Web3Provider";
+import SiteLayout from "@/app/components/SiteLayout";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,7 +22,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <Web3Provider>
+          <SiteLayout>{children}</SiteLayout>
+        </Web3Provider>
       </body>
     </html>
   );
