@@ -75,7 +75,7 @@ export const ellipsisString = (str, first, last) =>
 
 const subgraphUrl =
   process.env.NEXT_PUBLIC_SUBGRAPH_API_URL ||
-  "https://api.studio.thegraph.com/query/15343/3tube/version/latest";
+  "http://subgraph.testnet.nero.metaborong.com:8000/subgraphs/name/vidverse-nero";
 
 export const subgraphClient = new GraphQLClient(subgraphUrl);
 
