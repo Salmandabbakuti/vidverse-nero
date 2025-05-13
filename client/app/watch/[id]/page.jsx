@@ -326,7 +326,7 @@ export default function VideoPage({ params }) {
                 <Typography.Text type="secondary">
                   View Video NFT On:
                 </Typography.Text>
-                <a
+                {/* <a
                   title="OpenSea"
                   href={`https://testnets.opensea.io/assets/arbitrum_sepolia/${VIDVERSE_CONTRACT_ADDRESS}/${video?.id}`}
                   target="_blank"
@@ -339,9 +339,9 @@ export default function VideoPage({ params }) {
                     preview={false}
                     style={{ cursor: "pointer" }}
                   />
-                </a>
+                </a> */}
                 {/* view on rarible */}
-                <a
+                {/* <a
                   title="Rarible"
                   href={`https://testnet.rarible.com/token/arbitrum/${VIDVERSE_CONTRACT_ADDRESS}:${video?.id}`}
                   target="_blank"
@@ -354,12 +354,12 @@ export default function VideoPage({ params }) {
                     preview={false}
                     style={{ cursor: "pointer" }}
                   />
-                </a>
+                </a> */}
                 {/* view on etherscan */}
 
                 <a
                   title="NERO Scan"
-                  href={`${EXPLORER_URL}/nft/${VIDVERSE_CONTRACT_ADDRESS}/${video?.id}`}
+                  href={`${EXPLORER_URL}/token/${VIDVERSE_CONTRACT_ADDRESS}/tab=Transfers&a=${video?.id}`}
                   target="_blank"
                   rel="noreferrer"
                 >
