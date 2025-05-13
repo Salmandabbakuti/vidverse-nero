@@ -1,2 +1,3 @@
 export const VIDVERSE_CONTRACT_ADDRESS =
   "0x0BbF700909f861A0Fa1Ea7C53f330e05A67E1505";
+export const EXPLORER_URL = "https://testnet.neroscan.io";

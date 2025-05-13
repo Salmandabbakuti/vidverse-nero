@@ -1,77 +1,82 @@
 import { useState } from "react";
-import { Drawer, Form, Input, Select, Space, Button, message } from "antd";
-import { VideoCameraAddOutlined } from "@ant-design/icons";
+import {
+  Drawer,
+  Form,
+  Input,
+  Select,
+  Space,
+  Button,
+  message,
+  Image
+} from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import { upload } from "thirdweb/storage";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { contract, thirdwebClient } from "@/app/utils";
 import { executeOperation } from "@/app/utils/aaUtils";
 
-export default function UploadDrawer() {
+export default function VideoEditDrawer({ video: videoData }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [thumbnailFileInput, setThumbnailFileInput] = useState(null);
-  const [videoFileInput, setVideoFileInput] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const accountObj = useActiveAccount() || {};
   const account = accountObj?.address?.toLowerCase();
   const activeChain = useActiveWalletChain();
+
   const router = useRouter();
 
   const handleSubmit = async (values) => {
     console.log("thumbnail", thumbnailFileInput);
-    console.log("video", videoFileInput);
     if (!account) return message.error("Please connect your wallet first");
-
-    if (!thumbnailFileInput || !videoFileInput) {
-      message.error("Please upload a video and thumbnail");
-      return;
-    }
+    let thumbnailHash = videoData?.thumbnailHash || "";
     setLoading(true);
-    message.info("Uploading video and thumbnail to IPFS");
-    const [videoHash, thumbnailHash] = await upload({
-      client: thirdwebClient, // thirdweb client
-      files: [videoFileInput, thumbnailFileInput]
-    });
-    console.log("uploadRes ->v,t", videoHash, thumbnailHash);
-    const thumbnailCID = thumbnailHash.split("://")[1];
-    const videoCID = videoHash.split("://")[1];
-    console.log("thumbnailCID", thumbnailCID);
-    console.log("videoCID", videoCID);
-    message.success("Thumbnail and video are uploaded to IPFS");
-    message.info("Adding video info to the contract");
     try {
+      if (thumbnailFileInput) {
+        message.info("Uploading new thumbnail to IPFS");
+        const thumbnailIpfs = await upload({
+          client: thirdwebClient,
+          uploadWithoutDirectory: true,
+          files: [thumbnailFileInput]
+        });
+        console.log("uploadRes -> t", thumbnailIpfs);
+        thumbnailHash = thumbnailIpfs?.split("://")[1];
+        console.log("thumbnailHash", thumbnailHash);
+        message.success("Thumbnail uploaded to IPFS");
+        message.info("Updating video info in the contract");
+      }
+      if (!thumbnailHash)
+        return message.error("Thumbnail is required to update video info");
       const signer = ethers6Adapter.signer.toEthers({
         client: thirdwebClient,
         chain: activeChain,
         account: accountObj
       });
       message.info("Please sign the transaction in your wallet");
-      const addVideoTx = await executeOperation(
+      const updateTx = await executeOperation(
         signer,
         contract.target,
-        "addVideo",
+        "updateVideoInfo",
         [
+          videoData?.id,
           values.title,
           values.description,
           values.category,
           values.location,
-          thumbnailCID,
-          videoCID
+          thumbnailHash
         ]
       );
-      console.log("addVideoTx", addVideoTx);
+      console.log("updateVideoTx", updateTx);
       message.success(
-        "Video uploaded successfully. Redirecting to home page..."
+        "Video info updated successfully. Refreshing in few seconds..."
       );
       setDrawerOpen(false);
-      // Refresh the page to show the new video after 3 seconds
-      setTimeout(() => router.push("/"), 5000);
+      // Refresh the page to show the updated video after 3 seconds
+      setTimeout(() => router.refresh(), 5000);
     } catch (error) {
       console.error(error);
-      message.error("Failed to upload video. Please try again.");
+      message.error("Failed to update video info. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -81,42 +86,27 @@ export default function UploadDrawer() {
     <>
       <Button
         type="primary"
-        icon={<VideoCameraAddOutlined />}
+        icon={<EditOutlined />}
         shape="circle"
-        size="large"
+        title="Edit Video Info"
         onClick={() => setDrawerOpen(true)}
       />
       <Drawer
-        title="Upload Video"
+        title="Edit Video Info"
         width={620}
         onClose={() => setDrawerOpen(false)}
         open={drawerOpen}
       >
-        <Form layout="vertical" onFinish={handleSubmit}>
-          <Form.Item
-            name="video"
-            label="Video"
-            rules={[{ required: true, message: "Please upload a video" }]}
-          >
-            <Space direction="vertical">
-              <Input
-                type="file"
-                accept="video/*, audio/*"
-                onChange={(e) => {
-                  setVideoFileInput(e.target.files[0]);
-                }}
-              />
-              {videoFileInput && (
-                <video
-                  style={{ border: "1px solid grey" }}
-                  width={450}
-                  height={200}
-                  controls
-                  src={URL.createObjectURL(videoFileInput)}
-                />
-              )}
-            </Space>
-          </Form.Item>
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{
+            title: videoData?.title,
+            description: videoData?.description,
+            location: videoData?.location,
+            category: videoData?.category
+          }}
+        >
           <Form.Item
             name="title"
             label="Title"
@@ -166,7 +156,12 @@ export default function UploadDrawer() {
           <Form.Item
             name="thumbnail"
             label="Thumbnail"
-            rules={[{ required: true, message: "Please upload a thumbnail" }]}
+            rules={[
+              {
+                required: !videoData?.thumbnailHash,
+                message: "Please upload a thumbnail"
+              }
+            ]}
           >
             <Space direction="vertical">
               <Input
@@ -176,15 +171,18 @@ export default function UploadDrawer() {
                   setThumbnailFileInput(e.target.files[0]);
                 }}
               />
-              {thumbnailFileInput && (
-                <Image
-                  style={{ border: "1px solid grey" }}
-                  src={URL.createObjectURL(thumbnailFileInput)}
-                  alt="Thumbnail"
-                  width={450}
-                  height={200}
-                />
-              )}
+              <Image
+                preview={false}
+                alt={videoData?.title}
+                style={{ border: "1px solid grey" }}
+                src={
+                  thumbnailFileInput
+                    ? URL.createObjectURL(thumbnailFileInput)
+                    : `https://ipfs.io/ipfs/${videoData?.thumbnailHash}`
+                }
+                width={450}
+                height={200}
+              />
             </Space>
           </Form.Item>
           <Form.Item>
@@ -195,10 +193,10 @@ export default function UploadDrawer() {
               <Button
                 type="primary"
                 shape="round"
-                htmlType="submit"
                 loading={loading}
+                htmlType="submit"
               >
-                Submit
+                Update
               </Button>
             </Space>
           </Form.Item>

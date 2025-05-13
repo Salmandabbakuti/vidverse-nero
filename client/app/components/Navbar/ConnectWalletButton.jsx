@@ -56,6 +56,7 @@ export default function ConnectWalletButton() {
         }
       }}
       detailsButton={{
+        // connectedAccountName: "",
         connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${account}`,
         style: {
           borderRadius: "15px"
