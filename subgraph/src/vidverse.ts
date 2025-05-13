@@ -1,76 +1,76 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
-  VidVerse,
-  Approval,
-  ApprovalForAll,
-  Transfer,
-  VideoAdded,
-  VideoInfoUpdated,
-  VideoTipped
-} from "../generated/VidVerse/VidVerse"
-import { ExampleEntity } from "../generated/schema"
+  VideoAdded as VideoAddedEvent,
+  VideoInfoUpdated as VideoInfoUpdatedEvent,
+  VideoTipped as VideoTippedEvent
+} from "../generated/VidVerse/VidVerse";
+import { Video, Tip, Channel } from "../generated/schema";
 
-export function handleApproval(event: Approval): void {
-  // Entities can be loaded from the store using an ID; this ID
-  // needs to be unique across all entities of the same type
-  const id = event.transaction.hash.concat(
-    Bytes.fromByteArray(Bytes.fromBigInt(event.logIndex))
-  )
-  let entity = ExampleEntity.load(id)
+export function handleVideoAdded(event: VideoAddedEvent): void {
+  const blockTimestamp = event.block.timestamp;
+  const channelId = event.params.owner;
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(id)
+  // Create or update channel entity
+  getOrInitChannel(channelId, blockTimestamp);
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
-
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.owner = event.params.owner
-  entity.approved = event.params.approved
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.balanceOf(...)
-  // - contract.getApproved(...)
-  // - contract.isApprovedForAll(...)
-  // - contract.name(...)
-  // - contract.nextVideoId(...)
-  // - contract.ownerOf(...)
-  // - contract.supportsInterface(...)
-  // - contract.symbol(...)
-  // - contract.tips(...)
-  // - contract.tokenURI(...)
-  // - contract.videos(...)
+  // Create video entity
+  let video = new Video(event.params.id.toString());
+  video.title = event.params.title;
+  video.description = event.params.description;
+  video.category = event.params.category;
+  video.location = event.params.location;
+  video.thumbnailHash = event.params.thumbnailHash;
+  video.videoHash = event.params.videoHash;
+  video.channel = channelId.toHex();
+  video.tipAmount = BigInt.fromI32(0);
+  video.createdAt = blockTimestamp;
+  video.updatedAt = blockTimestamp;
+  video.save();
 }
 
-export function handleApprovalForAll(event: ApprovalForAll): void {}
+export function handleVideoInfoUpdated(event: VideoInfoUpdatedEvent): void {
+  let video = Video.load(event.params.id.toString());
+  if (video) {
+    video.title = event.params.title;
+    video.description = event.params.description;
+    video.category = event.params.category;
+    video.location = event.params.location;
+    video.thumbnailHash = event.params.thumbnailHash;
+    video.updatedAt = event.block.timestamp;
+    video.save();
+  }
+}
 
-export function handleTransfer(event: Transfer): void {}
+export function handleVideoTipped(event: VideoTippedEvent): void {
+  const videoId = event.params.videoId;
+  const blockTimestamp = event.block.timestamp;
+  const channelId = event.params.from;
 
-export function handleVideoAdded(event: VideoAdded): void {}
+  let video = Video.load(videoId.toString());
+  // get or create channel
+  getOrInitChannel(channelId, blockTimestamp);
 
-export function handleVideoInfoUpdated(event: VideoInfoUpdated): void {}
+  if (video) {
+    video.tipAmount = video.tipAmount.plus(event.params.amount);
+    video.save();
+  }
+  let tip = new Tip(videoId.toString() + "-" + event.params.id.toString());
+  tip.video = videoId.toString();
+  tip.amount = event.params.amount;
+  tip.from = channelId.toHex();
+  tip.txHash = event.transaction.hash.toHex();
+  tip.createdAt = blockTimestamp;
+  tip.save();
+}
 
-export function handleVideoTipped(event: VideoTipped): void {}
+// Helper function to get or initialize channel entity
+function getOrInitChannel(channelId: Bytes, initTimestamp: BigInt): Channel {
+  let channel = Channel.load(channelId.toHex());
+  if (!channel) {
+    channel = new Channel(channelId.toHex());
+    channel.owner = channelId;
+    channel.createdAt = initTimestamp;
+    channel.save();
+  }
+  return channel as Channel;
+}
