@@ -229,14 +229,19 @@ export default function VideoPage({ params }) {
               />
 
               {/* Video Title */}
-              <Space>
+              <Space
+                style={{
+                  width: "100%",
+                  justifyContent: "space-between",
+                  display: "flex",
+                  marginTop: "10px"
+                }}
+              >
                 <Title level={5} style={{ marginTop: "5px" }}>
                   {video?.title}
                 </Title>
-              </Space>
 
-              {/* Action Buttons - Right-Aligned */}
-              <Row justify="end" align="middle">
+                {/* Action Buttons - Right-Aligned */}
                 <Space size="small" wrap>
                   <Button
                     type="text"
@@ -306,7 +311,7 @@ export default function VideoPage({ params }) {
                   </a>
                   {isVideoOwner && <VideoEditDrawer video={video} />}
                 </Space>
-              </Row>
+              </Space>
 
               {/* Video Description and Info */}
               <Text type="secondary">
