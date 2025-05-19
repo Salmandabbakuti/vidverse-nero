@@ -1,0 +1,32 @@
+type Video @entity(immutable: false) {
+  id: ID!
+  title: String! # string
+  description: String # string
+  category: String # string
+  location: String # string
+  thumbnailHash: String! # string
+  videoHash: String! # string
+  channel: Channel! # address
+  tipAmount: BigInt! # uint256
+  tips: [Tip!]! @derivedFrom(field: "video")
+  createdAt: BigInt! # uint256
+  updatedAt: BigInt! # uint256
+}
+
+# Channel is also a user
+type Channel @entity(immutable: true) {
+  id: ID!
+  owner: Bytes! # address
+  videos: [Video!]! @derivedFrom(field: "channel")
+  tips: [Tip!]! @derivedFrom(field: "from")
+  createdAt: BigInt! # uint256
+}
+
+type Tip @entity(immutable: true) {
+  id: ID!
+  video: Video! # address
+  from: Channel! # address
+  amount: BigInt! # uint256
+  txHash: String! # string
+  createdAt: BigInt! # uint256
+}

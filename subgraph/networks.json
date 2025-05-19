@@ -1,0 +1,8 @@
+{
+  "arbitrum-sepolia": {
+    "VidVerse": {
+      "address": "0x0bbf700909f861a0fa1ea7c53f330e05a67e1505",
+      "startBlock": 6714071
+    }
+  }
+}
