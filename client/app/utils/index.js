@@ -143,7 +143,7 @@ export const GET_VIDEO_QUERY = gql`
       ) {
         id
         amount
-        # txHash
+        txHash
         from {
           id
         }
@@ -198,7 +198,7 @@ export const GET_CHANNEL_QUERY = gql`
       ) {
         id
         amount
-        # txHash
+        txHash
         createdAt
         video {
           id

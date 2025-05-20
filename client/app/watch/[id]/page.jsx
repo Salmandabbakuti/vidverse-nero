@@ -129,7 +129,8 @@ export default function VideoPage({ params }) {
 
   const handleTipVideo = async () => {
     if (!account) return message.error("Please connect your wallet first");
-    if (!tipAmountInput) return message.error("Please enter tip amount");
+    if (!tipAmountInput || tipAmountInput <= 0)
+      return message.error("Please enter valid tip amount");
     try {
       console.log("tipAmountInput", tipAmountInput);
       console.log("video?.id", video?.id);
@@ -157,7 +158,13 @@ export default function VideoPage({ params }) {
       message.success("Thank you for supporting the creator!");
     } catch (error) {
       console.error(error);
-      message.error("Failed to tip video. Please try again.");
+      message.error(
+        `Failed to tip video. Make sure you have enough amount in your smart contract wallet ${ellipsisString(
+          aaWalletAddress,
+          5,
+          5
+        )}`
+      );
     }
   };
 
