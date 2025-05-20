@@ -21,7 +21,7 @@ export default function Home() {
   const category = searchParams.get("c") || "All";
   const sortOption = searchParams.get("sort") || "createdAt_desc";
 
-  const fetchVideos = async () => {
+  const fetchVideos = () => {
     console.log("Fetching videos...");
     console.log("searchQuery:", searchQuery);
     console.log("categoryFilter:", category);

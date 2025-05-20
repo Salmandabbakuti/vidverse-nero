@@ -132,6 +132,7 @@ export default function VideoPage({ params }) {
     if (!tipAmountInput) return message.error("Please enter tip amount");
     try {
       console.log("tipAmountInput", tipAmountInput);
+      console.log("video?.id", video?.id);
       const tipAmountinWei = parseEther(tipAmountInput);
       console.log("tipAmountinWei", tipAmountinWei);
       const signer = ethers6Adapter.signer.toEthers({
@@ -144,7 +145,8 @@ export default function VideoPage({ params }) {
         signer,
         contract.target,
         "tipVideo",
-        [video?.id, tipAmountinWei.toString()]
+        [video?.id, tipAmountinWei],
+        tipAmountinWei
       );
       console.log("tipTx", tipTx);
       // update tip amount in state
@@ -326,45 +328,13 @@ export default function VideoPage({ params }) {
               >
                 {video?.description}
               </Paragraph>
-              {/* view on opensea link */}
               <Space>
                 <Typography.Text type="secondary">
                   View Video NFT On:
                 </Typography.Text>
-                {/* <a
-                  title="OpenSea"
-                  href={`https://testnets.opensea.io/assets/arbitrum_sepolia/${VIDVERSE_CONTRACT_ADDRESS}/${video?.id}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Image
-                    src="https://opensea.io/favicon.ico"
-                    width={20}
-                    height={20}
-                    preview={false}
-                    style={{ cursor: "pointer" }}
-                  />
-                </a> */}
-                {/* view on rarible */}
-                {/* <a
-                  title="Rarible"
-                  href={`https://testnet.rarible.com/token/arbitrum/${VIDVERSE_CONTRACT_ADDRESS}:${video?.id}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Image
-                    src="https://rarible.com/favicon.ico"
-                    width={20}
-                    height={20}
-                    preview={false}
-                    style={{ cursor: "pointer" }}
-                  />
-                </a> */}
-                {/* view on etherscan */}
-
                 <a
                   title="NERO Scan"
-                  href={`${EXPLORER_URL}/token/${VIDVERSE_CONTRACT_ADDRESS}/tab=Transfers&a=${video?.id}`}
+                  href={`${EXPLORER_URL}/token/${VIDVERSE_CONTRACT_ADDRESS}?tab=Transfers&a=${video?.id}`}
                   target="_blank"
                   rel="noreferrer"
                 >

@@ -59,7 +59,8 @@ export default function UploadDrawer() {
           values.category,
           values.location,
           thumbnailCID,
-          videoCID
+          videoCID,
+          account
         ]
       );
       console.log("addVideoTx", addVideoTx);
@@ -67,8 +68,8 @@ export default function UploadDrawer() {
         "Video uploaded successfully. Redirecting to home page..."
       );
       setDrawerOpen(false);
-      // Refresh the page to show the new video after 3 seconds
-      setTimeout(() => router.push("/"), 5000);
+      // Refresh the page to show the new video after 5 seconds
+      setTimeout(() => (window.location.href = "/"), 5000);
     } catch (error) {
       console.error(error);
       message.error("Failed to upload video. Please try again.");

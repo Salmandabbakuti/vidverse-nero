@@ -8,9 +8,9 @@ dataSources:
     name: VidVerse
     network: nero-evm-testnet
     source:
-      address: "0x0bbf700909f861a0fa1ea7c53f330e05a67e1505"
+      address: "0x22428d3d0354CCc66E85723DF074cf6e957CEc60"
       abi: VidVerse
-      startBlock: 6714071
+      startBlock: 6896431
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -23,7 +23,7 @@ dataSources:
         - name: VidVerse
           file: ./abis/VidVerse.json
       eventHandlers:
-        - event: VideoAdded(indexed uint256,string,string,string,string,string,string,indexed address)
+        - event: VideoAdded(indexed uint256,string,string,string,string,string,string,indexed address,indexed address)
           handler: handleVideoAdded
         - event: VideoInfoUpdated(indexed uint256,string,string,string,string,string)
           handler: handleVideoInfoUpdated

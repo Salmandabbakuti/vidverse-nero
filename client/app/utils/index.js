@@ -59,7 +59,7 @@ export const defaultProvider = new JsonRpcProvider(
 );
 
 const abi = [
-  "function addVideo(string _title, string _description, string _category, string _location, string _thumbnailHash, string _videoHash)",
+  "function addVideo(string _title, string _description, string _category, string _location, string _thumbnailHash, string _videoHash, address _eoa)",
   "function tipVideo(uint256 _videoId, uint256 _amount) payable",
   "function updateVideoInfo(uint256 _videoId, string _title, string _description, string _category, string _location, string _thumbnailHash)"
 ]; // ABI of the contract

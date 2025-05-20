@@ -19,6 +19,7 @@ contract VidVerse is ERC721 {
         string thumbnailHash;
         string videoHash;
         address owner;
+        address eoa;
         uint256 tipAmount;
         uint256 tipsCount;
     }
@@ -42,7 +43,8 @@ contract VidVerse is ERC721 {
         string location,
         string thumbnailHash,
         string videoHash,
-        address indexed owner
+        address indexed owner,
+        address indexed eoa
     );
 
     event VideoInfoUpdated(
@@ -74,7 +76,8 @@ contract VidVerse is ERC721 {
         string memory _category,
         string memory _location,
         string memory _thumbnailHash,
-        string memory _videoHash
+        string memory _videoHash,
+        address _eoa
     ) external {
         require(bytes(_videoHash).length > 0, "Video hash cannot be empty");
         require(
@@ -92,11 +95,12 @@ contract VidVerse is ERC721 {
             _thumbnailHash,
             _videoHash,
             msg.sender,
+            _eoa,
             0,
             0
         );
-        // mint an NFT for the video
-        _safeMint(msg.sender, videoId);
+        // mint an NFT for the video to eoa
+        _safeMint(_eoa, videoId);
         emit VideoAdded(
             videoId,
             _title,
@@ -105,7 +109,8 @@ contract VidVerse is ERC721 {
             _location,
             _thumbnailHash,
             _videoHash,
-            msg.sender
+            msg.sender,
+            _eoa
         );
     }
 
@@ -119,8 +124,8 @@ contract VidVerse is ERC721 {
     ) external onlyExistingVideo(_videoId) {
         Video storage video = videos[_videoId];
         require(
-            video.owner == msg.sender,
-            "Only Video owner can update video info"
+            video.owner == msg.sender || video.eoa == msg.sender,
+            "Only Video owner or EOA can update video info"
         );
         require(bytes(_title).length > 0, "Title cannot be empty");
         require(
@@ -147,7 +152,7 @@ contract VidVerse is ERC721 {
         uint256 _amount
     ) external payable onlyExistingVideo(_videoId) {
         Video storage video = videos[_videoId];
-        address videoOwner = video.owner;
+        address videoOwner = video.eoa; // Use the EOA address for tipping. owner can be smart account
         require(videoOwner != msg.sender, "You cannot tip your own video");
         require(_amount > 0, "Tip amount must be greater than 0");
         require(msg.value == _amount, "Tip amount must match value");

@@ -24,6 +24,8 @@ Today’s creator platforms are controlled by centralized entities that decide w
 
 By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVerse onboards the next billion users to Web3 with a truly frictionless experience, allowing them to interact with the platform without worrying about gas fees or complex wallet setups. This makes it easier for creators and viewers to engage with the platform and helps to drive adoption of decentralized technologies.
 
+![vidverse-nero-watch-page](https://github.com/user-attachments/assets/65118dd7-8bfc-4f10-8b8e-2c3a8d409802)
+
 ## Core Features
 
 - **Decentralized Storage**: All videos are stored on IPFS, ensuring censorship resistance and permanence
@@ -86,6 +88,24 @@ npm install
 npm run dev
 ```
 
+### Paymaster and AA Integration
+
+The core implemtation of Paymaster and Account Abstraction(AA) can be found in [`client/app/utils/aaUtils.js`](client/app/utils/aaUtils.js)
+
+Interaction flow is demonstrated in [adding a video](https://github.com/Salmandabbakuti/vidverse-nero/blob/ede24e1323c042596dee04cf5bf29d2237b86a86/client/app/components/Navbar/UploadDrawer.jsx#L52) and in [updating video Info](https://github.com/Salmandabbakuti/vidverse-nero/blob/6b769597ff54ce2a81c318b28a139e246910bb7e/client/app/components/VideoEditDrawer.jsx#L57) and [tipping a video](https://github.com/Salmandabbakuti/vidverse-nero/blob/6b769597ff54ce2a81c318b28a139e246910bb7e/client/app/watch/%5Bid%5D/page.jsx#L143)
+
+### Screenshots
+
+![vidverse-nero-home](https://github.com/user-attachments/assets/3165106b-ce64-411b-96a1-a3dfa5169189)
+
+![vidverse-nero-watch-page](https://github.com/user-attachments/assets/65118dd7-8bfc-4f10-8b8e-2c3a8d409802)
+
+### Deployed Resources
+
+- [VidVerse Contract](https://testnet.neroscan.io/address/0x22428d3d0354ccc66e85723df074cf6e957cec60)
+- [VidVerse Subgraph](https://subgraph.testnet.nero.metaborong.com/subgraphs/name/vidverse-nero)
+- [VidVerse Client](https://vidverse-nero.vercel.app/)
+
 ## Architecture
 
 ![vidverse5](https://github.com/user-attachments/assets/cb29e309-8fd5-481f-9dc8-5af0d88af336)
@@ -106,10 +126,11 @@ npm run dev
 ### v0.1.0
 
 - Initial release with basic features(Video List, Upload Video, Watch, Channels, Tips, Subgraph integration)
-- Basic smart contracts for video upload, edit, tokenization (ERC721), and user channels(profiles).
-- Basic UI for video upload, edit, tipping, viewing, search, filtering.
-- Basic Paymaster and Account abstraction platform integration using NERO Chain's AA UserOp SDK and Paymaster APIs.
-- Basic subgraph implementation for video metadata and user interactions.
+- Smart contracts for video upload, edit, tokenization (ERC721), and user channels(profiles).
+- Paymaster and Account abstraction platform integration using NERO Chain's AA UserOp SDK and Paymaster APIs for video upload, edit, and tipping.
+- Social logins and smartwallets integration using Thirdweb and NERO Chain's AA.
+- Subgraph implementation for video metadata and user interactions.
+- UI for video upload, edit, tipping, viewing, search, filtering.
 
 ## Roadmap
 

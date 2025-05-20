@@ -7,6 +7,7 @@ type Video @entity(immutable: false) {
   thumbnailHash: String! # string
   videoHash: String! # string
   channel: Channel! # address
+  eoa: Bytes! # address
   tipAmount: BigInt! # uint256
   tips: [Tip!]! @derivedFrom(field: "video")
   createdAt: BigInt! # uint256

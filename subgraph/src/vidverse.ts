@@ -22,6 +22,7 @@ export function handleVideoAdded(event: VideoAddedEvent): void {
   video.thumbnailHash = event.params.thumbnailHash;
   video.videoHash = event.params.videoHash;
   video.channel = channelId.toHex();
+  video.eoa = event.params.eoa;
   video.tipAmount = BigInt.fromI32(0);
   video.createdAt = blockTimestamp;
   video.updatedAt = blockTimestamp;

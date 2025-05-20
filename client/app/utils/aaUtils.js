@@ -73,7 +73,8 @@ export const executeOperation = async (
   accountSigner,
   contractAddress,
   functionName,
-  functionParams
+  functionParams,
+  value = 0
 ) => {
   // Initialize client
   const client = await initAAClient();
@@ -86,7 +87,7 @@ export const executeOperation = async (
     functionParams
   );
 
-  const userOp = builder.execute(contractAddress, 0, callData);
+  const userOp = builder.execute(contractAddress, value, callData);
 
   // Send the user operation
   console.log("Sending UserOperation to bundler");
