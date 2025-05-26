@@ -60,7 +60,15 @@ export default function Channel({ params }) {
         tips_first: 50,
         tips_skip: 0,
         tips_orderBy: "createdAt",
-        tips_orderDirection: "desc"
+        tips_orderDirection: "desc",
+        likes_first: 50,
+        likes_skip: 0,
+        likes_orderBy: "createdAt",
+        likes_orderDirection: "desc",
+        comments_first: 50,
+        comments_skip: 0,
+        comments_orderBy: "createdAt",
+        comments_orderDirection: "desc"
       })
       .then((data) => {
         setChannel(data?.channel);

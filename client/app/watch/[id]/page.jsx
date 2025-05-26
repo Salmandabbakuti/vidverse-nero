@@ -16,7 +16,8 @@ import {
   Space,
   Tabs,
   List,
-  Image
+  Image,
+  Result
 } from "antd";
 import {
   HeartTwoTone,
@@ -26,7 +27,8 @@ import {
   DownloadOutlined,
   DollarCircleOutlined,
   CommentOutlined,
-  ExportOutlined
+  ExportOutlined,
+  LikeFilled
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { toEther } from "thirdweb";
@@ -61,6 +63,7 @@ export default function VideoPage({ params }) {
   const [video, setVideo] = useState(null);
   const [tipAmountInput, setTipAmountInput] = useState(null);
   const [aaWalletAddress, setAAWalletAddress] = useState(null);
+  const [isVideoLiked, setIsVideoLiked] = useState(false);
 
   const { id } = use(params);
   const accountObj = useActiveAccount() || {};
@@ -75,7 +78,12 @@ export default function VideoPage({ params }) {
         tips_first: 50,
         tips_skip: 0,
         tips_orderBy: "createdAt",
-        tips_orderDirection: "desc"
+        tips_orderDirection: "desc",
+        comments_first: 50,
+        comments_skip: 0,
+        comments_orderBy: "createdAt",
+        comments_orderDirection: "desc",
+        comments_where: {}
       })
       .then((data) => {
         setVideo(data?.video);
@@ -169,6 +177,41 @@ export default function VideoPage({ params }) {
     }
   };
 
+  const handleToggleLikeVideo = async () => {
+    if (!account) return message.error("Please connect your wallet first");
+    try {
+      const signer = ethers6Adapter.signer.toEthers({
+        client: thirdwebClient,
+        chain: activeChain,
+        account: accountObj
+      });
+      const tx = await contract.connect(signer).toggleLikeVideo(id);
+      await tx.wait();
+      console.log("Transaction successful:", tx);
+      // Update local state to reflect the like
+      setIsVideoLiked((prev) => !prev);
+      message.success(
+        `Video ${isVideoLiked ? "unliked" : "liked"} successfully!`
+      );
+    } catch (error) {
+      console.error("Error liking video:", error);
+      message.error("Failed to like video. Please try again.");
+    }
+  };
+
+  const isVideoLikedByUser = async () => {
+    if (!account) return false; // If no account is connected, return false
+    try {
+      const isLiked = await contract.isVideoLikedByUser(id, account);
+      console.log(`Video ${id} liked by user ${account}: ${isLiked}`);
+      setIsVideoLiked(isLiked);
+      return isLiked;
+    } catch (err) {
+      console.error("Failed to check if video is liked by user:", err);
+      return false;
+    }
+  };
+
   const isVideoOwner = useMemo(() => {
     if (!video || !aaWalletAddress) return false;
     return video?.channel?.owner === aaWalletAddress?.toLowerCase();
@@ -177,21 +220,26 @@ export default function VideoPage({ params }) {
   useEffect(() => {
     fetchVideo();
     fetchRelatedVideos(id);
-    if (account) resolveAAWalletAddress();
+    if (account) {
+      resolveAAWalletAddress();
+      isVideoLikedByUser();
+    }
   }, [id, account]);
 
   if (!loading && !video?.videoHash) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%"
-        }}
-      >
-        <Empty description="Video not found" />
-      </div>
+      <Result
+        status="404"
+        title="Video Not Found"
+        subTitle="Sorry, the video you are looking for does not exist."
+        extra={
+          <Link href="/">
+            <Button type="primary" shape="round">
+              Back Home
+            </Button>
+          </Link>
+        }
+      />
     );
   }
   return (
@@ -255,8 +303,14 @@ export default function VideoPage({ params }) {
                 <Space size="small" wrap>
                   <Button
                     type="text"
-                    icon={<LikeOutlined />}
-                    onClick={() => message.info("Like feature coming soon!")}
+                    icon={
+                      isVideoLiked ? (
+                        <LikeFilled style={{ color: "#1677ff" }} />
+                      ) : (
+                        <LikeOutlined style={{ color: "#1677ff" }} />
+                      )
+                    }
+                    onClick={handleToggleLikeVideo}
                   >
                     {video?.likeCount || 0}
                   </Button>
@@ -506,7 +560,7 @@ export default function VideoPage({ params }) {
           <Divider />
         </Col>
         <Col xs={24} md={8}>
-          <Title level={4}>Related Videos</Title>
+          <Title level={5}>Related Videos</Title>
           {loading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <Card
