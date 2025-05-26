@@ -106,6 +106,10 @@ export default function Home() {
         >
           <Option value="createdAt_desc">Newest First</Option>
           <Option value="createdAt_asc">Oldest First</Option>
+          <Option value="likeCount_desc">Most Liked</Option>
+          <Option value="likeCount_asc">Least Liked</Option>
+          <Option value="commentCount_desc">Most Commented</Option>
+          <Option value="commentCount_asc">Least Commented</Option>
         </Select>
       </div>
 
