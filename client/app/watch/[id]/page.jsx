@@ -40,6 +40,7 @@ import "plyr-react/plyr.css";
 import VideoCard from "@/app/components/VideoCard";
 import CategoryBar from "@/app/components/CategoryBar";
 import VideoEditDrawer from "@/app/components/VideoEditDrawer";
+import CommentSection from "@/app/components/CommentSection";
 import {
   ellipsisString,
   contract,
@@ -415,7 +416,7 @@ export default function VideoPage({ params }) {
             }}
           >
             <Tabs
-              defaultActiveKey="tips"
+              defaultActiveKey="comments"
               // activeKey={activeTab}
               animated
               type="line"
@@ -425,9 +426,16 @@ export default function VideoPage({ params }) {
               items={[
                 {
                   key: "comments",
-                  label: "Comments",
+                  label: `Comments (${video?.commentCount || 0})`,
                   icon: <CommentOutlined />,
-                  children: <Empty description="Video comments coming soon" />
+                  children: (
+                    <CommentSection
+                      comments={video?.comments || []}
+                      videoId={video?.id}
+                      count={video?.commentCount}
+                      dataLoading={loading}
+                    />
+                  )
                 },
                 {
                   key: "tips",

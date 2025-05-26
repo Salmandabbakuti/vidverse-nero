@@ -189,6 +189,104 @@ export default function Channel({ params }) {
             )
           },
           {
+            key: "liked",
+            label: "Liked",
+            icon: <LikeOutlined />,
+            children: (
+              <Row gutter={[16, 16]} justify="start" className={styles.grid}>
+                {loading ? (
+                  Array.from({ length: 12 }).map((_, index) => (
+                    <Col key={index} xs={24} sm={12} md={8} lg={6}>
+                      <Card
+                        loading
+                        style={{ borderRadius: 20 }}
+                        cover={
+                          <div
+                            style={{
+                              height: 150,
+                              borderRadius: 20
+                            }}
+                          />
+                        }
+                      />
+                    </Col>
+                  ))
+                ) : !channel?.likes?.length ? (
+                  <Empty description="No liked videos found" />
+                ) : (
+                  channel?.likes?.map((like) => (
+                    <Col key={like?.id} xs={24} sm={12} md={8} lg={6}>
+                      <Link href={`/watch/${like?.video?.id}`}>
+                        <VideoCard video={like?.video} />
+                      </Link>
+                    </Col>
+                  ))
+                )}
+              </Row>
+            )
+          },
+          {
+            key: "comments",
+            label: "Comments",
+            icon: <CommentOutlined />,
+            children: (
+              <List
+                itemLayout="horizontal"
+                split
+                loading={loading}
+                pagination={{
+                  onChange: (page) => {
+                    console.log(page);
+                  },
+                  pageSize: 20
+                }}
+                dataSource={channel?.comments || []}
+                rowKey={(item) => item?.id}
+                renderItem={(item) => (
+                  <Link href={`/watch/${item?.video?.id}`}>
+                    <List.Item
+                      key={item?.id}
+                      // extra={
+                      //   <Image
+                      //     width={272}
+                      //     alt="video-thumbnail"
+                      //     preview={false}
+                      //     style={{ borderRadius: 20 }}
+                      //     src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
+                      //   />
+                      // }
+                    >
+                      <List.Item.Meta
+                        title={
+                          <Space>
+                            <Typography.Text strong>
+                              {`“${item?.content}”`}
+                            </Typography.Text>
+                            <Typography.Text type="secondary">
+                              {dayjs(item?.createdAt * 1000).fromNow()}
+                            </Typography.Text>
+                          </Space>
+                        }
+                        description={`Commented on “${item?.video?.title}”`}
+                        avatar={
+                          <Avatar
+                            shape="square"
+                            size="large"
+                            style={{
+                              cursor: "pointer",
+                              border: "1px solid grey"
+                            }}
+                            src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
+                          />
+                        }
+                      />
+                    </List.Item>
+                  </Link>
+                )}
+              />
+            )
+          },
+          {
             key: "tips",
             label: "Tips",
             icon: <DollarOutlined />,
@@ -241,18 +339,6 @@ export default function Channel({ params }) {
                 )}
               />
             )
-          },
-          {
-            key: "liked",
-            label: "Liked",
-            icon: <LikeOutlined />,
-            children: <Empty description="Channel likes coming soon" />
-          },
-          {
-            key: "comments",
-            label: "Comments",
-            icon: <CommentOutlined />,
-            children: <Empty description="Channel comments coming soon" />
           }
         ]}
       />

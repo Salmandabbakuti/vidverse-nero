@@ -60,6 +60,18 @@ export default function VideoCard({ video }) {
                 " • " +
                 dayjs(video?.createdAt * 1000).fromNow()}
             </Text>
+            <Space className={styles.stats}>
+              <span>
+                <LikeOutlined /> {video?.likeCount || 0}
+              </span>
+              <span>
+                <MessageOutlined /> {video?.commentCount || 0}
+              </span>
+              <span>
+                <DollarCircleOutlined />{" "}
+                {toEther(video?.tipAmount || 0n) + " ETH"}
+              </span>
+            </Space>
           </div>
         }
       />
