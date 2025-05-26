@@ -19,6 +19,8 @@ dataSources:
         - Video
         - Channel
         - Tip
+        - Like
+        - Comment
       abis:
         - name: VidVerse
           file: ./abis/VidVerse.json
@@ -29,4 +31,8 @@ dataSources:
           handler: handleVideoInfoUpdated
         - event: VideoTipped(indexed uint256,indexed uint256,uint256,indexed address)
           handler: handleVideoTipped
+        - event: VideoLikeToggled(indexed uint256,indexed address,bool)
+          handler: handleVideoLikeToggled
+        - event: VideoCommented(indexed uint256,indexed uint256,string,indexed address)
+          handler: handleVideoCommented
       file: ./src/vidverse.ts

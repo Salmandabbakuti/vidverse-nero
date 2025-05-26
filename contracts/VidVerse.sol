@@ -22,6 +22,8 @@ contract VidVerse is ERC721 {
         address eoa;
         uint256 tipAmount;
         uint256 tipsCount;
+        uint256 commentsCount;
+        uint256 likesCount;
     }
 
     struct Tip {
@@ -31,9 +33,22 @@ contract VidVerse is ERC721 {
         address from;
     }
 
+    struct Comment {
+        uint256 id;
+        uint256 videoId;
+        string comment;
+        address author;
+    }
+
     mapping(uint256 id => Video video) public videos;
     // tips
     mapping(uint256 videoId => mapping(uint256 tipId => Tip)) public tips;
+    // comments
+    mapping(uint256 videoId => mapping(uint256 commentId => Comment))
+        public comments;
+    //  likes
+    mapping(uint256 videoId => mapping(address user => bool isLiked))
+        public isVideoLikedByUser;
 
     event VideoAdded(
         uint256 indexed id,
@@ -61,6 +76,18 @@ contract VidVerse is ERC721 {
         uint256 indexed videoId,
         uint256 amount,
         address indexed from
+    );
+
+    event VideoLikeToggled(
+        uint256 indexed videoId,
+        address indexed user,
+        bool isLiked
+    );
+    event VideoCommented(
+        uint256 indexed id,
+        uint256 indexed videoId,
+        string comment,
+        address indexed author
     );
 
     constructor() ERC721("VidVerse", "VID") {}
@@ -96,6 +123,8 @@ contract VidVerse is ERC721 {
             _videoHash,
             msg.sender,
             _eoa,
+            0,
+            0,
             0,
             0
         );
@@ -164,6 +193,42 @@ contract VidVerse is ERC721 {
         emit VideoTipped(tipId, _videoId, _amount, msg.sender);
     }
 
+    function commentVideo(
+        uint256 _videoId,
+        string memory _comment
+    ) external onlyExistingVideo(_videoId) {
+        require(
+            bytes(_comment).length > 0 && bytes(_comment).length <= 280,
+            "Comment must be between 1 and 280 characters"
+        );
+        uint256 commentId = videos[_videoId].commentsCount++;
+        comments[_videoId][commentId] = Comment(
+            commentId,
+            _videoId,
+            _comment,
+            msg.sender
+        );
+        emit VideoCommented(commentId, _videoId, _comment, msg.sender);
+    }
+
+    function toggleLikeVideo(
+        uint256 _videoId
+    ) external onlyExistingVideo(_videoId) returns (bool isLiked) {
+        // check if user has already liked the video
+        bool isLikedAlready = isVideoLikedByUser[_videoId][msg.sender];
+        // toggle like status and update likes count
+        if (isLikedAlready) {
+            videos[_videoId].likesCount--;
+            isVideoLikedByUser[_videoId][msg.sender] = false;
+            isLiked = false;
+        } else {
+            videos[_videoId].likesCount++;
+            isVideoLikedByUser[_videoId][msg.sender] = true;
+            isLiked = true;
+        }
+        emit VideoLikeToggled(_videoId, msg.sender, isLiked);
+    }
+
     // override to prevent transfers
     function _update(
         address to,
@@ -208,6 +273,10 @@ contract VidVerse is ERC721 {
             '", "thumbnail":"',
             BASE_URI,
             video.thumbnailHash,
+            '", "likes":"',
+            video.likesCount.toString(),
+            '", "comments":"',
+            video.commentsCount.toString(),
             '", "tips":"',
             video.tipAmount.toString(),
             '"}',

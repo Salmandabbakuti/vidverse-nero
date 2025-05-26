@@ -1,10 +1,12 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes, store } from "@graphprotocol/graph-ts";
 import {
   VideoAdded as VideoAddedEvent,
   VideoInfoUpdated as VideoInfoUpdatedEvent,
-  VideoTipped as VideoTippedEvent
+  VideoTipped as VideoTippedEvent,
+  VideoLikeToggled as VideoLikeToggledEvent,
+  VideoCommented as VideoCommentedEvent
 } from "../generated/VidVerse/VidVerse";
-import { Video, Tip, Channel } from "../generated/schema";
+import { Video, Tip, Channel, Like, Comment } from "../generated/schema";
 
 export function handleVideoAdded(event: VideoAddedEvent): void {
   const blockTimestamp = event.block.timestamp;
@@ -24,6 +26,8 @@ export function handleVideoAdded(event: VideoAddedEvent): void {
   video.channel = channelId.toHex();
   video.eoa = event.params.eoa;
   video.tipAmount = BigInt.fromI32(0);
+  video.likeCount = BigInt.fromI32(0);
+  video.commentCount = BigInt.fromI32(0);
   video.createdAt = blockTimestamp;
   video.updatedAt = blockTimestamp;
   video.save();
@@ -62,6 +66,62 @@ export function handleVideoTipped(event: VideoTippedEvent): void {
   tip.txHash = event.transaction.hash.toHex();
   tip.createdAt = blockTimestamp;
   tip.save();
+}
+
+export function handleVideoLikeToggled(event: VideoLikeToggledEvent): void {
+  const videoId = event.params.videoId;
+  const userId = event.params.user;
+  const blockTimestamp = event.block.timestamp;
+  // create or update channel entity
+  getOrInitChannel(userId, blockTimestamp);
+
+  // create/remove like entity
+  let video = Video.load(videoId.toString());
+  if (video) {
+    let likeId = videoId.toString() + "-" + userId.toHex();
+    let like = Like.load(likeId);
+    if (like) {
+      // Remove like entity and decrement video like count if it exists
+      store.remove("Like", likeId);
+      video.likeCount = video.likeCount.minus(BigInt.fromI32(1));
+      video.save();
+    } else {
+      // Create like entity
+      like = new Like(likeId);
+      like.video = videoId.toString();
+      like.likedBy = userId.toHex();
+      like.createdAt = blockTimestamp;
+      like.save();
+      // Update video entity with incremented like count
+      video.likeCount = video.likeCount.plus(BigInt.fromI32(1));
+      video.save();
+    }
+  }
+}
+
+export function handleVideoCommented(event: VideoCommentedEvent): void {
+  const videoId = event.params.videoId;
+  const blockTimestamp = event.block.timestamp;
+  const channelId = event.params.author;
+  // create or update channel entity
+  getOrInitChannel(channelId, blockTimestamp);
+
+  // create comment entity and update comment count
+  let video = Video.load(videoId.toString());
+  if (video) {
+    // Create comment entity
+    let comment = new Comment(
+      videoId.toString() + "-" + event.params.id.toString()
+    );
+    comment.video = videoId.toString();
+    comment.author = channelId.toHex();
+    comment.content = event.params.comment;
+    comment.createdAt = blockTimestamp;
+    comment.save();
+    // Update video entity with incremented comment count
+    video.commentCount = video.commentCount.plus(BigInt.fromI32(1));
+    video.save();
+  }
 }
 
 // Helper function to get or initialize channel entity
