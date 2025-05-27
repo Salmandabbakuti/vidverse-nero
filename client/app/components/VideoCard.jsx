@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, Avatar, Typography, Image, Space } from "antd";
 import {
   CheckCircleTwoTone,

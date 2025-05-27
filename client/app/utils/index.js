@@ -298,3 +298,48 @@ export const GET_CHANNEL_QUERY = gql`
     }
   }
 `;
+
+export const GET_VIDEOS_WITH_REPORTS = gql`
+  query videos(
+    $first: Int
+    $skip: Int
+    $orderBy: Video_orderBy
+    $orderDirection: OrderDirection
+    $where: Video_filter
+    $reports_first: Int
+    $reports_skip: Int
+    $reports_orderBy: Report_orderBy
+    $reports_orderDirection: OrderDirection
+    $reports_where: Report_filter
+  ) {
+    videos(
+      first: $first
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      where: $where
+    ) {
+      id
+      title
+      thumbnailHash
+      reportCount
+      isFlagged
+      isRemoved
+      reports(
+        first: $reports_first
+        skip: $reports_skip
+        orderBy: $reports_orderBy
+        orderDirection: $reports_orderDirection
+        where: $reports_where
+      ) {
+        id
+        reason
+        description
+        createdAt
+        reporter {
+          id
+        }
+      }
+    }
+  }
+`;

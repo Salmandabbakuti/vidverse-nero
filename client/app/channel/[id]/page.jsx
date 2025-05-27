@@ -259,19 +259,8 @@ export default function Channel({ params }) {
                 dataSource={channel?.comments || []}
                 rowKey={(item) => item?.id}
                 renderItem={(item) => (
-                  <Link href={`/watch/${item?.video?.id}`}>
-                    <List.Item
-                      key={item?.id}
-                      // extra={
-                      //   <Image
-                      //     width={272}
-                      //     alt="video-thumbnail"
-                      //     preview={false}
-                      //     style={{ borderRadius: 20 }}
-                      //     src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
-                      //   />
-                      // }
-                    >
+                  <List.Item key={item?.id} style={{ cursor: "pointer" }}>
+                    <Link href={`/watch/${item?.video?.id}`}>
                       <List.Item.Meta
                         title={
                           <Space>
@@ -290,14 +279,16 @@ export default function Channel({ params }) {
                             size="large"
                             style={{
                               cursor: "pointer",
-                              border: "1px solid grey"
+                              border: "1px solid grey",
+                              width: 120,
+                              height: 90
                             }}
                             src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
                           />
                         }
                       />
-                    </List.Item>
-                  </Link>
+                    </Link>
+                  </List.Item>
                 )}
               />
             )
@@ -323,7 +314,9 @@ export default function Channel({ params }) {
                             size="large"
                             style={{
                               cursor: "pointer",
-                              border: "1px solid grey"
+                              border: "1px solid grey",
+                              width: 120,
+                              height: 90
                             }}
                             src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
                           />

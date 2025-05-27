@@ -94,11 +94,7 @@ export default function ReportModal({ videoId }) {
               style={{ display: "flex", flexDirection: "column" }}
               options={REPORT_REASONS}
             /> */}
-            <Select
-              placeholder="Select a reason"
-              options={REPORT_REASONS}
-              rules={[{ required: true, message: "Please select a reason" }]}
-            />
+            <Select placeholder="Select a reason" options={REPORT_REASONS} />
           </Form.Item>
 
           <Form.Item label="Additional Description" name="description">

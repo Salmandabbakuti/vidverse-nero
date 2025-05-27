@@ -28,8 +28,7 @@ import {
   DollarCircleOutlined,
   CommentOutlined,
   ExportOutlined,
-  LikeFilled,
-  DeleteOutlined
+  LikeFilled
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { toEther } from "thirdweb";
@@ -210,34 +209,6 @@ export default function VideoPage({ params }) {
     } catch (error) {
       console.error("Error liking video:", error);
       message.error("Failed to like video. Please try again.");
-    }
-  };
-
-  const handleRemoveVideo = async () => {
-    if (!account) return message.error("Please connect your wallet first");
-    try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
-      // execute the remove video operation gaslessly
-      // const removeVideoTx = await executeOperation(
-      //   signer,
-      //   contract.target,
-      //   "removeVideo",
-      //   [id]
-      // );
-      // console.log("Video removed successfully:", removeVideoTx);
-      // for now, we will use the contract directly because its not regular user function
-      const removeVideoTx = await contract.connect(signer).removeVideo(id);
-      console.log("removeVideoTx", removeVideoTx);
-      await removeVideoTx.wait();
-      message.success("Video removed successfully!");
-      router.push("/");
-    } catch (error) {
-      console.error("Error removing video:", error);
-      message.error("Failed to remove video. Please try again.");
     }
   };
 
@@ -436,13 +407,6 @@ export default function VideoPage({ params }) {
                     <Button type="text" icon={<DownloadOutlined />} />
                   </a>
                   {isVideoOwner && <VideoEditDrawer video={video} />}
-                  {/* TODO: Remove video button only visible to moderator later */}
-                  <Button
-                    type="text"
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={handleRemoveVideo}
-                  />
                   <ReportVideoModal videoId={video?.id} />
                 </Space>
               </Space>
