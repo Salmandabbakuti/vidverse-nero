@@ -57,6 +57,9 @@ export default function Channel({ params }) {
         videos_skip: 0,
         videos_orderBy: "createdAt",
         videos_orderDirection: "desc",
+        videos_where: {
+          isRemoved: false
+        },
         tips_first: 50,
         tips_skip: 0,
         tips_orderBy: "createdAt",
@@ -65,6 +68,11 @@ export default function Channel({ params }) {
         likes_skip: 0,
         likes_orderBy: "createdAt",
         likes_orderDirection: "desc",
+        likes_where: {
+          video_: {
+            isRemoved: false
+          }
+        },
         comments_first: 50,
         comments_skip: 0,
         comments_orderBy: "createdAt",

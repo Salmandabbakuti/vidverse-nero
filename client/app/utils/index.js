@@ -108,6 +108,7 @@ export const GET_VIDEOS_QUERY = gql`
       tipAmount
       likeCount
       commentCount
+      isFlagged
       createdAt
       channel {
         id
@@ -142,6 +143,9 @@ export const GET_VIDEO_QUERY = gql`
       tipAmount
       likeCount
       commentCount
+      reportCount
+      isFlagged
+      isRemoved
       createdAt
       channel {
         id

@@ -39,6 +39,7 @@ export default function Home() {
         orderDirection: sortDirection,
         where: {
           and: [
+            { isRemoved: false },
             ...(category === "All" ? [] : [{ category }]),
             ...(searchQuery
               ? [

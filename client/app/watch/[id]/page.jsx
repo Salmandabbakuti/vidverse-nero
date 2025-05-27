@@ -226,7 +226,7 @@ export default function VideoPage({ params }) {
     }
   }, [id, account]);
 
-  if (!loading && !video?.videoHash) {
+  if (!loading && (!video?.videoHash || video?.isRemoved)) {
     return (
       <Result
         status="404"

@@ -4,9 +4,34 @@ import {
   VideoInfoUpdated as VideoInfoUpdatedEvent,
   VideoTipped as VideoTippedEvent,
   VideoLikeToggled as VideoLikeToggledEvent,
-  VideoCommented as VideoCommentedEvent
+  VideoCommented as VideoCommentedEvent,
+  VideoReported as VideoReportedEvent,
+  VideoRemoved as VideoRemovedEvent,
+  VideoFlagToggled as VideoFlagToggledEvent
 } from "../generated/VidVerse/VidVerse";
-import { Video, Tip, Channel, Like, Comment } from "../generated/schema";
+import {
+  Video,
+  Tip,
+  Channel,
+  Like,
+  Comment,
+  Report
+} from "../generated/schema";
+
+const REPORT_REASONS = [
+  "SexualContent",
+  "ViolentOrRepulsive",
+  "HatefulOrAbusive",
+  "HarmfulOrDangerousActs",
+  "Misinformation",
+  "ChildAbuse",
+  "SpamOrMisleading",
+  "Legal",
+  "Other"
+];
+
+const ZERO_BI = BigInt.fromI32(0);
+const ONE_BI = BigInt.fromI32(1);
 
 export function handleVideoAdded(event: VideoAddedEvent): void {
   const blockTimestamp = event.block.timestamp;
@@ -25,9 +50,12 @@ export function handleVideoAdded(event: VideoAddedEvent): void {
   video.videoHash = event.params.videoHash;
   video.channel = channelId.toHex();
   video.eoa = event.params.eoa;
-  video.tipAmount = BigInt.fromI32(0);
-  video.likeCount = BigInt.fromI32(0);
-  video.commentCount = BigInt.fromI32(0);
+  video.tipAmount = ZERO_BI;
+  video.likeCount = ZERO_BI;
+  video.commentCount = ZERO_BI;
+  video.reportCount = ZERO_BI;
+  video.isFlagged = false;
+  video.isRemoved = false;
   video.createdAt = blockTimestamp;
   video.updatedAt = blockTimestamp;
   video.save();
@@ -83,7 +111,7 @@ export function handleVideoLikeToggled(event: VideoLikeToggledEvent): void {
     if (like) {
       // Remove like entity and decrement video like count if it exists
       store.remove("Like", likeId);
-      video.likeCount = video.likeCount.minus(BigInt.fromI32(1));
+      video.likeCount = video.likeCount.minus(ONE_BI);
       video.save();
     } else {
       // Create like entity
@@ -93,7 +121,7 @@ export function handleVideoLikeToggled(event: VideoLikeToggledEvent): void {
       like.createdAt = blockTimestamp;
       like.save();
       // Update video entity with incremented like count
-      video.likeCount = video.likeCount.plus(BigInt.fromI32(1));
+      video.likeCount = video.likeCount.plus(ONE_BI);
       video.save();
     }
   }
@@ -119,7 +147,48 @@ export function handleVideoCommented(event: VideoCommentedEvent): void {
     comment.createdAt = blockTimestamp;
     comment.save();
     // Update video entity with incremented comment count
-    video.commentCount = video.commentCount.plus(BigInt.fromI32(1));
+    video.commentCount = video.commentCount.plus(ONE_BI);
+    video.save();
+  }
+}
+
+export function handleVideoReported(event: VideoReportedEvent): void {
+  const videoId = event.params.videoId;
+  const video = Video.load(videoId.toString());
+  if (video) {
+    video.reportCount = video.reportCount.plus(ONE_BI);
+    video.updatedAt = event.block.timestamp;
+    video.save();
+  }
+  const reportId = event.params.id;
+  const report = new Report(videoId.toString() + "-" + reportId.toString());
+  report.video = videoId.toString();
+  report.reason = REPORT_REASONS[event.params.reason];
+  report.description = event.params.description;
+  report.reporter = event.params.reporter.toHex();
+  report.createdAt = event.block.timestamp;
+  report.save();
+}
+
+export function handleVideoRemoved(event: VideoRemovedEvent): void {
+  const video = Video.load(event.params.id.toString());
+  if (video) {
+    // Remove video entity
+    // store.remove("Video", video.id);
+    // or mark it as removed
+    video.isRemoved = true;
+    video.updatedAt = event.block.timestamp;
+    video.save();
+  }
+}
+
+export function handleVideoFlagToggled(event: VideoFlagToggledEvent): void {
+  // Load the video entity
+  const video = Video.load(event.params.videoId.toString());
+  if (video) {
+    // Update the flagged status
+    video.isFlagged = event.params.isFlagged;
+    video.updatedAt = event.block.timestamp;
     video.save();
   }
 }

@@ -11,9 +11,13 @@ type Video @entity(immutable: false) {
   tipAmount: BigInt! # uint256
   likeCount: BigInt! # uint256
   commentCount: BigInt! # uint256
+  reportCount: BigInt! # uint256
+  isRemoved: Boolean! # bool
+  isFlagged: Boolean! # bool
   tips: [Tip!]! @derivedFrom(field: "video")
   likes: [Like!]! @derivedFrom(field: "video")
   comments: [Comment!]! @derivedFrom(field: "video")
+  reports: [Report!]! @derivedFrom(field: "video")
   createdAt: BigInt! # uint256
   updatedAt: BigInt! # uint256
 }
@@ -26,6 +30,7 @@ type Channel @entity(immutable: true) {
   tips: [Tip!]! @derivedFrom(field: "from")
   likes: [Like!]! @derivedFrom(field: "likedBy")
   comments: [Comment!]! @derivedFrom(field: "author")
+  reports: [Report!]! @derivedFrom(field: "reporter")
   createdAt: BigInt! # uint256
 }
 
@@ -50,5 +55,14 @@ type Like @entity(immutable: true) {
   id: ID!
   video: Video! # address
   likedBy: Channel! # address
+  createdAt: BigInt! # uint256
+}
+
+type Report @entity(immutable: true) {
+  id: ID!
+  video: Video! # address
+  reporter: Channel! # address
+  reason: String! # string
+  description: String # string
   createdAt: BigInt! # uint256
 }
