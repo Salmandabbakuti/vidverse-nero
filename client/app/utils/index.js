@@ -64,8 +64,9 @@ const abi = [
   "function updateVideoInfo(uint256 _videoId, string _title, string _description, string _category, string _location, string _thumbnailHash)",
   "function commentVideo(uint256 _videoId, string _comment)",
   "function toggleLikeVideo(uint256 _videoId)",
-  "function videoCommentsCount(uint256 videoId) view returns (uint256 count)",
-  "function videoLikesCount(uint256 videoId) view returns (uint256 likesCount)",
+  "function reportVideo(uint256 _videoId, uint8 _reason, string _description)",
+  "function removeVideo(uint256 _videoId)",
+  "function clearVideoFlag(uint256 _videoId)",
   "function isVideoLikedByUser(uint256 videoId, address user) view returns (bool)"
 ]; // ABI of the contract
 

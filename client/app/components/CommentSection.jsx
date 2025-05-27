@@ -1,29 +1,18 @@
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Collapse,
-  Input,
-  List,
-  Avatar,
-  Button,
-  Space,
-  Typography,
-  message
-} from "antd";
+import { Input, List, Avatar, Button, Space, Typography, message } from "antd";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { contract, ellipsisString, thirdwebClient } from "@/app/utils";
+import { executeOperation } from "@/app/utils/aaUtils";
 
 dayjs.extend(relativeTime);
-
-const { Title } = Typography;
 
 export default function CommentSection({
   comments,
   videoId,
-  count = 0,
   dataLoading = false
 }) {
   const [commentInput, setCommentInput] = useState("");
@@ -43,11 +32,14 @@ export default function CommentSection({
         chain: activeChain,
         account: accountObj
       });
-      const tx = await contract
-        .connect(signer)
-        .commentVideo(videoId, commentInput);
-      await tx.wait();
+      const addCommentTx = await executeOperation(
+        signer,
+        contract.target,
+        "commentVideo",
+        [videoId, commentInput]
+      );
       setCommentInput("");
+      console.log("addCommentTx", addCommentTx);
       message.success("Comment added!");
       // add comment to state
       comments.unshift({
@@ -68,7 +60,7 @@ export default function CommentSection({
     <>
       <Input
         type="text"
-        autoFocus={commentInput}
+        autoFocus={true}
         variant="borderless"
         placeholder="Add a public comment..."
         value={commentInput}

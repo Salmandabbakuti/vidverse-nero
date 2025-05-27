@@ -12,7 +12,6 @@ import {
   Popconfirm,
   Button,
   Input,
-  Empty,
   Space,
   Tabs,
   List,
@@ -29,7 +28,8 @@ import {
   DollarCircleOutlined,
   CommentOutlined,
   ExportOutlined,
-  LikeFilled
+  LikeFilled,
+  DeleteOutlined
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { toEther } from "thirdweb";
@@ -45,6 +45,7 @@ import VideoCard from "@/app/components/VideoCard";
 import CategoryBar from "@/app/components/CategoryBar";
 import VideoEditDrawer from "@/app/components/VideoEditDrawer";
 import CommentSection from "@/app/components/CommentSection";
+import ReportVideoModal from "@/app/components/ReportVideoModal";
 import {
   ellipsisString,
   contract,
@@ -193,9 +194,14 @@ export default function VideoPage({ params }) {
         chain: activeChain,
         account: accountObj
       });
-      const tx = await contract.connect(signer).toggleLikeVideo(id);
-      await tx.wait();
-      console.log("Transaction successful:", tx);
+      const toggleLikeTx = await executeOperation(
+        signer,
+        contract.target,
+        "toggleLikeVideo",
+        [id]
+      );
+
+      console.log("Transaction successful:", toggleLikeTx);
       // Update local state to reflect the like
       setIsVideoLiked((prev) => !prev);
       message.success(
@@ -204,6 +210,34 @@ export default function VideoPage({ params }) {
     } catch (error) {
       console.error("Error liking video:", error);
       message.error("Failed to like video. Please try again.");
+    }
+  };
+
+  const handleRemoveVideo = async () => {
+    if (!account) return message.error("Please connect your wallet first");
+    try {
+      const signer = ethers6Adapter.signer.toEthers({
+        client: thirdwebClient,
+        chain: activeChain,
+        account: accountObj
+      });
+      // execute the remove video operation gaslessly
+      // const removeVideoTx = await executeOperation(
+      //   signer,
+      //   contract.target,
+      //   "removeVideo",
+      //   [id]
+      // );
+      // console.log("Video removed successfully:", removeVideoTx);
+      // for now, we will use the contract directly because its not regular user function
+      const removeVideoTx = await contract.connect(signer).removeVideo(id);
+      console.log("removeVideoTx", removeVideoTx);
+      await removeVideoTx.wait();
+      message.success("Video removed successfully!");
+      router.push("/");
+    } catch (error) {
+      console.error("Error removing video:", error);
+      message.error("Failed to remove video. Please try again.");
     }
   };
 
@@ -402,6 +436,14 @@ export default function VideoPage({ params }) {
                     <Button type="text" icon={<DownloadOutlined />} />
                   </a>
                   {isVideoOwner && <VideoEditDrawer video={video} />}
+                  {/* TODO: Remove video button only visible to moderator later */}
+                  <Button
+                    type="text"
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={handleRemoveVideo}
+                  />
+                  <ReportVideoModal videoId={video?.id} />
                 </Space>
               </Space>
 
@@ -514,7 +556,6 @@ export default function VideoPage({ params }) {
                     <CommentSection
                       comments={video?.comments || []}
                       videoId={video?.id}
-                      count={video?.commentCount}
                       dataLoading={loading}
                     />
                   )

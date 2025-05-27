@@ -154,10 +154,16 @@ export function handleVideoCommented(event: VideoCommentedEvent): void {
 
 export function handleVideoReported(event: VideoReportedEvent): void {
   const videoId = event.params.videoId;
+  const blockTimestamp = event.block.timestamp;
+  const channelId = event.params.reporter;
+
+  // create or update channel entity
+  getOrInitChannel(channelId, blockTimestamp);
+
   const video = Video.load(videoId.toString());
   if (video) {
     video.reportCount = video.reportCount.plus(ONE_BI);
-    video.updatedAt = event.block.timestamp;
+    video.updatedAt = blockTimestamp;
     video.save();
   }
   const reportId = event.params.id;
@@ -165,8 +171,8 @@ export function handleVideoReported(event: VideoReportedEvent): void {
   report.video = videoId.toString();
   report.reason = REPORT_REASONS[event.params.reason];
   report.description = event.params.description;
-  report.reporter = event.params.reporter.toHex();
-  report.createdAt = event.block.timestamp;
+  report.reporter = channelId.toHex();
+  report.createdAt = blockTimestamp;
   report.save();
 }
 
