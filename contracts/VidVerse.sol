@@ -77,6 +77,8 @@ contract VidVerse is ERC721 {
     mapping(uint256 videoId => VideoStats stats) public videoStats;
     // reports
     mapping(uint256 videoId => Report[] reports) public videoReports;
+    mapping(uint256 videoId => mapping(address user => bool hasReported))
+        public hasUserReportedVideo;
     // tips
     mapping(uint256 videoId => mapping(uint256 tipId => Tip)) public tips;
     // comments
@@ -306,11 +308,16 @@ contract VidVerse is ERC721 {
         string memory _description
     ) external onlyExistingVideo(_videoId) {
         require(bytes(_description).length <= 300, "Description too long");
+        require(
+            !hasUserReportedVideo[_videoId][msg.sender],
+            "You have already reported this video"
+        );
         VideoStats storage vidStats = videoStats[_videoId];
         uint256 reportId = vidStats.reportsCount++;
         videoReports[_videoId].push(
             Report(reportId, _videoId, _reason, _description, msg.sender)
         );
+        hasUserReportedVideo[_videoId][msg.sender] = true;
         emit VideoReported(
             reportId,
             _videoId,
