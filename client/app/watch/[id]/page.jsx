@@ -17,7 +17,8 @@ import {
   Tabs,
   List,
   Image,
-  Result
+  Result,
+  Modal
 } from "antd";
 import {
   HeartTwoTone,
@@ -36,6 +37,7 @@ import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import { parseEther } from "ethers";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
@@ -64,11 +66,14 @@ export default function VideoPage({ params }) {
   const [tipAmountInput, setTipAmountInput] = useState(null);
   const [aaWalletAddress, setAAWalletAddress] = useState(null);
   const [isVideoLiked, setIsVideoLiked] = useState(false);
+  const [showFlaggedWarning, setShowFlaggedWarning] = useState(false);
 
   const { id } = use(params);
   const accountObj = useActiveAccount() || {};
   const account = accountObj?.address?.toLowerCase();
   const activeChain = useActiveWalletChain();
+
+  const router = useRouter();
 
   const fetchVideo = () => {
     setLoading(true);
@@ -87,6 +92,9 @@ export default function VideoPage({ params }) {
       })
       .then((data) => {
         setVideo(data?.video);
+        if (data?.video?.isFlagged) {
+          setShowFlaggedWarning(true);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -245,6 +253,27 @@ export default function VideoPage({ params }) {
   return (
     <div style={{ padding: "20px" }}>
       <CategoryBar />
+      {/* Modal for viewers discretion */}
+      <Modal
+        title="Viewer discretion is advised"
+        open={showFlaggedWarning}
+        onOk={() => setShowFlaggedWarning(false)}
+        onCancel={() => {
+          router.push("/");
+        }}
+        okText="Continue"
+        cancelText="Go Back"
+        centered
+        okButtonProps={{ shape: "round" }}
+        cancelButtonProps={{ shape: "round" }}
+        closable={false}
+      >
+        <p>
+          This video has been flagged by the community and may contain content
+          that is inappropriate or sensitive for some viewers. Viewer discretion
+          is advised.
+        </p>
+      </Modal>
       <Row gutter={[16, 16]}>
         <Col xs={24} md={16}>
           {loading ? (
@@ -272,8 +301,7 @@ export default function VideoPage({ params }) {
               {/* Video Section */}
               <Plyr
                 style={{ borderRadius: "10px", overflow: "hidden" }}
-                autoPlay
-                options={{ autoplay: true }}
+                options={{ autoplay: !showFlaggedWarning }}
                 controls
                 source={{
                   type: "video",
