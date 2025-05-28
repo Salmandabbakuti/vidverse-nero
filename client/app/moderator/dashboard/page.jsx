@@ -9,7 +9,8 @@ import {
   Space,
   Avatar,
   message,
-  Input
+  Input,
+  Spin
 } from "antd";
 import {
   DeleteOutlined,
@@ -33,54 +34,41 @@ const { Title, Text } = Typography;
 const { Search } = Input;
 dayjs.extend(relativeTime);
 
-const sampleVideos = [
-  {
-    id: 1,
-    title: "Video A",
-    isFlagged: true,
-    isRemoved: false,
-    reports: [
-      {
-        reason: "Violence",
-        description: "Very graphic",
-        reporter: { id: "0x123" }
-      },
-      { reason: "Abuse", description: "", reporter: { id: "0xabc" } }
-    ]
-  },
-  {
-    id: 2,
-    title: "Video B",
-    isFlagged: true,
-    isRemoved: false,
-    reports: [
-      {
-        reason: "Nudity",
-        description: "Explicit thumbnail",
-        reporter: { id: "0x456" }
-      }
-    ]
-  }
-];
-
-const ModeratorDashboard = () => {
+export default function ModeratorDashboard() {
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [videos, setVideos] = useState(sampleVideos);
+  const [videos, setVideos] = useState([]);
   const [dataLoading, setDataLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const accountObj = useActiveAccount() || {};
   const account = accountObj?.address?.toLowerCase();
   const activeChain = useActiveWalletChain();
 
-  const fetchVideosWithReports = () => {
+  const fetchVideosWithReports = (searchQuery = "") => {
+    console.log("searchQuery:", searchQuery);
     setDataLoading(true);
     client
       .request(GET_VIDEOS_WITH_REPORTS, {
         first: 100,
         skip: 0,
-        orderBy: "createdAt",
+        orderBy: "reportCount",
         orderDirection: "desc",
-        // where: { reportCount_gt: 0 }, // Only fetch videos with reports, also you can add more filters here e.g isFlagged: true
+        where: {
+          and: [
+            // { reportCount_gt: 0 }, // Only fetch videos with reports
+            ...(searchQuery
+              ? [
+                  {
+                    or: [
+                      { title_contains_nocase: searchQuery },
+                      { description_contains_nocase: searchQuery },
+                      { category_contains_nocase: searchQuery }
+                    ]
+                  }
+                ]
+              : [])
+          ]
+        }, // Only fetch videos with reports, also you can add more filters here e.g isFlagged: true
         reports_first: 50,
         reports_skip: 0,
         reports_orderBy: "createdAt",
@@ -109,6 +97,7 @@ const ModeratorDashboard = () => {
     if (!account) return message.error("Please connect your wallet first");
     if (!videoId) return message.error("Invalid video ID");
     console.log("Unflag video", videoId);
+    setLoading(true);
     try {
       const signer = ethers6Adapter.signer.toEthers({
         client: thirdwebClient,
@@ -123,12 +112,15 @@ const ModeratorDashboard = () => {
     } catch (error) {
       console.error("Error unflagging video:", error);
       message.error("Failed to unflag video. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRemoveVideo = async (videoId) => {
     if (!account) return message.error("Please connect your wallet first");
     if (!videoId) return message.error("Invalid video ID");
+    setLoading(true);
     try {
       const signer = ethers6Adapter.signer.toEthers({
         client: thirdwebClient,
@@ -142,103 +134,108 @@ const ModeratorDashboard = () => {
     } catch (error) {
       console.error("Error removing video:", error);
       message.error("Failed to remove video. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <Title level={4}>Reported Videos</Title>
-      <List
-        itemLayout="horizontal"
-        loading={dataLoading}
-        dataSource={videos || sampleVideos}
-        header={
-          // search and refresh buttons
-          <Space wrap>
-            <Search
-              type="primary"
-              enterButton
-              placeholder="Search videos by title"
-              allowClear
-              onSearch={(value) => {}}
-              style={{ width: 300 }}
-            />
-            <Button
-              shape="circle"
-              onClick={fetchVideosWithReports}
-              icon={<SyncOutlined spin={dataLoading} />}
-            />
-          </Space>
-        }
-        pagination={{
-          size: "small",
-          responsive: true,
-          // hideOnSinglePage: true,
-          showLessItems: true,
-          pageSizeOptions: [5, 10, 25, 50],
-          showSizeChanger: true,
-          defaultCurrent: 1,
-          defaultPageSize: 10
-        }}
-        renderItem={(video) => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={
-                <Link href={`/watch/${video?.id}`}>
-                  <Avatar
-                    shape="square"
-                    size="large"
-                    src={`https://ipfs.io/ipfs/${video.thumbnailHash}`}
-                    alt={video.title}
-                    style={{ width: 120, height: 90 }}
-                  />
-                </Link>
-              }
-              title={video?.title}
-              description={
-                <Space wrap>
-                  <Tag
-                    color={video?.reportCount ? "blue" : "red"}
-                    bordered={false}
-                  >
-                    {video?.reportCount} Reports
-                  </Tag>
-                  <Tag color={video.isFlagged ? "orange" : "cyan"}>
-                    {video.isFlagged ? "Flagged" : "Not Flagged"}
-                  </Tag>
-                  <Tag color={video?.isRemoved ? "red" : "green"}>
-                    {video.isRemoved ? "Removed" : "Active"}
-                  </Tag>
-                </Space>
-              }
-            />
-            <Space>
-              <Button
-                icon={<EyeOutlined />}
-                shape="circle"
-                title="View Reports"
-                onClick={() => setSelectedVideo(video)}
-              />
-              <Button
-                type="default"
-                icon={<FlagTwoTone />}
-                shape="circle"
-                title="Unflag Video"
-                onClick={() => handleClearVideoFlag(video?.id)}
-                disabled={!video.isFlagged}
-              />
-              <Button
-                icon={<DeleteOutlined />}
-                shape="circle"
+      <Spin spinning={loading} tip="Transaction in progress...">
+        <List
+          itemLayout="horizontal"
+          loading={dataLoading}
+          dataSource={videos}
+          header={
+            // search and refresh buttons
+            <Space wrap>
+              <Search
+                defaultValue={""}
                 type="primary"
-                title="Remove Video"
-                danger
-                onClick={() => handleRemoveVideo(video?.id)}
+                enterButton
+                placeholder="Search videos by title"
+                allowClear
+                onSearch={fetchVideosWithReports}
+                style={{ width: 300 }}
+              />
+              <Button
+                shape="circle"
+                onClick={() => fetchVideosWithReports()}
+                icon={<SyncOutlined spin={dataLoading} />}
               />
             </Space>
-          </List.Item>
-        )}
-      />
+          }
+          pagination={{
+            size: "small",
+            responsive: true,
+            // hideOnSinglePage: true,
+            showLessItems: true,
+            pageSizeOptions: [5, 10, 25, 50],
+            showSizeChanger: true,
+            defaultCurrent: 1,
+            defaultPageSize: 10
+          }}
+          renderItem={(video) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={
+                  <Link href={`/watch/${video?.id}`}>
+                    <Avatar
+                      shape="square"
+                      size="large"
+                      src={`https://ipfs.io/ipfs/${video.thumbnailHash}`}
+                      alt={video.title}
+                      style={{ width: 120, height: 90 }}
+                    />
+                  </Link>
+                }
+                title={video?.title}
+                description={
+                  <Space wrap>
+                    <Tag
+                      color={video?.reportCount ? "blue" : "red"}
+                      bordered={false}
+                    >
+                      {video?.reportCount} Reports
+                    </Tag>
+                    <Tag color={video?.isFlagged ? "orange" : "cyan"}>
+                      {video?.isFlagged ? "Flagged" : "Not Flagged"}
+                    </Tag>
+                    <Tag color={video?.isRemoved ? "red" : "green"}>
+                      {video?.isRemoved ? "Removed" : "Active"}
+                    </Tag>
+                  </Space>
+                }
+              />
+              <Space>
+                <Button
+                  icon={<EyeOutlined />}
+                  shape="circle"
+                  title="View Reports"
+                  onClick={() => setSelectedVideo(video)}
+                />
+                <Button
+                  type="default"
+                  icon={<FlagTwoTone />}
+                  shape="circle"
+                  title="Unflag Video"
+                  onClick={() => handleClearVideoFlag(video?.id)}
+                  disabled={!video?.isFlagged}
+                />
+                <Button
+                  icon={<DeleteOutlined />}
+                  shape="circle"
+                  type="primary"
+                  title="Remove Video"
+                  danger
+                  onClick={() => handleRemoveVideo(video?.id)}
+                />
+              </Space>
+            </List.Item>
+          )}
+        />
+      </Spin>
 
       <Drawer
         title={`Reports for "${selectedVideo?.title}"`}
@@ -267,7 +264,7 @@ const ModeratorDashboard = () => {
                   <Space>
                     <Text strong>{report?.reporter?.id}</Text>
                     <Text type="secondary">
-                      {dayjs(report?.createdAt).fromNow()}
+                      {dayjs(report?.createdAt || 0).fromNow()}
                     </Text>
                   </Space>
                 }
@@ -286,6 +283,4 @@ const ModeratorDashboard = () => {
       </Drawer>
     </>
   );
-};
-
-export default ModeratorDashboard;
+}
