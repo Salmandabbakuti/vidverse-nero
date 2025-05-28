@@ -169,7 +169,7 @@ export default function ModeratorDashboard() {
           pagination={{
             size: "small",
             responsive: true,
-            // hideOnSinglePage: true,
+            hideOnSinglePage: true,
             showLessItems: true,
             pageSizeOptions: [5, 10, 25, 50],
             showSizeChanger: true,
@@ -241,7 +241,7 @@ export default function ModeratorDashboard() {
         title={`Reports for "${selectedVideo?.title}"`}
         open={!!selectedVideo}
         onClose={() => setSelectedVideo(null)}
-        width={480}
+        width={520}
       >
         <List
           itemLayout="vertical"
@@ -250,7 +250,7 @@ export default function ModeratorDashboard() {
           pagination={{
             size: "small",
             responsive: true,
-            // hideOnSinglePage: true,
+            hideOnSinglePage: true,
             showLessItems: true,
             pageSizeOptions: [5, 10, 25, 50],
             showSizeChanger: true,
@@ -264,7 +264,7 @@ export default function ModeratorDashboard() {
                   <Space>
                     <Text strong>{report?.reporter?.id}</Text>
                     <Text type="secondary">
-                      {dayjs(report?.createdAt || 0).fromNow()}
+                      {dayjs(report?.createdAt * 1000 || 0).fromNow()}
                     </Text>
                   </Space>
                 }

@@ -49,7 +49,7 @@ export default function ReportModal({ videoId }) {
         [videoId, values.reason, values.description]
       );
       console.log("reportTx", reportTx);
-      message.success("Report submitted successfully!");
+      message.success("Thanks for your report! We will review it shortly.");
       setShowReportModal(false);
       form.resetFields();
     } catch (error) {

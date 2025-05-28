@@ -251,28 +251,21 @@ export default function Channel({ params }) {
                 split
                 loading={loading}
                 pagination={{
-                  onChange: (page) => {
-                    console.log(page);
-                  },
-                  pageSize: 20
+                  size: "small",
+                  responsive: true,
+                  hideOnSinglePage: true,
+                  showLessItems: true,
+                  pageSizeOptions: [5, 10, 25, 50],
+                  showSizeChanger: true,
+                  defaultCurrent: 1,
+                  defaultPageSize: 20
                 }}
                 dataSource={channel?.comments || []}
                 rowKey={(item) => item?.id}
                 renderItem={(item) => (
-                  <List.Item key={item?.id} style={{ cursor: "pointer" }}>
-                    <Link href={`/watch/${item?.video?.id}`}>
+                  <Link href={`/watch/${item?.video?.id}`} key={item?.id}>
+                    <List.Item>
                       <List.Item.Meta
-                        title={
-                          <Space>
-                            <Typography.Text strong>
-                              {`“${item?.content}”`}
-                            </Typography.Text>
-                            <Typography.Text type="secondary">
-                              {dayjs(item?.createdAt * 1000).fromNow()}
-                            </Typography.Text>
-                          </Space>
-                        }
-                        description={`Commented on “${item?.video?.title}”`}
                         avatar={
                           <Avatar
                             shape="square"
@@ -286,9 +279,20 @@ export default function Channel({ params }) {
                             src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
                           />
                         }
+                        title={
+                          <Space>
+                            <Typography.Text strong>
+                              {`“${item?.content}”`}
+                            </Typography.Text>
+                            <Typography.Text type="secondary">
+                              {dayjs(item?.createdAt * 1000).fromNow()}
+                            </Typography.Text>
+                          </Space>
+                        }
+                        description={`Commented on “${item?.video?.title}”`}
                       />
-                    </Link>
-                  </List.Item>
+                    </List.Item>
+                  </Link>
                 )}
               />
             )
@@ -304,6 +308,16 @@ export default function Channel({ params }) {
                 rowKey={(item) => item?.id}
                 split
                 loading={loading}
+                pagination={{
+                  size: "small",
+                  responsive: true,
+                  hideOnSinglePage: true,
+                  showLessItems: true,
+                  pageSizeOptions: [5, 10, 25, 50],
+                  showSizeChanger: true,
+                  defaultCurrent: 1,
+                  defaultPageSize: 10
+                }}
                 renderItem={(item) => (
                   <List.Item>
                     <List.Item.Meta

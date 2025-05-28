@@ -102,7 +102,7 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ### Deployed Resources
 
-- [VidVerse Contract](https://testnet.neroscan.io/address/0x22428d3d0354ccc66e85723df074cf6e957cec60)
+- [VidVerse Contract](https://testnet.neroscan.io/address/0x7d9daBF118482B47ea6D900f0221aB1ECDb19a7a)
 - [VidVerse Subgraph](https://subgraph.testnet.nero.metaborong.com/subgraphs/name/vidverse-nero)
 - [VidVerse Client](https://vidverse-nero.vercel.app/)
 

@@ -40,7 +40,6 @@ export default function CommentSection({
       );
       setCommentInput("");
       console.log("addCommentTx", addCommentTx);
-      message.success("Comment added!");
       // add comment to state
       comments.unshift({
         id: comments.length + 1,
@@ -48,6 +47,7 @@ export default function CommentSection({
         author: { id: account },
         createdAt: Math.floor(Date.now() / 1000)
       });
+      message.success("Comment added!");
     } catch (error) {
       console.error(error);
       message.error("Failed to add comment. Please try again.");
