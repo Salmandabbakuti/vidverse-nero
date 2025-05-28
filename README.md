@@ -24,7 +24,7 @@ Today’s creator platforms are controlled by centralized entities that decide w
 
 By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVerse onboards the next billion users to Web3 with a truly frictionless experience, allowing them to interact with the platform without worrying about gas fees or complex wallet setups. This makes it easier for creators and viewers to engage with the platform and helps to drive adoption of decentralized technologies.
 
-![vidverse-nero-watch-page](https://github.com/user-attachments/assets/65118dd7-8bfc-4f10-8b8e-2c3a8d409802)
+![vidverse-nero-watch-page](https://github.com/user-attachments/assets/0eb628cd-f90d-44d0-a235-05e71eaa2f3a)
 
 ## Core Features
 
@@ -96,9 +96,8 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ### Screenshots
 
-![vidverse-nero-home](https://github.com/user-attachments/assets/3165106b-ce64-411b-96a1-a3dfa5169189)
-
-![vidverse-nero-watch-page](https://github.com/user-attachments/assets/65118dd7-8bfc-4f10-8b8e-2c3a8d409802)
+![vidverse-nero-home](https://github.com/user-attachments/assets/205bd061-89e1-4d19-b2ed-e9cbbeeb5d55)
+![vidverse-nero-watch-page](https://github.com/user-attachments/assets/0eb628cd-f90d-44d0-a235-05e71eaa2f3a)
 
 ### Deployed Resources
 
@@ -122,6 +121,17 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 - **Data Indexing**: TheGraph(NERO Chain Subgraph Sandbox Node)
 
 ## Changelog
+
+### v0.2.0
+
+- Video social dynamics (likes, comments) implementation in smartcontract and subgraph.
+- Introduced video reporting and moderation features, including reporting videos with reasons and descriptions.
+- Added comment section, likes, viewers discretion modal for flagged video, and video reporting in watch page.
+- Added moderator dashboard for video removal and flagging capabilities.
+- Channel Page(Creator Profile) with uploaded videos, likes, comments, and tips sections.
+- Added likes, comments, tip amount stats in video card.
+
+Full changelog can be found in [https://github.com/Salmandabbakuti/vidverse-nero/pull/3](https://github.com/Salmandabbakuti/vidverse-nero/pull/3#issue-3091744147).
 
 ### v0.1.0
 

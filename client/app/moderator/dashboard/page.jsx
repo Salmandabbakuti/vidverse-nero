@@ -111,7 +111,9 @@ export default function ModeratorDashboard() {
       message.success("Video unflagged successfully!");
     } catch (error) {
       console.error("Error unflagging video:", error);
-      message.error("Failed to unflag video. Please try again.");
+      message.error(
+        `Failed to unflag video. ${error?.shortMessage || "Please try again."}`
+      );
     } finally {
       setLoading(false);
     }
@@ -133,7 +135,9 @@ export default function ModeratorDashboard() {
       message.success("Video removed successfully!");
     } catch (error) {
       console.error("Error removing video:", error);
-      message.error("Failed to remove video. Please try again.");
+      message.error(
+        `Failed to remove video. ${error?.shortMessage || "Please try again."}`
+      );
     } finally {
       setLoading(false);
     }

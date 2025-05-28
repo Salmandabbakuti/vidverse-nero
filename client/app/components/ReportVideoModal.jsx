@@ -54,7 +54,11 @@ export default function ReportModal({ videoId }) {
       form.resetFields();
     } catch (error) {
       console.error("Error submitting report:", error);
-      message.error("Failed to submit report. Please try again.");
+      message.error(
+        `Failed to submit report: ${
+          error?.shortMessage || "Please try again later."
+        }`
+      );
     } finally {
       setLoading(false);
     }
