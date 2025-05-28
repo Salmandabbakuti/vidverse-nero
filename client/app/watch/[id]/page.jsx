@@ -9,9 +9,7 @@ import {
   Typography,
   Skeleton,
   Divider,
-  Popconfirm,
   Button,
-  Input,
   Space,
   Tabs,
   List,
@@ -34,7 +32,6 @@ import dayjs from "dayjs";
 import { toEther } from "thirdweb";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
-import { parseEther } from "ethers";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -45,6 +42,7 @@ import CategoryBar from "@/app/components/CategoryBar";
 import VideoEditDrawer from "@/app/components/VideoEditDrawer";
 import CommentSection from "@/app/components/CommentSection";
 import ReportVideoModal from "@/app/components/ReportVideoModal";
+import TipModal from "@/app/components/TipModal";
 import {
   ellipsisString,
   contract,
@@ -63,10 +61,10 @@ export default function VideoPage({ params }) {
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [video, setVideo] = useState(null);
-  const [tipAmountInput, setTipAmountInput] = useState(null);
   const [aaWalletAddress, setAAWalletAddress] = useState(null);
   const [isVideoLiked, setIsVideoLiked] = useState(false);
   const [showFlaggedWarning, setShowFlaggedWarning] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
 
   const { id } = use(params);
   const accountObj = useActiveAccount() || {};
@@ -144,49 +142,9 @@ export default function VideoPage({ params }) {
     }
   };
 
-  const handleTipVideo = async () => {
-    if (!account) return message.error("Please connect your wallet first");
-    if (!tipAmountInput || tipAmountInput <= 0)
-      return message.error("Please enter valid tip amount");
-    try {
-      console.log("tipAmountInput", tipAmountInput);
-      console.log("video?.id", video?.id);
-      const tipAmountinWei = parseEther(tipAmountInput);
-      console.log("tipAmountinWei", tipAmountinWei);
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
-      message.info("Please sign the transaction in your wallet");
-      const tipTx = await executeOperation(
-        signer,
-        contract.target,
-        "tipVideo",
-        [video?.id, tipAmountinWei],
-        tipAmountinWei
-      );
-      console.log("tipTx", tipTx);
-      // update tip amount in state
-      setVideo((prev) => ({
-        ...prev,
-        tipAmount: BigInt(prev?.tipAmount || 0) + tipAmountinWei
-      }));
-      message.success("Thank you for supporting the creator!");
-    } catch (error) {
-      console.error(error);
-      message.error(
-        `Failed to tip video. Make sure you have enough amount in your smart contract wallet ${ellipsisString(
-          aaWalletAddress,
-          5,
-          5
-        )}`
-      );
-    }
-  };
-
   const handleToggleLikeVideo = async () => {
     if (!account) return message.error("Please connect your wallet first");
+    setIsLiking(true);
     try {
       const signer = ethers6Adapter.signer.toEthers({
         client: thirdwebClient,
@@ -209,6 +167,8 @@ export default function VideoPage({ params }) {
     } catch (error) {
       console.error("Error liking video:", error);
       message.error("Failed to like video. Please try again.");
+    } finally {
+      setIsLiking(false);
     }
   };
 
@@ -336,6 +296,7 @@ export default function VideoPage({ params }) {
                 <Space size="small" wrap>
                   <Button
                     type="text"
+                    loading={isLiking}
                     icon={
                       isVideoLiked ? (
                         <LikeFilled style={{ color: "#1677ff" }} />
@@ -347,34 +308,10 @@ export default function VideoPage({ params }) {
                   >
                     {video?.likeCount || 0}
                   </Button>
-                  <Popconfirm
-                    title={
-                      <>
-                        <label>
-                          Like this video? Consider tipping the creator!
-                        </label>
-                        <Input
-                          type="number"
-                          size="large"
-                          addonAfter="ETH"
-                          value={tipAmountInput}
-                          placeholder="Enter tip amount"
-                          onChange={(e) => setTipAmountInput(e.target.value)}
-                        />
-                        <p>*100% of the tip goes to the video owner.</p>
-                      </>
-                    }
-                    onConfirm={handleTipVideo}
-                  >
-                    <Button
-                      type="text"
-                      icon={
-                        <DollarCircleOutlined style={{ color: "#eb2f96" }} />
-                      }
-                    >
-                      {toEther(video?.tipAmount || 0n) + " ETH"}
-                    </Button>
-                  </Popconfirm>
+                  <TipModal
+                    videoData={video}
+                    aaWalletAddress={aaWalletAddress}
+                  />
                   <Button
                     type="text"
                     icon={<ShareAltOutlined />}
@@ -463,33 +400,16 @@ export default function VideoPage({ params }) {
                     <CheckCircleTwoTone twoToneColor="#52c41a" />
                   </Link>
                   <br />
-                  <Popconfirm
-                    title={
-                      <>
-                        <label>Support the creator with a tip!</label>
-                        <Input
-                          type="number"
-                          size="large"
-                          addonAfter="ETH"
-                          value={tipAmountInput}
-                          placeholder="Enter tip amount"
-                          onChange={(e) => setTipAmountInput(e.target.value)}
-                        />
-                        <p>*100% of the tip goes to the video owner.</p>
-                      </>
-                    }
-                    onConfirm={handleTipVideo}
+                  <Button
+                    icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                    type="primary"
+                    shape="round"
+                    size="small"
+                    onClick={() => message.info("Feature coming soon!")}
+                    style={{ marginTop: "5px" }}
                   >
-                    <Button
-                      icon={<HeartTwoTone twoToneColor="#eb2f96" />}
-                      type="primary"
-                      shape="round"
-                      size="small"
-                      style={{ marginTop: "5px" }}
-                    >
-                      Support
-                    </Button>
-                  </Popconfirm>
+                    Subscribe
+                  </Button>
                 </Col>
               </Row>
             </div>
