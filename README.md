@@ -126,12 +126,13 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 - Video social dynamics (likes, comments) implementation in smartcontract and subgraph.
 - Introduced video reporting and moderation features, including reporting videos with reasons and descriptions.
-- Added comment section, likes, viewers discretion modal for flagged video, and video reporting in watch page.
+- Added comment section, likes, viewer discretion modal for flagged video, and video reporting in watch page.
+- Paymaster and AA integration for commenting, liking, and reporting videos.
 - Added moderator dashboard for video removal and flagging capabilities.
-- Channel Page(Creator Profile) with uploaded videos, likes, comments, and tips sections.
+- Channel Page (Creator Profile) with uploaded videos, likes, comments, and tips sections.
 - Added likes, comments, tip amount stats in video card.
 
-Full changelog can be found in [https://github.com/Salmandabbakuti/vidverse-nero/pull/3](https://github.com/Salmandabbakuti/vidverse-nero/pull/3#issue-3091744147).
+Full changelog can be found in https://github.com/Salmandabbakuti/vidverse-nero/pull/3
 
 ### v0.1.0
 

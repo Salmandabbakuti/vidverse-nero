@@ -76,7 +76,12 @@ export default function Channel({ params }) {
         comments_first: 50,
         comments_skip: 0,
         comments_orderBy: "createdAt",
-        comments_orderDirection: "desc"
+        comments_orderDirection: "desc",
+        comments_where: {
+          video_: {
+            isRemoved: false
+          }
+        }
       })
       .then((data) => {
         setChannel(data?.channel);
