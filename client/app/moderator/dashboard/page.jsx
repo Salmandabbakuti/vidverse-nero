@@ -47,11 +47,29 @@ export default function ModeratorDashboard() {
   const account = accountObj?.address?.toLowerCase();
   const activeChain = useActiveWalletChain();
 
-  const fetchVideosWithReports = (searchQuery = "") => {
+  const fetchVideosWithReports = async (searchQuery = "") => {
+    // Reset state to avoid stale data
+    setVideos([]);
+    setSelectedVideo(null);
+    if (!account)
+      return message.error(
+        "Please connect your wallet to access this dashboard"
+      );
     console.log("searchQuery:", searchQuery);
     setDataLoading(true);
-    client
-      .request(GET_VIDEOS_WITH_REPORTS, {
+    try {
+      // check if connected account is the moderator onchain. if not return early
+      const moderator = await contract.moderator();
+      console.log("Current moderator:", moderator);
+      setModerator(moderator);
+      if (account !== moderator?.toLowerCase()) {
+        message.error(
+          "You are not the moderator. Only the moderator can access this page."
+        );
+        return;
+      }
+      console.log("Fetching videos with reports...");
+      const data = await client.request(GET_VIDEOS_WITH_REPORTS, {
         first: 100,
         skip: 0,
         orderBy: "reportCount",
@@ -77,35 +95,20 @@ export default function ModeratorDashboard() {
         reports_orderBy: "createdAt",
         reports_orderDirection: "desc",
         reports_where: {}
-      })
-      .then((data) => {
-        console.log("Fetched videos with reports:", data.videos);
-        setVideos(data?.videos);
-      })
-      .catch((error) => {
-        console.error("Error fetching videos:", error);
-        message.error("Failed to fetch videos with reports.");
-      })
-      .finally(() => {
-        setDataLoading(false);
       });
-  };
-
-  const getModeratorAddress = async () => {
-    try {
-      const moderator = await contract.moderator();
-      setModerator(moderator?.toLowerCase());
-      console.log("Moderator address:", moderator);
-    } catch (err) {
-      console.error("Error fetching moderator address:", err);
-      message.error("Failed to fetch moderator address.");
+      console.log("Fetched videos with reports:", data?.videos);
+      setVideos(data?.videos);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+      message.error("Failed to fetch videos with reports.");
+    } finally {
+      setDataLoading(false);
     }
   };
 
   useEffect(() => {
     fetchVideosWithReports();
-    getModeratorAddress();
-  }, []);
+  }, [account]);
 
   const handleClearVideoFlag = async (videoId) => {
     if (!account) return message.error("Please connect your wallet first");
