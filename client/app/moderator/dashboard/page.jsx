@@ -302,7 +302,7 @@ export default function ModeratorDashboard() {
                     <Tag color="red" style={{ fontWeight: "bold" }}>
                       {report?.reason}
                     </Tag>
-                    <Text strong={report?.description ? true : false}>
+                    <Text strong={Boolean(report?.description)}>
                       {report?.description || "<No description provided>"}
                     </Text>
                   </Space>

@@ -96,13 +96,13 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ### Screenshots
 
-![vv0 2-home-sc](https://github.com/user-attachments/assets/1cf03cf6-6e45-429a-a1c8-fc696d02a021)
+![vv0.2-home-sc](https://github.com/user-attachments/assets/1cf03cf6-6e45-429a-a1c8-fc696d02a021)
 
-![vv0 2-watch-comments-view-sc](https://github.com/user-attachments/assets/68c7e42d-6aae-41d4-a996-8c82a0fb492e)
+![vv0.2-watch-comments-view-sc](https://github.com/user-attachments/assets/68c7e42d-6aae-41d4-a996-8c82a0fb492e)
 
-![vv0 2-channel-comments-sc](https://github.com/user-attachments/assets/fdd6e529-2c92-4ca8-a5b6-1e6a2b2cb9b7)
+![vv0.2-channel-comments-sc](https://github.com/user-attachments/assets/fdd6e529-2c92-4ca8-a5b6-1e6a2b2cb9b7)
 
-![vv0 2-moderator-dashboard-sc](https://github.com/user-attachments/assets/d9ccd4e6-7f0e-447e-a38f-93893da69db6)
+![vv0.2-moderator-dashboard-sc](https://github.com/user-attachments/assets/d9ccd4e6-7f0e-447e-a38f-93893da69db6)
 
 ### Deployed Resources
 
