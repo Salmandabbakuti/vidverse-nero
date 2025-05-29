@@ -10,7 +10,8 @@ import {
   Avatar,
   message,
   Input,
-  Spin
+  Spin,
+  Alert
 } from "antd";
 import {
   DeleteOutlined,
@@ -27,7 +28,8 @@ import {
   subgraphClient as client,
   GET_VIDEOS_WITH_REPORTS,
   contract,
-  thirdwebClient
+  thirdwebClient,
+  ellipsisString
 } from "@/app/utils";
 
 const { Title, Text } = Typography;
@@ -39,6 +41,7 @@ export default function ModeratorDashboard() {
   const [videos, setVideos] = useState([]);
   const [dataLoading, setDataLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [moderator, setModerator] = useState("");
 
   const accountObj = useActiveAccount() || {};
   const account = accountObj?.address?.toLowerCase();
@@ -88,9 +91,20 @@ export default function ModeratorDashboard() {
       });
   };
 
+  const getModeratorAddress = async () => {
+    try {
+      const moderator = await contract.moderator();
+      setModerator(moderator?.toLowerCase());
+      console.log("Moderator address:", moderator);
+    } catch (err) {
+      console.error("Error fetching moderator address:", err);
+      message.error("Failed to fetch moderator address.");
+    }
+  };
+
   useEffect(() => {
-    // This would be replaced with a real API call to fetch videos with reports
     fetchVideosWithReports();
+    getModeratorAddress();
   }, []);
 
   const handleClearVideoFlag = async (videoId) => {
@@ -145,6 +159,17 @@ export default function ModeratorDashboard() {
 
   return (
     <>
+      <Alert
+        message={
+          <Typography.Text strong>
+            Current Moderator: {ellipsisString(moderator, 6, 4)}
+          </Typography.Text>
+        }
+        description="Only the moderator can perform actions on this page."
+        type="info"
+        showIcon
+        style={{ marginBottom: 24 }}
+      />
       <Title level={4}>Reported Videos</Title>
       <Spin spinning={loading} tip="Transaction in progress...">
         <List

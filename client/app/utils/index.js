@@ -67,6 +67,7 @@ const abi = [
   "function reportVideo(uint256 _videoId, uint8 _reason, string _description)",
   "function removeVideo(uint256 _videoId)",
   "function clearVideoFlag(uint256 _videoId)",
+  "function moderator() view returns (address)",
   "function isVideoLikedByUser(uint256 videoId, address user) view returns (bool)"
 ]; // ABI of the contract
 
@@ -76,7 +77,7 @@ export const contract = new Contract(
   defaultProvider
 );
 
-export const ellipsisString = (str, first, last) =>
+export const ellipsisString = (str = "", first, last) =>
   str.slice(0, first) + "..." + str.slice(-last);
 
 const subgraphUrl =
