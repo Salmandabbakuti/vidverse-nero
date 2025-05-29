@@ -64,7 +64,7 @@ export default function TipModal({ videoData, aaWalletAddress }) {
         onClick={() => setOpenModal(true)}
         icon={<DollarCircleOutlined style={{ color: "#eb2f96" }} />}
       >
-        {toEther(videoData?.tipAmount || 0n) + " ETH"}
+        {toEther(videoData?.tipAmount || 0n) + " NERO"}
       </Button>
 
       <Modal
@@ -83,7 +83,7 @@ export default function TipModal({ videoData, aaWalletAddress }) {
         <Input
           type="number"
           size="large"
-          addonAfter="ETH"
+          addonAfter="NERO"
           value={tipAmountInput}
           placeholder="Enter tip amount"
           onChange={(e) => setTipAmountInput(e.target.value)}

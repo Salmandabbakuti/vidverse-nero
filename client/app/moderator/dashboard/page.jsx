@@ -15,9 +15,9 @@ import {
 } from "antd";
 import {
   DeleteOutlined,
-  EyeOutlined,
-  FlagTwoTone,
-  SyncOutlined
+  SafetyCertificateTwoTone,
+  SyncOutlined,
+  FileExclamationTwoTone
 } from "@ant-design/icons";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
@@ -51,10 +51,6 @@ export default function ModeratorDashboard() {
     // Reset state to avoid stale data
     setVideos([]);
     setSelectedVideo(null);
-    if (!account)
-      return message.error(
-        "Please connect your wallet to access this dashboard"
-      );
     console.log("searchQuery:", searchQuery);
     setDataLoading(true);
     try {
@@ -64,7 +60,7 @@ export default function ModeratorDashboard() {
       setModerator(moderator);
       if (account !== moderator?.toLowerCase()) {
         message.error(
-          "You are not the moderator. Only the moderator can access this page."
+          "Only moderator can access this dashboard. Please connect as moderator wallet."
         );
         return;
       }
@@ -242,14 +238,15 @@ export default function ModeratorDashboard() {
               />
               <Space>
                 <Button
-                  icon={<EyeOutlined />}
+                  variant="outlined"
+                  icon={<FileExclamationTwoTone />}
                   shape="circle"
                   title="View Reports"
                   onClick={() => setSelectedVideo(video)}
                 />
                 <Button
                   type="default"
-                  icon={<FlagTwoTone />}
+                  icon={<SafetyCertificateTwoTone />}
                   shape="circle"
                   title="Unflag Video"
                   onClick={() => handleClearVideoFlag(video?.id)}
@@ -294,7 +291,7 @@ export default function ModeratorDashboard() {
               <List.Item.Meta
                 title={
                   <Space>
-                    <Text strong>{report?.reporter?.id}</Text>
+                    <Text type="secondary">{report?.reporter?.id}</Text>
                     <Text type="secondary">
                       {dayjs(report?.createdAt * 1000 || 0).fromNow()}
                     </Text>
@@ -305,7 +302,9 @@ export default function ModeratorDashboard() {
                     <Tag color="red" style={{ fontWeight: "bold" }}>
                       {report?.reason}
                     </Tag>
-                    {report?.description && <Text>{report?.description}</Text>}
+                    <Text strong={report?.description ? true : false}>
+                      {report?.description || "<No description provided>"}
+                    </Text>
                   </Space>
                 }
               />

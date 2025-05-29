@@ -68,7 +68,7 @@ export default function VideoCard({ video }) {
               </span>
               <span>
                 <DollarCircleOutlined />{" "}
-                {toEther(video?.tipAmount || 0n) + " ETH"}
+                {toEther(video?.tipAmount || 0n) + " NERO"}
               </span>
             </Space>
           </div>

@@ -20,7 +20,7 @@ const REPORT_REASONS = [
   { label: "Other", value: 8 }
 ];
 
-export default function ReportModal({ videoId }) {
+export default function ReportVideoModal({ videoId }) {
   const [showReportModal, setShowReportModal] = useState(false);
   const [loading, setLoading] = useState(false);
 

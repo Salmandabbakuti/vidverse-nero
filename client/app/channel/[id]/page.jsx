@@ -344,7 +344,7 @@ export default function Channel({ params }) {
                       title={
                         <Space>
                           <Typography.Text strong>
-                            {`Tipped ${toEther(item?.amount || 0n)} ETH`}
+                            {`Tipped ${toEther(item?.amount || 0n)} NERO`}
                           </Typography.Text>
                           <Typography.Text type="secondary">
                             {dayjs(item?.createdAt * 1000).format(

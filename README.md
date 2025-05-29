@@ -24,7 +24,7 @@ Today’s creator platforms are controlled by centralized entities that decide w
 
 By using NERO Chain's Native Account Abstraction(AA), Paymaster features, VidVerse onboards the next billion users to Web3 with a truly frictionless experience, allowing them to interact with the platform without worrying about gas fees or complex wallet setups. This makes it easier for creators and viewers to engage with the platform and helps to drive adoption of decentralized technologies.
 
-![vidverse-nero-watch-page](https://github.com/user-attachments/assets/0eb628cd-f90d-44d0-a235-05e71eaa2f3a)
+![vidverse-nero-watch-page](https://github.com/user-attachments/assets/68c7e42d-6aae-41d4-a996-8c82a0fb492e)
 
 ## Core Features
 
@@ -92,12 +92,17 @@ npm run dev
 
 The core implemtation of Paymaster and Account Abstraction(AA) can be found in [`client/app/utils/aaUtils.js`](client/app/utils/aaUtils.js)
 
-Interaction flow is demonstrated in [adding a video](https://github.com/Salmandabbakuti/vidverse-nero/blob/ede24e1323c042596dee04cf5bf29d2237b86a86/client/app/components/Navbar/UploadDrawer.jsx#L52) and in [updating video Info](https://github.com/Salmandabbakuti/vidverse-nero/blob/6b769597ff54ce2a81c318b28a139e246910bb7e/client/app/components/VideoEditDrawer.jsx#L57) and [tipping a video](https://github.com/Salmandabbakuti/vidverse-nero/blob/6b769597ff54ce2a81c318b28a139e246910bb7e/client/app/watch/%5Bid%5D/page.jsx#L143)
+Interaction flow is demonstrated in [adding a video](https://github.com/Salmandabbakuti/vidverse-nero/blob/ede24e1323c042596dee04cf5bf29d2237b86a86/client/app/components/Navbar/UploadDrawer.jsx#L52) and in [updating video Info](https://github.com/Salmandabbakuti/vidverse-nero/blob/6b769597ff54ce2a81c318b28a139e246910bb7e/client/app/components/VideoEditDrawer.jsx#L57) and [tipping a video](https://github.com/Salmandabbakuti/vidverse-nero/blob/6b769597ff54ce2a81c318b28a139e246910bb7e/client/app/watch/%5Bid%5D/page.jsx#L143), commenting, liking, reporting videos in their respective components.
 
 ### Screenshots
 
-![vidverse-nero-home](https://github.com/user-attachments/assets/205bd061-89e1-4d19-b2ed-e9cbbeeb5d55)
-![vidverse-nero-watch-page](https://github.com/user-attachments/assets/0eb628cd-f90d-44d0-a235-05e71eaa2f3a)
+![vv0 2-home-sc](https://github.com/user-attachments/assets/1cf03cf6-6e45-429a-a1c8-fc696d02a021)
+
+![vv0 2-watch-comments-view-sc](https://github.com/user-attachments/assets/68c7e42d-6aae-41d4-a996-8c82a0fb492e)
+
+![vv0 2-channel-comments-sc](https://github.com/user-attachments/assets/fdd6e529-2c92-4ca8-a5b6-1e6a2b2cb9b7)
+
+![vv0 2-moderator-dashboard-sc](https://github.com/user-attachments/assets/d9ccd4e6-7f0e-447e-a38f-93893da69db6)
 
 ### Deployed Resources
 

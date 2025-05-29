@@ -500,7 +500,7 @@ export default function VideoPage({ params }) {
                             }
                             description={`Tipped ${toEther(
                               item?.amount || 0n
-                            )} ETH`}
+                            )} NERO`}
                           />
                         </List.Item>
                       )}
