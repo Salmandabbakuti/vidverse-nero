@@ -44,7 +44,7 @@ export default function SiteLayout({ children }) {
           ©{new Date().getFullYear()} Salman Dabbakuti. Powered by NERO Chain &
           TheGraph
         </a>
-        <p style={{ fontSize: "12px" }}>v0.0.2</p>
+        <p style={{ fontSize: "12px" }}>v0.2.0</p>
       </Footer>
     </Layout>
   );

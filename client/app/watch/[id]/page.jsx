@@ -9,14 +9,13 @@ import {
   Typography,
   Skeleton,
   Divider,
-  Popconfirm,
   Button,
-  Input,
-  Empty,
   Space,
   Tabs,
   List,
-  Image
+  Image,
+  Result,
+  Modal
 } from "antd";
 import {
   HeartTwoTone,
@@ -26,20 +25,24 @@ import {
   DownloadOutlined,
   DollarCircleOutlined,
   CommentOutlined,
-  ExportOutlined
+  ExportOutlined,
+  LikeFilled
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { toEther } from "thirdweb";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
-import { parseEther } from "ethers";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Plyr from "plyr-react";
 import "plyr-react/plyr.css";
 import VideoCard from "@/app/components/VideoCard";
 import CategoryBar from "@/app/components/CategoryBar";
 import VideoEditDrawer from "@/app/components/VideoEditDrawer";
+import CommentSection from "@/app/components/CommentSection";
+import ReportVideoModal from "@/app/components/ReportVideoModal";
+import TipModal from "@/app/components/TipModal";
 import {
   ellipsisString,
   contract,
@@ -58,13 +61,17 @@ export default function VideoPage({ params }) {
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [video, setVideo] = useState(null);
-  const [tipAmountInput, setTipAmountInput] = useState(null);
   const [aaWalletAddress, setAAWalletAddress] = useState(null);
+  const [isVideoLiked, setIsVideoLiked] = useState(false);
+  const [showFlaggedWarning, setShowFlaggedWarning] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
 
   const { id } = use(params);
   const accountObj = useActiveAccount() || {};
   const account = accountObj?.address?.toLowerCase();
   const activeChain = useActiveWalletChain();
+
+  const router = useRouter();
 
   const fetchVideo = () => {
     setLoading(true);
@@ -74,10 +81,18 @@ export default function VideoPage({ params }) {
         tips_first: 50,
         tips_skip: 0,
         tips_orderBy: "createdAt",
-        tips_orderDirection: "desc"
+        tips_orderDirection: "desc",
+        comments_first: 50,
+        comments_skip: 0,
+        comments_orderBy: "createdAt",
+        comments_orderDirection: "desc",
+        comments_where: {}
       })
       .then((data) => {
         setVideo(data?.video);
+        if (data?.video?.isFlagged) {
+          setShowFlaggedWarning(true);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -127,44 +142,46 @@ export default function VideoPage({ params }) {
     }
   };
 
-  const handleTipVideo = async () => {
+  const handleToggleLikeVideo = async () => {
     if (!account) return message.error("Please connect your wallet first");
-    if (!tipAmountInput || tipAmountInput <= 0)
-      return message.error("Please enter valid tip amount");
+    setIsLiking(true);
     try {
-      console.log("tipAmountInput", tipAmountInput);
-      console.log("video?.id", video?.id);
-      const tipAmountinWei = parseEther(tipAmountInput);
-      console.log("tipAmountinWei", tipAmountinWei);
       const signer = ethers6Adapter.signer.toEthers({
         client: thirdwebClient,
         chain: activeChain,
         account: accountObj
       });
-      message.info("Please sign the transaction in your wallet");
-      const tipTx = await executeOperation(
+      const toggleLikeTx = await executeOperation(
         signer,
         contract.target,
-        "tipVideo",
-        [video?.id, tipAmountinWei],
-        tipAmountinWei
+        "toggleLikeVideo",
+        [id]
       );
-      console.log("tipTx", tipTx);
-      // update tip amount in state
-      setVideo((prev) => ({
-        ...prev,
-        tipAmount: BigInt(prev?.tipAmount || 0) + tipAmountinWei
-      }));
-      message.success("Thank you for supporting the creator!");
+
+      console.log("Transaction successful:", toggleLikeTx);
+      // Update local state to reflect the like
+      setIsVideoLiked((prev) => !prev);
+      message.success(
+        `Video ${isVideoLiked ? "unliked" : "liked"} successfully!`
+      );
     } catch (error) {
-      console.error(error);
-      message.error(
-        `Failed to tip video. Make sure you have enough amount in your smart contract wallet ${ellipsisString(
-          aaWalletAddress,
-          5,
-          5
-        )}`
-      );
+      console.error("Error liking video:", error);
+      message.error("Failed to like video. Please try again.");
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
+  const isVideoLikedByUser = async () => {
+    if (!account) return false; // If no account is connected, return false
+    try {
+      const isLiked = await contract.isVideoLikedByUser(id, account);
+      console.log(`Video ${id} liked by user ${account}: ${isLiked}`);
+      setIsVideoLiked(isLiked);
+      return isLiked;
+    } catch (err) {
+      console.error("Failed to check if video is liked by user:", err);
+      return false;
     }
   };
 
@@ -176,26 +193,52 @@ export default function VideoPage({ params }) {
   useEffect(() => {
     fetchVideo();
     fetchRelatedVideos(id);
-    if (account) resolveAAWalletAddress();
+    if (account) {
+      resolveAAWalletAddress();
+      isVideoLikedByUser();
+    }
   }, [id, account]);
 
-  if (!loading && !video?.videoHash) {
+  if (!loading && (!video?.videoHash || video?.isRemoved)) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%"
-        }}
-      >
-        <Empty description="Video not found" />
-      </div>
+      <Result
+        status="404"
+        title="Video Not Found"
+        subTitle="Sorry, the video you are looking for does not exist."
+        extra={
+          <Link href="/">
+            <Button type="primary" shape="round">
+              Back Home
+            </Button>
+          </Link>
+        }
+      />
     );
   }
   return (
     <div style={{ padding: "20px" }}>
       <CategoryBar />
+      {/* Modal for viewers discretion */}
+      <Modal
+        title="Viewer discretion is advised"
+        open={showFlaggedWarning}
+        onOk={() => setShowFlaggedWarning(false)}
+        onCancel={() => {
+          router.push("/");
+        }}
+        okText="Continue"
+        cancelText="Go Back"
+        centered
+        okButtonProps={{ shape: "round" }}
+        cancelButtonProps={{ shape: "round" }}
+        closable={false}
+      >
+        <p>
+          This video has been flagged by the community and may contain content
+          that is inappropriate or sensitive for some viewers. Viewer discretion
+          is advised.
+        </p>
+      </Modal>
       <Row gutter={[16, 16]}>
         <Col xs={24} md={16}>
           {loading ? (
@@ -223,8 +266,7 @@ export default function VideoPage({ params }) {
               {/* Video Section */}
               <Plyr
                 style={{ borderRadius: "10px", overflow: "hidden" }}
-                autoPlay
-                options={{ autoplay: true }}
+                options={{ autoplay: !showFlaggedWarning }}
                 controls
                 source={{
                   type: "video",
@@ -254,39 +296,22 @@ export default function VideoPage({ params }) {
                 <Space size="small" wrap>
                   <Button
                     type="text"
-                    icon={<LikeOutlined />}
-                    onClick={() => message.info("Like feature coming soon!")}
+                    loading={isLiking}
+                    icon={
+                      isVideoLiked ? (
+                        <LikeFilled style={{ color: "#1677ff" }} />
+                      ) : (
+                        <LikeOutlined style={{ color: "#1677ff" }} />
+                      )
+                    }
+                    onClick={handleToggleLikeVideo}
                   >
                     {video?.likeCount || 0}
                   </Button>
-                  <Popconfirm
-                    title={
-                      <>
-                        <label>
-                          Like this video? Consider tipping the creator!
-                        </label>
-                        <Input
-                          type="number"
-                          size="large"
-                          addonAfter="ETH"
-                          value={tipAmountInput}
-                          placeholder="Enter tip amount"
-                          onChange={(e) => setTipAmountInput(e.target.value)}
-                        />
-                        <p>*100% of the tip goes to the video owner.</p>
-                      </>
-                    }
-                    onConfirm={handleTipVideo}
-                  >
-                    <Button
-                      type="text"
-                      icon={
-                        <DollarCircleOutlined style={{ color: "#eb2f96" }} />
-                      }
-                    >
-                      {toEther(video?.tipAmount || 0n) + " ETH"}
-                    </Button>
-                  </Popconfirm>
+                  <TipModal
+                    videoData={video}
+                    aaWalletAddress={aaWalletAddress}
+                  />
                   <Button
                     type="text"
                     icon={<ShareAltOutlined />}
@@ -319,6 +344,7 @@ export default function VideoPage({ params }) {
                     <Button type="text" icon={<DownloadOutlined />} />
                   </a>
                   {isVideoOwner && <VideoEditDrawer video={video} />}
+                  <ReportVideoModal videoId={video?.id} />
                 </Space>
               </Space>
 
@@ -374,33 +400,16 @@ export default function VideoPage({ params }) {
                     <CheckCircleTwoTone twoToneColor="#52c41a" />
                   </Link>
                   <br />
-                  <Popconfirm
-                    title={
-                      <>
-                        <label>Support the creator with a tip!</label>
-                        <Input
-                          type="number"
-                          size="large"
-                          addonAfter="ETH"
-                          value={tipAmountInput}
-                          placeholder="Enter tip amount"
-                          onChange={(e) => setTipAmountInput(e.target.value)}
-                        />
-                        <p>*100% of the tip goes to the video owner.</p>
-                      </>
-                    }
-                    onConfirm={handleTipVideo}
+                  <Button
+                    icon={<HeartTwoTone twoToneColor="#eb2f96" />}
+                    type="primary"
+                    shape="round"
+                    size="small"
+                    onClick={() => message.info("Feature coming soon!")}
+                    style={{ marginTop: "5px" }}
                   >
-                    <Button
-                      icon={<HeartTwoTone twoToneColor="#eb2f96" />}
-                      type="primary"
-                      shape="round"
-                      size="small"
-                      style={{ marginTop: "5px" }}
-                    >
-                      Support
-                    </Button>
-                  </Popconfirm>
+                    Subscribe
+                  </Button>
                 </Col>
               </Row>
             </div>
@@ -415,7 +424,7 @@ export default function VideoPage({ params }) {
             }}
           >
             <Tabs
-              defaultActiveKey="tips"
+              defaultActiveKey="comments"
               // activeKey={activeTab}
               animated
               type="line"
@@ -425,9 +434,15 @@ export default function VideoPage({ params }) {
               items={[
                 {
                   key: "comments",
-                  label: "Comments",
+                  label: `Comments (${video?.commentCount || 0})`,
                   icon: <CommentOutlined />,
-                  children: <Empty description="Video comments coming soon" />
+                  children: (
+                    <CommentSection
+                      comments={video?.comments || []}
+                      videoId={video?.id}
+                      dataLoading={loading}
+                    />
+                  )
                 },
                 {
                   key: "tips",
@@ -485,7 +500,7 @@ export default function VideoPage({ params }) {
                             }
                             description={`Tipped ${toEther(
                               item?.amount || 0n
-                            )} ETH`}
+                            )} NERO`}
                           />
                         </List.Item>
                       )}
@@ -498,7 +513,7 @@ export default function VideoPage({ params }) {
           <Divider />
         </Col>
         <Col xs={24} md={8}>
-          <Title level={4}>Related Videos</Title>
+          <Title level={5}>Related Videos</Title>
           {loading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <Card

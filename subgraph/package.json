@@ -10,11 +10,11 @@
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 vidverse-nero",
     "create-remote": "graph create --node http://subgraph.testnet.nero.metaborong.com:8020 vidverse-nero",
     "remove-remote": "graph remove --node http://subgraph.testnet.nero.metaborong.com:8020 vidverse-nero",
-    "deploy-remote": "graph deploy --node http://subgraph.testnet.nero.metaborong.com:8020 --ipfs https://ipfs.network.thegraph.com vidverse-nero",
+    "deploy-remote": "graph deploy --node http://subgraph.testnet.nero.metaborong.com:8020 --ipfs https://ipfs.network.thegraph.com vidverse-nero --version-label 0.2.3",
     "test": "graph test"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.97.0",
-    "@graphprotocol/graph-ts": "0.37.0"
+    "@graphprotocol/graph-cli": "0.97.1",
+    "@graphprotocol/graph-ts": "0.38.1"
   }
 }

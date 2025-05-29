@@ -1,6 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import { message, Row, Col, Card, Empty, Select } from "antd";
+import {
+  message,
+  Row,
+  Col,
+  Card,
+  Empty,
+  Select,
+  Space,
+  Typography
+} from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -10,6 +19,7 @@ import CategoryBar from "./components/CategoryBar";
 import styles from "./page.module.css";
 
 const { Option } = Select;
+const { Title, Text } = Typography;
 
 export default function Home() {
   const [videos, setVideos] = useState([]);
@@ -39,6 +49,7 @@ export default function Home() {
         orderDirection: sortDirection,
         where: {
           and: [
+            { isRemoved: false },
             ...(category === "All" ? [] : [{ category }]),
             ...(searchQuery
               ? [
@@ -106,6 +117,10 @@ export default function Home() {
         >
           <Option value="createdAt_desc">Newest First</Option>
           <Option value="createdAt_asc">Oldest First</Option>
+          <Option value="likeCount_desc">Most Liked</Option>
+          <Option value="likeCount_asc">Least Liked</Option>
+          <Option value="commentCount_desc">Most Commented</Option>
+          <Option value="commentCount_asc">Least Commented</Option>
         </Select>
       </div>
 
@@ -128,7 +143,29 @@ export default function Home() {
             </Col>
           ))
         ) : videos.length === 0 ? (
-          <Empty description="No videos found" />
+          <Empty
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: 300,
+              width: "100%"
+            }}
+            description={
+              <Space direction="vertical" size={2} align="center">
+                <Title level={5}>No Videos Found</Title>
+                <Text type="secondary">
+                  Try adjusting your search or filters, or check back later for
+                  new content.
+                </Text>
+                <Text>
+                  <span role="img" aria-label="film">
+                    🎬
+                  </span>{" "}
+                  Discover and share amazing videos on <b>VidVerse</b>!
+                </Text>
+              </Space>
+            }
+          />
         ) : (
           videos.map((video) => (
             <Col key={video?.id} xs={24} sm={12} md={8} lg={6}>

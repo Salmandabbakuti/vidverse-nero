@@ -57,10 +57,31 @@ export default function Channel({ params }) {
         videos_skip: 0,
         videos_orderBy: "createdAt",
         videos_orderDirection: "desc",
+        videos_where: {
+          isRemoved: false
+        },
         tips_first: 50,
         tips_skip: 0,
         tips_orderBy: "createdAt",
-        tips_orderDirection: "desc"
+        tips_orderDirection: "desc",
+        likes_first: 50,
+        likes_skip: 0,
+        likes_orderBy: "createdAt",
+        likes_orderDirection: "desc",
+        likes_where: {
+          video_: {
+            isRemoved: false
+          }
+        },
+        comments_first: 50,
+        comments_skip: 0,
+        comments_orderBy: "createdAt",
+        comments_orderDirection: "desc",
+        comments_where: {
+          video_: {
+            isRemoved: false
+          }
+        }
       })
       .then((data) => {
         setChannel(data?.channel);
@@ -189,6 +210,99 @@ export default function Channel({ params }) {
             )
           },
           {
+            key: "liked",
+            label: "Liked",
+            icon: <LikeOutlined />,
+            children: (
+              <Row gutter={[16, 16]} justify="start" className={styles.grid}>
+                {loading ? (
+                  Array.from({ length: 12 }).map((_, index) => (
+                    <Col key={index} xs={24} sm={12} md={8} lg={6}>
+                      <Card
+                        loading
+                        style={{ borderRadius: 20 }}
+                        cover={
+                          <div
+                            style={{
+                              height: 150,
+                              borderRadius: 20
+                            }}
+                          />
+                        }
+                      />
+                    </Col>
+                  ))
+                ) : !channel?.likes?.length ? (
+                  <Empty description="No liked videos found" />
+                ) : (
+                  channel?.likes?.map((like) => (
+                    <Col key={like?.id} xs={24} sm={12} md={8} lg={6}>
+                      <Link href={`/watch/${like?.video?.id}`}>
+                        <VideoCard video={like?.video} />
+                      </Link>
+                    </Col>
+                  ))
+                )}
+              </Row>
+            )
+          },
+          {
+            key: "comments",
+            label: "Comments",
+            icon: <CommentOutlined />,
+            children: (
+              <List
+                itemLayout="horizontal"
+                split
+                loading={loading}
+                pagination={{
+                  size: "small",
+                  responsive: true,
+                  hideOnSinglePage: true,
+                  showLessItems: true,
+                  pageSizeOptions: [5, 10, 25, 50],
+                  showSizeChanger: true,
+                  defaultCurrent: 1,
+                  defaultPageSize: 20
+                }}
+                dataSource={channel?.comments || []}
+                rowKey={(item) => item?.id}
+                renderItem={(item) => (
+                  <Link href={`/watch/${item?.video?.id}`} key={item?.id}>
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Avatar
+                            shape="square"
+                            size="large"
+                            style={{
+                              cursor: "pointer",
+                              border: "1px solid grey",
+                              width: 120,
+                              height: 90
+                            }}
+                            src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
+                          />
+                        }
+                        title={
+                          <Space>
+                            <Typography.Text strong>
+                              {`“${item?.content}”`}
+                            </Typography.Text>
+                            <Typography.Text type="secondary">
+                              {dayjs(item?.createdAt * 1000).fromNow()}
+                            </Typography.Text>
+                          </Space>
+                        }
+                        description={`Commented on “${item?.video?.title}”`}
+                      />
+                    </List.Item>
+                  </Link>
+                )}
+              />
+            )
+          },
+          {
             key: "tips",
             label: "Tips",
             icon: <DollarOutlined />,
@@ -199,6 +313,16 @@ export default function Channel({ params }) {
                 rowKey={(item) => item?.id}
                 split
                 loading={loading}
+                pagination={{
+                  size: "small",
+                  responsive: true,
+                  hideOnSinglePage: true,
+                  showLessItems: true,
+                  pageSizeOptions: [5, 10, 25, 50],
+                  showSizeChanger: true,
+                  defaultCurrent: 1,
+                  defaultPageSize: 10
+                }}
                 renderItem={(item) => (
                   <List.Item>
                     <List.Item.Meta
@@ -209,7 +333,9 @@ export default function Channel({ params }) {
                             size="large"
                             style={{
                               cursor: "pointer",
-                              border: "1px solid grey"
+                              border: "1px solid grey",
+                              width: 120,
+                              height: 90
                             }}
                             src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
                           />
@@ -218,7 +344,7 @@ export default function Channel({ params }) {
                       title={
                         <Space>
                           <Typography.Text strong>
-                            {`Tipped ${toEther(item?.amount || 0n)} ETH`}
+                            {`Tipped ${toEther(item?.amount || 0n)} NERO`}
                           </Typography.Text>
                           <Typography.Text type="secondary">
                             {dayjs(item?.createdAt * 1000).format(
@@ -241,18 +367,6 @@ export default function Channel({ params }) {
                 )}
               />
             )
-          },
-          {
-            key: "liked",
-            label: "Liked",
-            icon: <LikeOutlined />,
-            children: <Empty description="Channel likes coming soon" />
-          },
-          {
-            key: "comments",
-            label: "Comments",
-            icon: <CommentOutlined />,
-            children: <Empty description="Channel comments coming soon" />
           }
         ]}
       />
