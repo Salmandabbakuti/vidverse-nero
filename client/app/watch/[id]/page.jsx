@@ -272,7 +272,7 @@ export default function VideoPage({ params }) {
                   type: "video",
                   sources: [
                     {
-                      src: `https://ipfs.io/ipfs/${video?.videoHash}`,
+                      src: `https://ipfs.io/ipfs/${video?.videoHash?.trim()}`,
                       type: "video/mp4"
                     }
                   ]
@@ -336,7 +336,7 @@ export default function VideoPage({ params }) {
                     }}
                   />
                   <a
-                    href={`https://ipfs.io/ipfs/${video?.videoHash}`}
+                    href={`https://ipfs.io/ipfs/${video?.videoHash?.trim()}`}
                     target="_blank"
                     rel="noreferrer"
                     download
