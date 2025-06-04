@@ -51,7 +51,7 @@ type Comment @entity(immutable: true) {
   createdAt: BigInt! # uint256
 }
 
-type Like @entity(immutable: true) {
+type Like @entity(immutable: false) {
   id: ID!
   video: Video! # address
   likedBy: Channel! # address

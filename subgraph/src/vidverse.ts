@@ -111,7 +111,9 @@ export function handleVideoLikeToggled(event: VideoLikeToggledEvent): void {
     if (like) {
       // Remove like entity and decrement video like count if it exists
       store.remove("Like", likeId);
-      video.likeCount = video.likeCount.minus(ONE_BI);
+      // Decrement like count to ensure it doesn't go negative
+      const likesToRemove = video.likeCount.gt(ZERO_BI) ? ONE_BI : ZERO_BI;
+      video.likeCount = video.likeCount.minus(likesToRemove);
       video.save();
     } else {
       // Create like entity

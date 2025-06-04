@@ -58,12 +58,12 @@ export default function ModeratorDashboard() {
       const moderator = await contract.moderator();
       console.log("Current moderator:", moderator);
       setModerator(moderator);
-      if (account !== moderator?.toLowerCase()) {
-        message.error(
-          "Only moderator can access this dashboard. Please connect as moderator wallet."
-        );
-        return;
-      }
+      // if (account !== moderator?.toLowerCase()) {
+      //   message.error(
+      //     "Only moderator can access this dashboard. Please connect as moderator wallet."
+      //   );
+      //   return;
+      // }
       console.log("Fetching videos with reports...");
       const data = await client.request(GET_VIDEOS_WITH_REPORTS, {
         first: 100,

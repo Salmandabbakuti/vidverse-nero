@@ -173,10 +173,10 @@ export default function VideoPage({ params }) {
   };
 
   const isVideoLikedByUser = async () => {
-    if (!account) return false; // If no account is connected, return false
+    if (!aaWalletAddress) return false; // If no account is connected, return false
     try {
-      const isLiked = await contract.isVideoLikedByUser(id, account);
-      console.log(`Video ${id} liked by user ${account}: ${isLiked}`);
+      const isLiked = await contract.isVideoLikedByUser(id, aaWalletAddress);
+      console.log(`Video ${id} liked by user ${aaWalletAddress}: ${isLiked}`);
       setIsVideoLiked(isLiked);
       return isLiked;
     } catch (err) {
@@ -197,7 +197,7 @@ export default function VideoPage({ params }) {
       resolveAAWalletAddress();
       isVideoLikedByUser();
     }
-  }, [id, account]);
+  }, [account]);
 
   if (!loading && (!video?.videoHash || video?.isRemoved)) {
     return (
