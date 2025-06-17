@@ -1,10 +1,18 @@
-import { ConnectButton, useActiveAccount } from "thirdweb/react";
+import { useEffect, useState } from "react";
+import {
+  ConnectButton,
+  useActiveAccount,
+  useActiveWalletChain
+} from "thirdweb/react";
 import { createWallet, inAppWallet } from "thirdweb/wallets";
+import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import {
   thirdwebClient,
   neroTestnetChain,
-  neroMainnetChain
+  neroMainnetChain,
+  ellipsisString
 } from "@/app/utils";
+import { getAAWalletAddress } from "@/app/utils/aaUtils";
 
 const thirdwebWallets = [
   inAppWallet({
@@ -21,8 +29,33 @@ const thirdwebWallets = [
 ];
 
 export default function ConnectWalletButton() {
-  const { address } = useActiveAccount() || {};
-  const account = address?.toLowerCase();
+  const [aaWalletAddress, setAAWalletAddress] = useState("");
+
+  const activeChain = useActiveWalletChain();
+  const accountObj = useActiveAccount() || {};
+  const account = accountObj?.address?.toLowerCase();
+
+  const resolveAAWalletAddress = async () => {
+    if (!account) return;
+    try {
+      const signer = ethers6Adapter.signer.toEthers({
+        client: thirdwebClient,
+        chain: activeChain,
+        account: accountObj
+      });
+      const aaWalletAddress = await getAAWalletAddress(signer);
+      console.log(
+        `Resolved AA Wallet Address for account ${account}: ${aaWalletAddress}`
+      );
+      setAAWalletAddress(aaWalletAddress);
+    } catch (err) {
+      console.error("Error resolving AA Wallet Address:", err);
+    }
+  };
+
+  useEffect(() => {
+    resolveAAWalletAddress();
+  }, [account]);
 
   return (
     <ConnectButton
@@ -56,13 +89,22 @@ export default function ConnectWalletButton() {
         }
       }}
       detailsButton={{
-        // connectedAccountName: "",
+        connectedAccountName: `${ellipsisString(
+          aaWalletAddress,
+          5,
+          5
+        )} (AA Wallet)`,
         connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${account}`,
         style: {
           borderRadius: "15px"
         }
       }}
       detailsModal={{
+        connectedAccountName: `${ellipsisString(
+          aaWalletAddress,
+          5,
+          5
+        )} (AA Wallet)`,
         connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${account}`
       }}
       appMetadata={{

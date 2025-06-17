@@ -2,9 +2,12 @@
 import { Input, Button } from "antd";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { SearchOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  PlayCircleOutlined,
+  VideoCameraAddOutlined
+} from "@ant-design/icons";
 import UserDrawer from "./UserDrawer";
-import UploadDrawer from "./UploadDrawer";
 import "antd/dist/reset.css";
 
 export default function NavBar() {
@@ -73,7 +76,14 @@ export default function NavBar() {
           padding: "0 20px"
         }}
       >
-        <UploadDrawer />
+        <Link href="/upload">
+          <Button
+            type="primary"
+            icon={<VideoCameraAddOutlined />}
+            shape="circle"
+            size="large"
+          />
+        </Link>
         <UserDrawer />
       </div>
     </>
