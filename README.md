@@ -132,10 +132,10 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 ### v0.3.0
 
 - Added dedicated video upload page with live video and thumbnail preview while uploading.
-- Major UI Revamp across site and Home page now features a rich hero section, platform features, and onboarding steps.
-- Account details button and account modal now displays smart account address with avatar instead of EOA address.
-- Editing and Tipping videos now requires users to pay gas fees, all other interactions (upload, like, comment, report) are still gasless.
-- Updated Search functionality to trigger on enter or press search button, improves performance and user experience.
+- Major UI revamp across the site and the Home page, featuring a rich hero section, platform highlights, and onboarding steps.
+- Account details button and account modal now display the smart account address with avatar instead of the EOA address.
+- Editing and tipping videos now require users to pay gas fees; all other interactions (upload, like, comment, report) remain gasless.
+- Updated search functionality to trigger on the Enter key or pressing the search button, improving performance and user experience.
 
 ### v0.2.0
 
