@@ -47,7 +47,7 @@ export default function ConnectWalletButton() {
       console.log(
         `Resolved AA Wallet Address for account ${account}: ${aaWalletAddress}`
       );
-      setAAWalletAddress(aaWalletAddress);
+      setAAWalletAddress(aaWalletAddress?.toLowerCase() || "");
     } catch (err) {
       console.error("Error resolving AA Wallet Address:", err);
     }
@@ -94,7 +94,7 @@ export default function ConnectWalletButton() {
           5,
           5
         )} (AA Wallet)`,
-        connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${account}`,
+        connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${aaWalletAddress}`,
         style: {
           borderRadius: "15px"
         }
@@ -105,13 +105,13 @@ export default function ConnectWalletButton() {
           5,
           5
         )} (AA Wallet)`,
-        connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${account}`
+        connectedAccountAvatarUrl: `https://api.dicebear.com/5.x/open-peeps/svg?seed=${aaWalletAddress}`
       }}
       appMetadata={{
-        name: "ThreeTube",
+        name: "VidVerse",
         description: "A decentralized video sharing platform.",
-        url: "https://threetube.io",
-        logoUrl: "https://threetube.io/logo.png"
+        url: "https://vidverse.io",
+        logoUrl: "https://vidverse.io/logo.png"
       }}
       theme={"light"} // light | dark
     />

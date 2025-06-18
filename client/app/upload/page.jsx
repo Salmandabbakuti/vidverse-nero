@@ -13,7 +13,7 @@ import {
   Row,
   Col
 } from "antd";
-import { UploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import { upload } from "thirdweb/storage";
@@ -153,7 +153,7 @@ export default function UploadPage() {
                 >
                   <Input
                     placeholder="Enter video title"
-                    maxLength={80}
+                    maxLength={280}
                     showCount
                   />
                 </Form.Item>
@@ -167,7 +167,7 @@ export default function UploadPage() {
                   <Input.TextArea
                     rows={4}
                     placeholder="Enter video description"
-                    maxLength={300}
+                    maxLength={1000}
                     showCount
                   />
                 </Form.Item>

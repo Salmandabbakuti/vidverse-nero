@@ -8,14 +8,14 @@ import {
   Button,
   message,
   Image,
-  Spin
+  Spin,
+  Alert
 } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import { upload } from "thirdweb/storage";
 import { contract, thirdwebClient } from "@/app/utils";
-import { executeOperation } from "@/app/utils/aaUtils";
 
 export default function VideoEditDrawer({ video: videoData }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -51,21 +51,18 @@ export default function VideoEditDrawer({ video: videoData }) {
         chain: activeChain,
         account: accountObj
       });
-      message.info("Please sign the transaction in your wallet");
-      const updateTx = await executeOperation(
-        signer,
-        contract.target,
-        "updateVideoInfo",
-        [
+      const updateTx = await contract
+        .connect(signer)
+        .updateVideoInfo(
           videoData?.id,
           values.title,
           values.description,
           values.category,
           values.location,
           thumbnailHash
-        ]
-      );
+        );
       console.log("updateVideoTx", updateTx);
+      await updateTx.wait();
       message.success(
         "Video info updated successfully. Refreshing in few seconds..."
       );
@@ -185,9 +182,23 @@ export default function VideoEditDrawer({ video: videoData }) {
                   }
                   width={450}
                   height={200}
-                />
+                />{" "}
               </Space>
             </Form.Item>
+
+            {/* Gas Fee Notice */}
+            <Alert
+              message="Gas Fee Required"
+              description="Updating video info will require a gas fee. Please ensure you have sufficient NERO in your wallet."
+              type="info"
+              icon={<InfoCircleOutlined />}
+              showIcon
+              style={{
+                marginBottom: "20px",
+                borderRadius: "8px"
+              }}
+            />
+
             <Form.Item>
               <Space>
                 <Button shape="round" onClick={() => setDrawerOpen(false)}>

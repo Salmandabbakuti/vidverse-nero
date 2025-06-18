@@ -404,7 +404,7 @@ export default function VideoPage({ params }) {
                     icon={<HeartTwoTone twoToneColor="#eb2f96" />}
                     type="primary"
                     shape="round"
-                    size="small"
+                    size="middle"
                     onClick={() => message.info("Feature coming soon!")}
                     style={{ marginTop: "5px" }}
                   >
