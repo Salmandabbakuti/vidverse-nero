@@ -127,8 +127,10 @@ export default function CategoryBar() {
               whiteSpace: "nowrap",
               display: "flex",
               alignItems: "center",
-              backgroundColor:
-                categoryParam === categoryItem.label ? "#1890ff" : "#f0f0f0",
+              background:
+                categoryParam === categoryItem.label
+                  ? "var(--primary-gradient)"
+                  : "#f0f0f0",
               color: categoryParam === categoryItem.label ? "#fff" : "#000"
             }}
           >

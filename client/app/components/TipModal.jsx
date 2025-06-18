@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Modal, Button, message, Input } from "antd";
-import { DollarCircleOutlined } from "@ant-design/icons";
+import { Modal, Button, message, Input, Alert } from "antd";
+import { DollarCircleOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { toEther, toWei } from "thirdweb";
 import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
-import { thirdwebClient, contract, ellipsisString } from "@/app/utils";
-import { executeOperation } from "@/app/utils/aaUtils";
+import { thirdwebClient, contract } from "@/app/utils";
 
 export default function TipModal({ videoData, aaWalletAddress }) {
   const [tipAmountInput, setTipAmountInput] = useState("");
@@ -31,26 +30,22 @@ export default function TipModal({ videoData, aaWalletAddress }) {
         chain: activeChain,
         account: accountObj
       });
-      message.info("Please sign the transaction in your wallet");
-      const tipTx = await executeOperation(
-        signer,
-        contract.target,
-        "tipVideo",
-        [videoData?.id, tipAmountinWei],
-        tipAmountinWei
-      );
+      const tipTx = await contract
+        .connect(signer)
+        .tipVideo(videoData?.id, tipAmountinWei, {
+          value: tipAmountinWei
+        });
       console.log("tipTx", tipTx);
+      await tipTx.wait();
       message.success("Thank you for supporting the creator!");
       setOpenModal(false);
       setTipAmountInput("");
     } catch (error) {
-      console.error(error);
+      console.error("error tipping video", error);
       message.error(
-        `Failed to tip video. Make sure you have enough amount in your smart contract wallet ${ellipsisString(
-          aaWalletAddress,
-          5,
-          5
-        )}`
+        error?.shortMessage ||
+          error?.message ||
+          "Failed to tip the video. Please try again."
       );
     } finally {
       setLoading(false);
@@ -89,6 +84,18 @@ export default function TipModal({ videoData, aaWalletAddress }) {
           onChange={(e) => setTipAmountInput(e.target.value)}
         />
         <p>*100% of the tip goes to the video owner.</p>
+        {/* Alert */}
+        <Alert
+          message="Heads up!"
+          description={`Tipping this video will require funds (tip amount + gas fees). Please ensure you have sufficient NERO in your wallet.`}
+          type="info"
+          icon={<InfoCircleOutlined />}
+          showIcon
+          style={{
+            marginBottom: "20px",
+            borderRadius: "8px"
+          }}
+        />
       </Modal>
     </>
   );

@@ -2,37 +2,113 @@
   width: 100%;
   max-width: 450px;
   margin-bottom: 10px;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.coverContainer {
+  height: 200px !important;
+  min-height: 200px !important;
+  max-height: 200px !important;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px 20px 0 0;
+  background: #f8fafc;
 }
 
 .thumbnail {
-  object-fit: cover;
-  border-radius: 8px 8px 0 0;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 20px 20px 0 0;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.thumbnail img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 .metaTitle {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .title {
   margin-right: 8px;
+  margin-bottom: 0 !important;
 }
 
 .text {
   display: block;
   color: #888;
+  line-height: 1.4;
 }
 
 .stats {
   display: flex;
-  gap: 16px;
+  gap: 6px;
   margin-top: 8px;
   font-size: 14px;
+}
+
+/* Image container styling */
+.card .ant-card-cover {
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  height: 200px !important;
+  min-height: 200px !important;
+  max-height: 200px !important;
+}
+
+.card .ant-card-cover>* {
+  border-radius: 20px 20px 0 0;
+  height: 100% !important;
+}
+
+/* Ensure consistent cover height */
+.card .ant-card-cover .coverContainer {
+  height: 200px !important;
+  min-height: 200px !important;
+  max-height: 200px !important;
+}
+
+/* Ensure Ant Design Image component fills container */
+.card .ant-image {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.card .ant-image-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Fix for broken images */
+.card .ant-image-placeholder {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 48px;
+  width: 100%;
+  height: 200px !important;
 }
 
 @media (max-width: 768px) {
   .card {
     max-width: 100%;
+  }
+
+  .stats {
+    gap: 12px;
+    font-size: 12px;
   }
 }

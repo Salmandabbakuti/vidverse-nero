@@ -111,7 +111,8 @@ export default function VideoPage({ params }) {
         orderBy: "createdAt",
         orderDirection: "desc",
         where: {
-          id_not: idToExclude
+          id_not: idToExclude,
+          isRemoved: false
         }
       })
       .then((data) => {
@@ -404,7 +405,7 @@ export default function VideoPage({ params }) {
                     icon={<HeartTwoTone twoToneColor="#eb2f96" />}
                     type="primary"
                     shape="round"
-                    size="small"
+                    size="middle"
                     onClick={() => message.info("Feature coming soon!")}
                     style={{ marginTop: "5px" }}
                   >
