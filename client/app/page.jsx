@@ -9,12 +9,10 @@ import {
   Select,
   Space,
   Typography,
-  Button,
-  Divider
+  Button
 } from "antd";
 import {
   SwapOutlined,
-  RocketOutlined,
   VideoCameraOutlined,
   LockOutlined,
   GlobalOutlined
@@ -25,8 +23,6 @@ import { subgraphClient as client, GET_VIDEOS_QUERY } from "./utils";
 import VideoCard from "./components/VideoCard";
 import CategoryBar from "./components/CategoryBar";
 import styles from "./page.module.css";
-
-const { Option } = Select;
 const { Title, Text } = Typography;
 
 const features = [
@@ -67,13 +63,13 @@ const features = [
       "Community-driven content moderation through voting, ensuring platform freedom while maintaining quality."
   },
   {
-    icon: "�",
+    icon: "🚫",
     title: "Ad-Free Experience",
     description:
       "Clean, private viewing with no ads, tracking, or data collection. Pure content focus."
   },
   {
-    icon: "�",
+    icon: "👤",
     title: "Creator Channels",
     description:
       "Personalized creator profiles with upload stats, tip analytics, and social interaction metrics."
@@ -87,16 +83,12 @@ const howItWorksSteps = [
   { icon: "💰", step: "Earn Through Direct Tips" }
 ];
 
-// Helper function for step descriptions
-const getStepDescription = (index) => {
-  const descriptions = [
-    "Sign in easily using your social media accounts through secure social logins. No complex wallet setup or private key management required.",
-    "Upload videos directly to IPFS for decentralized storage and automatically mint them as NFTs. Your content is truly owned by you forever.",
-    "Share your content with a global, decentralized audience. No algorithmic suppression - your content reaches viewers via smart contracts, not algorithms and can be viewable on secondary NFT marketplaces like OpenSea, Rarible, and more.",
-    "Receive direct tips from viewers with 100% going to you. No platform fees, intermediaries, or revenue sharing with corporations."
-  ];
-  return descriptions[index] || "";
-};
+const howItWorksStepsDescriptions = [
+  "Sign in easily using your social media accounts through secure social logins. No complex wallet setup or private key management required.",
+  "Upload videos directly to IPFS for decentralized storage and automatically mint them as NFTs. Your content is truly owned by you forever.",
+  "Share your content with a global, decentralized audience. No algorithmic suppression - your content reaches viewers via smart contracts, not algorithms and can be viewable on secondary NFT marketplaces like OpenSea, Rarible, and more.",
+  "Receive direct tips from viewers with 100% going to you. No platform fees, intermediaries, or revenue sharing with corporations."
+];
 
 export default function Home() {
   const [videos, setVideos] = useState([]);
@@ -479,7 +471,6 @@ export default function Home() {
             }}
             className="fade-in"
           >
-            {" "}
             <Title
               level={2}
               style={{
@@ -514,30 +505,7 @@ export default function Home() {
               }}
             >
               {features.map((feature, index) => (
-                <div
-                  key={index}
-                  style={{
-                    padding: "32px 24px",
-                    background: "rgba(255, 255, 255, 0.6)",
-                    border: "1px solid rgba(226, 232, 240, 0.8)",
-                    borderRadius: "16px",
-                    transition: "all 0.3s ease",
-                    textAlign: "center"
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 12px 24px rgba(0, 0, 0, 0.1)";
-                    e.currentTarget.style.background =
-                      "rgba(255, 255, 255, 0.8)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.style.background =
-                      "rgba(255, 255, 255, 0.6)";
-                  }}
-                >
+                <div key={index} className={styles.featureCard}>
                   <div
                     style={{
                       fontSize: "32px",
@@ -571,12 +539,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <Divider
-            style={{
-              margin: "60px 0",
-              borderColor: "rgba(226, 232, 240, 0.8)"
-            }}
-          />
           <div
             style={{
               maxWidth: 1000,
@@ -596,7 +558,7 @@ export default function Home() {
               }}
             >
               How It Works
-            </Title>{" "}
+            </Title>
             <Text
               style={{
                 display: "block",
@@ -696,7 +658,7 @@ export default function Home() {
                       lineHeight: "1.5"
                     }}
                   >
-                    {getStepDescription(idx)}
+                    {howItWorksStepsDescriptions[idx]}
                   </Text>
                 </div>
               ))}

@@ -152,59 +152,6 @@ export default function SiteLayout({ children }) {
                 The future of decentralized video sharing. Own your content,
                 earn rewards, and join the Web3 revolution.
               </p>
-
-              {/* Social Links */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "16px"
-                }}
-              >
-                {[
-                  { icon: "🐦", label: "Twitter", href: "#" },
-                  { icon: "💬", label: "Discord", href: "#" },
-                  { icon: "📱", label: "Telegram", href: "#" },
-                  {
-                    icon: "🐙",
-                    label: "GitHub",
-                    href: "https://github.com/Salmandabbakuti"
-                  }
-                ].map((social, idx) => (
-                  <a
-                    key={idx}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      width: "44px",
-                      height: "44px",
-                      background: "rgba(255, 255, 255, 0.1)",
-                      border: "1px solid rgba(255, 255, 255, 0.2)",
-                      borderRadius: "12px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "18px",
-                      textDecoration: "none",
-                      transition: "all 0.3s ease",
-                      backdropFilter: "blur(10px)"
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = "rgba(102, 126, 234, 0.2)";
-                      e.target.style.transform = "translateY(-2px)";
-                      e.target.style.boxShadow =
-                        "0 8px 25px rgba(102, 126, 234, 0.3)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = "rgba(255, 255, 255, 0.1)";
-                      e.target.style.transform = "translateY(0)";
-                      e.target.style.boxShadow = "none";
-                    }}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
-              </div>
             </div>
 
             {/* Product Section */}

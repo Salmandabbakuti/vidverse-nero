@@ -127,6 +127,14 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ## Changelog
 
+### v0.3.0
+
+- Added dedicated video upload page with live video and thumbnail preview while uploading.
+- Major UI Revamp across site and Home page now features a rich hero section, platform features, and onboarding steps.
+- Account details button and account modal now displays smart account address with avatar instead of EOA address.
+- Editing and Tipping videos now requires users to pay gas fees, all other interactions (upload, like, comment, report) are still gasless.
+- Updated Search functionality to trigger on enter or press search button, improves performance and user experience.
+
 ### v0.2.0
 
 - Video social dynamics (likes, comments) implementation in smartcontract and subgraph.

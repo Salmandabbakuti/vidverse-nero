@@ -129,7 +129,7 @@ export default function CategoryBar() {
               alignItems: "center",
               background:
                 categoryParam === categoryItem.label
-                  ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                  ? "var(--primary-gradient)"
                   : "#f0f0f0",
               color: categoryParam === categoryItem.label ? "#fff" : "#000"
             }}

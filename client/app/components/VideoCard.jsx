@@ -53,40 +53,28 @@ export default function VideoCard({ video }) {
               display: "block",
               border: "none"
             }}
-            onError={(e) => {
-              e.target.style.display = "none";
-              e.target.parentElement.innerHTML = `
-                <div style="
-                  width: 100%; 
-                  height: 100%; 
-                  display: flex; 
-                  align-items: center; 
-                  justify-content: center; 
-                  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-                  color: #64748b;
-                  font-size: 48px;
-                ">
-                  🎬
-                </div>
-              `;
-            }}
           />
           <div
             style={{
               position: "absolute",
               top: 12,
               right: 12,
-              background: "rgba(0, 0, 0, 0.75)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-              color: "white",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              fontSize: "12px",
-              fontWeight: "700",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-              zIndex: 2
+              background: "rgba(255, 255, 255, 0.32)",
+              color: "#222",
+              padding: "2px 10px",
+              borderRadius: "6px",
+              fontSize: "10px",
+              fontWeight: 500,
+              border: "1px solid rgba(255,255,255,0.18)",
+              boxShadow: "0 2px 6px rgba(31,38,135,0.08)",
+              zIndex: 2,
+              minWidth: 0,
+              maxWidth: "90px",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)"
             }}
           >
             {video?.category}
@@ -94,18 +82,6 @@ export default function VideoCard({ video }) {
         </div>
       }
       className={styles.card}
-      // onMouseEnter={(e) => {
-      //   e.currentTarget.style.transform = "translateY(-8px)";
-      //   e.currentTarget.style.boxShadow = "0 20px 40px rgba(31, 38, 135, 0.2)";
-      //   const img = e.currentTarget.querySelector(".coverContainer img");
-      //   if (img) img.style.transform = "scale(1.05)";
-      // }}
-      // onMouseLeave={(e) => {
-      //   e.currentTarget.style.transform = "translateY(0)";
-      //   e.currentTarget.style.boxShadow = "0 10px 30px rgba(31, 38, 135, 0.1)";
-      //   const img = e.currentTarget.querySelector(".coverContainer img");
-      //   if (img) img.style.transform = "scale(1)";
-      // }}
     >
       <Card.Meta
         avatar={

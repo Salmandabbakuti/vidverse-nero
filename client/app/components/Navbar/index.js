@@ -16,6 +16,16 @@ export default function NavBar() {
   const searchParams = useSearchParams();
   const searchQueryParam = searchParams.get("q") || "";
 
+  const handleSearch = (value) => {
+    console.log("search input changed. preserving in url state", value);
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    // remove the tab query parameter if present(could be preset if search happened from different route)
+    if (urlSearchParams.has("tab")) urlSearchParams.delete("tab");
+    if (value) urlSearchParams.set("q", value);
+    else urlSearchParams.delete("q");
+    router.push(`/?${urlSearchParams.toString()}`);
+  };
+
   return (
     <div
       style={{
@@ -103,13 +113,11 @@ export default function NavBar() {
           justifyContent: "center"
         }}
       >
-        <Input
+        <Input.Search
+          defaultValue={searchQueryParam}
           allowClear
+          enterButton
           size="large"
-          prefix={
-            <SearchOutlined style={{ color: "#667eea", fontSize: "16px" }} />
-          }
-          value={searchQueryParam}
           placeholder="Search videos, creators, categories..."
           className="nav-search"
           style={{
@@ -120,18 +128,8 @@ export default function NavBar() {
             height: "48px"
             // margin: "0 20px"
           }}
-          onChange={(e) => {
-            console.log(
-              "search input changed. preserving in url state",
-              e.target.value
-            );
-            const urlSearchParams = new URLSearchParams(window.location.search);
-            // remove the tab query parameter if present(could be preset if search happened from different route)
-            if (urlSearchParams.has("tab")) urlSearchParams.delete("tab");
-            if (e.target.value) urlSearchParams.set("q", e.target.value);
-            else urlSearchParams.delete("q");
-            router.push(`/?${urlSearchParams.toString()}`);
-          }}
+          onPressEnter={(e) => handleSearch(e.target.value)}
+          onSearch={handleSearch}
         />
       </div>
       {/* Action Buttons - Enhanced */}
