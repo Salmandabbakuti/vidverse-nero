@@ -96,9 +96,11 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ### Screenshots
 
-![vv0.2-home-sc](https://github.com/user-attachments/assets/1cf03cf6-6e45-429a-a1c8-fc696d02a021)
+![vidversev03-home01](https://github.com/user-attachments/assets/d7667c71-54d0-4606-8819-e85c9472721a)
 
-![vv0.2-watch-comments-view-sc](https://github.com/user-attachments/assets/68c7e42d-6aae-41d4-a996-8c82a0fb492e)
+![vidverse-v03-upload-page](https://github.com/user-attachments/assets/ef933062-b6ff-49c7-8c8d-b88a2f48f35b)
+
+![vidverse03-watch-comments](https://github.com/user-attachments/assets/17df9a88-2a9c-405e-b7b9-b4c54e749cb6)
 
 ![vv0.2-channel-comments-sc](https://github.com/user-attachments/assets/fdd6e529-2c92-4ca8-a5b6-1e6a2b2cb9b7)
 

@@ -111,7 +111,8 @@ export default function VideoPage({ params }) {
         orderBy: "createdAt",
         orderDirection: "desc",
         where: {
-          id_not: idToExclude
+          id_not: idToExclude,
+          isRemoved: false
         }
       })
       .then((data) => {
