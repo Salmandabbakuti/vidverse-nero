@@ -34,7 +34,7 @@ createAppKit({
   },
   themeMode: "light",
   themeVariables: {
-    "--w3m-accent": "#1890ff",
+    "--w3m-accent": "#6c6ace",
     "--w3m-z-index": 9999
   },
   features: {
