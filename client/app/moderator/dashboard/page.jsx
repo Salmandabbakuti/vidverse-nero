@@ -88,7 +88,7 @@ export default function ModeratorDashboard() {
                 ]
               : [])
           ]
-        }, // Only fetch videos with reports, also you can add more filters here e.g isFlagged: true
+        },
         reports_first: 50,
         reports_skip: 0,
         reports_orderBy: "createdAt",
@@ -108,6 +108,7 @@ export default function ModeratorDashboard() {
   useEffect(() => {
     fetchVideosWithReports();
   }, [account]);
+
   const handleClearVideoFlag = async (videoId) => {
     if (!isConnected) return message.error("Please connect your wallet first");
     if (selectedNetworkId !== "eip155:689")

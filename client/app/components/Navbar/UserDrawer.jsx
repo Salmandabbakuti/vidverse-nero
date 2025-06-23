@@ -59,7 +59,6 @@ export default function UserDrawer() {
       <Drawer
         open={drawerOpen}
         width={420}
-        maskClosable={false}
         onClose={() => setDrawerOpen(false)}
         forceRender
         title={<appkit-button balance="show" />}
