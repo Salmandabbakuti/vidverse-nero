@@ -9,26 +9,22 @@ import {
   UserOutlined,
   BellOutlined
 } from "@ant-design/icons";
-import ConnectWalletButton from "./ConnectWalletButton";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
+import { useAppKitProvider, useAppKitAccount } from "@reown/appkit/react";
+import { BrowserProvider } from "ethers";
 import { getAAWalletAddress } from "@/app/utils/aaUtils";
-import { thirdwebClient } from "@/app/utils";
 
 export default function UserDrawer() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [aaWalletAddress, setAAWalletAddress] = useState(null);
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+
+  const { address: account } = useAppKitAccount();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const resolveAAWalletAddress = async () => {
+    if (!account || !walletProvider) return;
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const aaWalletAddress = await getAAWalletAddress(signer);
       console.log(
         `Resolved AA Wallet Address for account ${account}: ${aaWalletAddress}`
@@ -40,10 +36,10 @@ export default function UserDrawer() {
   };
 
   useEffect(() => {
-    if (account) {
+    if (account && walletProvider) {
       resolveAAWalletAddress();
     }
-  }, [account]);
+  }, [account, walletProvider]);
 
   return (
     <>
@@ -62,10 +58,11 @@ export default function UserDrawer() {
       </Badge>
       <Drawer
         open={drawerOpen}
-        width={320}
+        width={420}
+        maskClosable={false}
         onClose={() => setDrawerOpen(false)}
         forceRender
-        title={<ConnectWalletButton />}
+        title={<appkit-button balance="show" />}
         extra={
           <Button
             size="large"

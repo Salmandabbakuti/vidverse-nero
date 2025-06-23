@@ -14,7 +14,7 @@ import {
   List,
   Button
 } from "antd";
-import { toEther } from "thirdweb";
+import { formatEther } from "ethers";
 import {
   CheckCircleTwoTone,
   ShareAltOutlined,
@@ -344,7 +344,7 @@ export default function Channel({ params }) {
                       title={
                         <Space>
                           <Typography.Text strong>
-                            {`Tipped ${toEther(item?.amount || 0n)} NERO`}
+                            {`Tipped ${formatEther(item?.amount || 0n)} NERO`}
                           </Typography.Text>
                           <Typography.Text type="secondary">
                             {dayjs(item?.createdAt * 1000).format(

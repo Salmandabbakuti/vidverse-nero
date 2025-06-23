@@ -1,53 +1,49 @@
 import { Contract, JsonRpcProvider } from "ethers";
-import { createThirdwebClient } from "thirdweb";
-import { defineChain } from "thirdweb/chains";
+import { defineChain } from "@reown/appkit/networks";
 import { GraphQLClient, gql } from "graphql-request";
 import { VIDVERSE_CONTRACT_ADDRESS } from "./constants";
 
-const clientId = process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID;
-
-export const thirdwebClient = createThirdwebClient({ clientId });
-
+// Define the Nero Testnet chain
 export const neroTestnetChain = defineChain({
   id: 689,
+  caipNetworkId: "eip155:689",
+  chainNamespace: "eip155",
   name: "Nero Testnet",
-  rpc: "https://rpc-testnet.nerochain.io",
-  icon: "https://docs.nerochain.io/assets/nerologo.svg",
   nativeCurrency: {
+    decimals: 18,
     name: "Nero",
-    symbol: "NERO",
-    decimals: 18
+    symbol: "NERO"
   },
-  testnet: true,
-  blockExplorers: [
-    {
-      name: "Nero Testnet Explorer",
-      url: "https://testnet.neroscan.io/"
+  rpcUrls: {
+    default: {
+      http: ["https://rpc-testnet.nerochain.io"],
+      webSocket: ["wss://rpc-testnet.nerochain.io"]
     }
-  ],
-  faucets: [
-    "https://app.testnet.nerochain.io/faucet",
-    "https://faucet-testnet.nerochain.io/"
-  ]
+  },
+  blockExplorers: {
+    default: { name: "Explorer", url: "https://testnet.neroscan.io/" }
+  }
 });
 
 export const neroMainnetChain = defineChain({
   id: 1689,
+  caipNetworkId: "eip155:1689",
+  chainNamespace: "eip155",
   name: "Nero Mainnet",
-  rpc: "https://rpc.nerochain.io",
-  icon: "https://docs.nerochain.io/assets/nerologo.svg",
   nativeCurrency: {
+    decimals: 18,
     name: "Nero",
-    symbol: "NERO",
-    decimals: 18
+    symbol: "NERO"
   },
-  testnet: false,
-  blockExplorers: [
-    {
-      name: "Nero Mainnet Explorer",
-      url: "https://explorer.nerochain.io/"
+  rpcUrls: {
+    default: {
+      http: ["https://rpc.nerochain.io"],
+      webSocket: ["wss://rpc.nerochain.io"]
     }
-  ]
+  },
+  blockExplorers: {
+    default: { name: "Explorer", url: "https://neroscan.io/" }
+  }
 });
 
 export const defaultProvider = new JsonRpcProvider(
@@ -69,7 +65,7 @@ const abi = [
   "function clearVideoFlag(uint256 _videoId)",
   "function moderator() view returns (address)",
   "function isVideoLikedByUser(uint256 videoId, address user) view returns (bool)"
-]; // ABI of the contract
+];
 
 export const contract = new Contract(
   VIDVERSE_CONTRACT_ADDRESS,

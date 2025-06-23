@@ -5,7 +5,7 @@ import {
   MessageOutlined,
   DollarCircleOutlined
 } from "@ant-design/icons";
-import { toEther } from "thirdweb";
+import { formatEther } from "ethers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import styles from "./VideoCard.module.css";
@@ -139,7 +139,7 @@ export default function VideoCard({ video }) {
               <MessageOutlined style={{ color: "#4299e1" }} />
               {video?.commentCount || 0}
               <DollarCircleOutlined style={{ color: "#f56565" }} />
-              {toEther(video?.tipAmount || 0n) + " NERO"}
+              {formatEther(video?.tipAmount || 0n) + " NERO"}
             </Space>
           </div>
         }

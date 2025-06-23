@@ -121,13 +121,15 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 - **Blockchain**: NERO Chain (EVM compatible)
 - **Smart contracts**: Solidity, Openzeppelin, Hardhat
 - **Frontend**: React.js, Next.js, Antdesign
-- **Wallet Integration**: Thirdweb, ethers.js
+- **Wallet Integration**: AppKit, ethers.js
 - **Smartwallets/AA & Paymaster**: NERO Chain's AA UserOp SDK and Paymaster APIs
 - **Web3Client**: ethers.js, viem
-- **Storage**: IPFS, Thirdweb Storage
+- **Storage**: IPFS, Pinata
 - **Data Indexing**: TheGraph(NERO Chain Subgraph Sandbox Node)
 
 ## Changelog
+
+### v0.4.0
 
 ### v0.3.0
 
@@ -185,8 +187,8 @@ Full changelog can be found in https://github.com/Salmandabbakuti/vidverse-nero/
 - [Dapp Architecture - Nero Chain](https://docs.nerochain.io/en/getting-started/nero-dapp-architecture)
 - [Native Account Abstraction - Nero Chain](https://docs.nerochain.io/en/core-concepts/native-account-abstraction/nativeAccountAbstractionSupport)
 - [Creating a Dapp - Nero Chain](https://docs.nerochain.io/en/tutorials/low-level/create-first-dapp)
-- [Thirdweb Connect](https://portal.thirdweb.com/react/v5)
-- [Thirdweb storage](https://portal.thirdweb.com/typescript/v5/storage)
+- [Appkit - Overview](https://docs.reown.com/appkit/overview)
+- [Uploading files - Pinata](https://docs.pinata.cloud/files/uploading-files)
 - [Graph Node Docs](https://thegraph.com/docs/en/indexing/tooling/graph-node/)
 
 ## Safety & Security

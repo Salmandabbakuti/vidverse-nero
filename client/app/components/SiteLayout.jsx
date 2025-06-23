@@ -547,7 +547,7 @@ export default function SiteLayout({ children }) {
                   border: "1px solid rgba(255, 255, 255, 0.2)"
                 }}
               >
-                v0.3.0
+                v0.4.0
               </span>
             </div>
           </div>

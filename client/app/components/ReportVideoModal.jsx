@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Modal, Form, Select, Input, Button, Space, message } from "antd";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
+import {
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitState
+} from "@reown/appkit/react";
+import { BrowserProvider } from "ethers";
 import { FlagTwoTone } from "@ant-design/icons";
-import { contract, thirdwebClient } from "@/app/utils";
+import { contract } from "@/app/utils";
 import { executeOperation } from "@/app/utils/aaUtils";
 
 const { TextArea } = Input;
@@ -24,23 +28,22 @@ export default function ReportVideoModal({ videoId }) {
   const [showReportModal, setShowReportModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+  const { address: account, isConnected } = useAppKitAccount();
+  const { selectedNetworkId } = useAppKitState();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const [form] = Form.useForm();
 
   const handleFinish = async (values) => {
     if (!account) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     if (!videoId) return message.error("Video ID is required to report");
     console.log("Report data:", values);
     setLoading(true);
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       // Execute the report operation gaslessly
       const reportTx = await executeOperation(
         signer,

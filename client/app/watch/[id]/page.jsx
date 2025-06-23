@@ -29,9 +29,12 @@ import {
   LikeFilled
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { toEther } from "thirdweb";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
+import {
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitState
+} from "@reown/appkit/react";
+import { BrowserProvider, formatEther } from "ethers";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -47,7 +50,6 @@ import {
   ellipsisString,
   contract,
   subgraphClient as client,
-  thirdwebClient,
   GET_VIDEOS_QUERY,
   GET_VIDEO_QUERY
 } from "@/app/utils";
@@ -67,9 +69,9 @@ export default function VideoPage({ params }) {
   const [isLiking, setIsLiking] = useState(false);
 
   const { id } = use(params);
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+  const { address: account, isConnected } = useAppKitAccount();
+  const { selectedNetworkId } = useAppKitState();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const router = useRouter();
 
@@ -125,33 +127,29 @@ export default function VideoPage({ params }) {
         setLoading(false);
       });
   };
-
   const resolveAAWalletAddress = async () => {
+    if (!account || !walletProvider) return;
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const aaWalletAddress = await getAAWalletAddress(signer);
       console.log(
         `Resolved AA Wallet Address for account ${account}: ${aaWalletAddress}`
       );
-      setAAWalletAddress(aaWalletAddress);
+      setAAWalletAddress(aaWalletAddress?.toLowerCase());
     } catch (err) {
       console.error("Error resolving AA Wallet Address:", err);
     }
   };
 
   const handleToggleLikeVideo = async () => {
-    if (!account) return message.error("Please connect your wallet first");
+    if (!isConnected) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     setIsLiking(true);
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const toggleLikeTx = await executeOperation(
         signer,
         contract.target,
@@ -188,17 +186,17 @@ export default function VideoPage({ params }) {
 
   const isVideoOwner = useMemo(() => {
     if (!video || !aaWalletAddress) return false;
-    return video?.channel?.owner === aaWalletAddress?.toLowerCase();
+    return video?.channel?.owner === aaWalletAddress;
   }, [video, aaWalletAddress]);
 
   useEffect(() => {
     fetchVideo();
     fetchRelatedVideos(id);
-    if (account) {
+    if (account && walletProvider) {
       resolveAAWalletAddress();
       isVideoLikedByUser();
     }
-  }, [account]);
+  }, [account, walletProvider]);
 
   if (!loading && (!video?.videoHash || video?.isRemoved)) {
     return (
@@ -499,7 +497,7 @@ export default function VideoPage({ params }) {
                                 </a>
                               </Space>
                             }
-                            description={`Tipped ${toEther(
+                            description={`Tipped ${formatEther(
                               item?.amount || 0n
                             )} NERO`}
                           />

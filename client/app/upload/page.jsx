@@ -14,10 +14,14 @@ import {
   Col
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
+import {
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitState
+} from "@reown/appkit/react";
+import { BrowserProvider } from "ethers";
 import { useRouter } from "next/navigation";
-import { contract, thirdwebClient } from "@/app/utils";
+import { contract } from "@/app/utils";
 import { executeOperation } from "@/app/utils/aaUtils";
 import VideoPreviewCard from "@/app/components/VideoPreviewCard";
 import { uploadVideoAssets } from "@/app/actions/pinata";
@@ -38,29 +42,29 @@ export default function UploadPage() {
 
   const router = useRouter();
 
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+  const { address: account, isConnected } = useAppKitAccount();
+  const { selectedNetworkId } = useAppKitState();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const handleSubmit = async (values) => {
-    console.log("thumbnail", thumbnailFileInput);
-    console.log("video", videoFileInput);
-    if (!account) return message.error("Please connect your wallet first");
-
+    if (!isConnected) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     if (!thumbnailFileInput || !videoFileInput) {
       message.error("Please upload a video and thumbnail");
       return;
     }
+    if (videoFileInput.size > 90 * 1024 * 1024)
+      return message.error("Video file size exceeds 90MB limit");
+
+    if (thumbnailFileInput.size > 5 * 1024 * 1024)
+      return message.error("Thumbnail file size exceeds 5MB limit");
+
     setLoading(true);
     message.info("Uploading video and thumbnail to IPFS");
-    // const [videoHash, thumbnailHash] = await upload({
-    //   client: thirdwebClient, // thirdweb client
-    //   files: [videoFileInput, thumbnailFileInput]
-    // });
     const formData = new FormData();
     formData.append("thumbnailFile", thumbnailFileInput);
     formData.append("videoFile", videoFileInput);
-
     const { thumbnailHash, videoHash, error } = await uploadVideoAssets(
       formData
     );
@@ -71,11 +75,8 @@ export default function UploadPage() {
     message.success("Thumbnail and video are uploaded to IPFS");
     message.info("Adding video info to the contract");
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       message.info("Please sign the transaction in your wallet");
       const addVideoTx = await executeOperation(
         signer,

@@ -12,24 +12,33 @@ import {
   Alert
 } from "antd";
 import { EditOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
-import { upload } from "thirdweb/storage";
-import { contract, thirdwebClient } from "@/app/utils";
+import {
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitState
+} from "@reown/appkit/react";
+import { BrowserProvider } from "ethers";
+import { contract } from "@/app/utils";
 import { uploadVideoAssets } from "@/app/actions/pinata";
 
 export default function VideoEditDrawer({ video: videoData }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [thumbnailFileInput, setThumbnailFileInput] = useState(null);
   const [loading, setLoading] = useState(false);
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+
+  const { isConnected } = useAppKitAccount();
+  const { selectedNetworkId } = useAppKitState();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const handleSubmit = async (values) => {
+    if (!isConnected) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     console.log("thumbnail", thumbnailFileInput);
-    if (!account) return message.error("Please connect your wallet first");
+    if (thumbnailFileInput && thumbnailFileInput.size > 5 * 1024 * 1024)
+      return message.error("Thumbnail file size exceeds 5MB limit");
     let thumbnailHash = videoData?.thumbnailHash || "";
+
     setLoading(true);
     try {
       if (thumbnailFileInput) {
@@ -49,11 +58,9 @@ export default function VideoEditDrawer({ video: videoData }) {
       }
       if (!thumbnailHash)
         return message.error("Thumbnail is required to update video info");
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const updateTx = await contract
         .connect(signer)
         .updateVideoInfo(
