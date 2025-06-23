@@ -16,6 +16,7 @@ import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
 import { ethers6Adapter } from "thirdweb/adapters/ethers6";
 import { upload } from "thirdweb/storage";
 import { contract, thirdwebClient } from "@/app/utils";
+import { uploadVideoAssets } from "@/app/actions/pinata";
 
 export default function VideoEditDrawer({ video: videoData }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -33,13 +34,15 @@ export default function VideoEditDrawer({ video: videoData }) {
     try {
       if (thumbnailFileInput) {
         message.info("Uploading new thumbnail to IPFS");
-        const thumbnailIpfs = await upload({
-          client: thirdwebClient,
-          uploadWithoutDirectory: true,
-          files: [thumbnailFileInput]
-        });
-        console.log("uploadRes -> t", thumbnailIpfs);
-        thumbnailHash = thumbnailIpfs?.split("://")[1];
+        const formData = new FormData();
+        formData.append("thumbnailFile", thumbnailFileInput);
+        const { thumbnailHash: uploadedThumbnailHash, error } =
+          await uploadVideoAssets(formData);
+        if (error) {
+          console.error("Error uploading thumbnail to IPFS:", error);
+          return message.error(`Failed to upload thumbnail to IPFS. ${error}`);
+        }
+        thumbnailHash = uploadedThumbnailHash;
         console.log("thumbnailHash", thumbnailHash);
         message.success("Thumbnail uploaded to IPFS");
         message.info("Updating video info in the contract");
