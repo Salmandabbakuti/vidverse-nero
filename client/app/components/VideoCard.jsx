@@ -9,6 +9,7 @@ import { formatEther } from "ethers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import styles from "./VideoCard.module.css";
+import { IPFS_GATEWAY_URL } from "@/app/utils/constants";
 
 dayjs.extend(relativeTime);
 
@@ -43,7 +44,7 @@ export default function VideoCard({ video }) {
         >
           <img
             alt={video?.title}
-            src={`https://ipfs.io/ipfs/${video?.thumbnailHash}`}
+            src={`${IPFS_GATEWAY_URL}/ipfs/${video?.thumbnailHash}`}
             className={styles.thumbnail}
             style={{
               width: "100%",

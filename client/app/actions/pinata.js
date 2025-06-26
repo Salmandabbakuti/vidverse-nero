@@ -10,19 +10,18 @@ const pinata = new PinataSDK({
 export async function uploadVideoAssets(formData) {
   const thumbnailFile = formData.get("thumbnailFile");
   const videoFile = formData.get("videoFile");
-  // check if atleast one file is present
-  if (!thumbnailFile && !videoFile) {
-    return errorResponse(
-      "Thumbnail and/or video file is required to upload",
-      400,
-      true
-    );
-  }
   try {
-    const uploadRes = await pinata.upload.public.fileArray(
-      [thumbnailFile, videoFile],
-      {}
-    );
+    const filesToUpload = [];
+    if (thumbnailFile) filesToUpload.push(thumbnailFile);
+    if (videoFile) filesToUpload.push(videoFile);
+    if (!filesToUpload.length) {
+      return errorResponse(
+        "No files to upload. Please provide a thumbnail or video file.",
+        400,
+        true
+      );
+    }
+    const uploadRes = await pinata.upload.public.fileArray(filesToUpload, {});
     console.log("uploadRes in action", uploadRes);
     return {
       thumbnailHash: `${uploadRes?.cid}/${thumbnailFile?.name}`,

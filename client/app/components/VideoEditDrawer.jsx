@@ -20,6 +20,7 @@ import {
 import { BrowserProvider } from "ethers";
 import { contract } from "@/app/utils";
 import { uploadVideoAssets } from "@/app/actions/pinata";
+import { IPFS_GATEWAY_URL } from "@/app/utils/constants";
 
 export default function VideoEditDrawer({ video: videoData }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -188,7 +189,7 @@ export default function VideoEditDrawer({ video: videoData }) {
                   src={
                     thumbnailFileInput
                       ? URL.createObjectURL(thumbnailFileInput)
-                      : `https://ipfs.io/ipfs/${videoData?.thumbnailHash}`
+                      : `${IPFS_GATEWAY_URL}/ipfs/${videoData?.thumbnailHash}`
                   }
                   width={450}
                   height={200}

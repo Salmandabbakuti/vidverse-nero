@@ -74,6 +74,7 @@ export default function UploadPage() {
     }
     message.success("Thumbnail and video are uploaded to IPFS");
     message.info("Adding video info to the contract");
+    console.log("video data", { values, thumbnailHash, videoHash });
     try {
       const provider = new BrowserProvider(walletProvider);
       const signer = await provider.getSigner();

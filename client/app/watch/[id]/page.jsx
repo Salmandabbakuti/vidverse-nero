@@ -53,7 +53,11 @@ import {
   GET_VIDEOS_QUERY,
   GET_VIDEO_QUERY
 } from "@/app/utils";
-import { EXPLORER_URL, VIDVERSE_CONTRACT_ADDRESS } from "@/app/utils/constants";
+import {
+  EXPLORER_URL,
+  VIDVERSE_CONTRACT_ADDRESS,
+  IPFS_GATEWAY_URL
+} from "@/app/utils/constants";
 import { executeOperation, getAAWalletAddress } from "@/app/utils/aaUtils";
 
 const { Title, Text, Paragraph } = Typography;
@@ -271,7 +275,7 @@ export default function VideoPage({ params }) {
                   type: "video",
                   sources: [
                     {
-                      src: `https://ipfs.io/ipfs/${video?.videoHash?.trim()}`,
+                      src: `${IPFS_GATEWAY_URL}/ipfs/${video?.videoHash?.trim()}`,
                       type: "video/mp4"
                     }
                   ]
@@ -335,7 +339,7 @@ export default function VideoPage({ params }) {
                     }}
                   />
                   <a
-                    href={`https://ipfs.io/ipfs/${video?.videoHash?.trim()}`}
+                    href={`${IPFS_GATEWAY_URL}/ipfs/${video?.videoHash?.trim()}`}
                     target="_blank"
                     rel="noreferrer"
                     download

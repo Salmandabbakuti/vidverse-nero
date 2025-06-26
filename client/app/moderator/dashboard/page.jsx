@@ -34,6 +34,7 @@ import {
   contract,
   ellipsisString
 } from "@/app/utils";
+import { IPFS_GATEWAY_URL } from "@/app/utils/constants";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -212,7 +213,7 @@ export default function ModeratorDashboard() {
                     <Avatar
                       shape="square"
                       size="large"
-                      src={`https://ipfs.io/ipfs/${video.thumbnailHash}`}
+                      src={`${IPFS_GATEWAY_URL}/ipfs/${video.thumbnailHash}`}
                       alt={video.title}
                       style={{ width: 120, height: 90 }}
                     />
