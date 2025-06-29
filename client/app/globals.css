@@ -46,7 +46,7 @@ body {
   position: relative;
 }
 
-/* Add subtle animated background pattern */
+/* Add subtle animated gradient background */
 body::before {
   content: '';
   position: fixed;

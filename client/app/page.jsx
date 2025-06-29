@@ -183,41 +183,21 @@ export default function Home() {
     <>
       {showHero && (
         <div style={{ position: "relative", marginBottom: "80px" }}>
-          {/* Hero Background Effects */}
-          <div
-            style={{
-              position: "absolute",
-              top: "-100px",
-              left: "-100px",
-              width: "calc(100% + 200px)",
-              height: "calc(100% + 200px)",
-              background: `
-                radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(52, 211, 153, 0.1) 0%, transparent 50%)
-              `,
-              animation: "float 20s ease-in-out infinite",
-              pointerEvents: "none",
-              zIndex: 0
-            }}
-          />
-
           <Card
-            className="fade-in"
             style={{
               margin: "0 auto",
-              maxWidth: "1200px",
+              maxWidth: "100%",
               background:
-                "linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%)",
+                "linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%)",
               backdropFilter: "blur(30px)",
               WebkitBackdropFilter: "blur(30px)",
               border: "1px solid rgba(255, 255, 255, 0.4)",
-              borderRadius: "32px",
+              borderRadius: "24px",
               boxShadow:
-                "0 32px 64px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2)",
+                "0 20px 40px rgba(102, 126, 234, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.2)",
               overflow: "hidden",
               position: "relative",
-              padding: "80px 40px",
+              padding: "50px 40px",
               zIndex: 1
             }}
             variant="borderless"
@@ -237,11 +217,10 @@ export default function Home() {
                   border: "1px solid rgba(102, 126, 234, 0.2)",
                   borderRadius: "50px",
                   padding: "8px 20px",
-                  marginBottom: "32px",
-                  animation: "slideUp 0.8s ease-out 0.2s both"
+                  marginBottom: "24px"
                 }}
               >
-                <span style={{ fontSize: "16px" }}>🚀</span>
+                <span style={{ fontSize: "16px" }}>⚡</span>
                 <Text
                   style={{
                     color: "#667eea",
@@ -250,27 +229,26 @@ export default function Home() {
                     margin: 0
                   }}
                 >
-                  The Future of Decentralized Video
+                  Gasless Web3 Video Platform
                 </Text>
               </div>
 
               <Title
                 level={1}
                 style={{
-                  fontSize: "clamp(3rem, 8vw, 5.5rem)",
-                  fontWeight: 900,
-                  margin: "0 0 24px 0",
+                  fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                  fontWeight: 800,
+                  margin: "0 0 20px 0",
                   background:
                     "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  lineHeight: 1.1,
-                  animation: "slideUp 0.8s ease-out 0.4s both",
+                  lineHeight: 1.2,
                   letterSpacing: "-0.02em"
                 }}
               >
-                Welcome to
+                Create. Own. Earn.
                 <br />
                 <span
                   style={{
@@ -281,93 +259,73 @@ export default function Home() {
                     backgroundClip: "text"
                   }}
                 >
-                  VidVerse
+                  Decentralized.
                 </span>
               </Title>
 
               <Text
                 style={{
-                  fontSize: "clamp(1.2rem, 3vw, 1.8rem)",
-                  color: "#2d3748",
+                  fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
+                  color: "#4a5568",
                   lineHeight: 1.6,
                   fontWeight: 500,
-                  maxWidth: "800px",
-                  margin: "0 auto 40px auto",
-                  display: "block",
-                  animation: "fadeIn 1s ease-out 0.6s both"
+                  maxWidth: "600px",
+                  margin: "0 auto 32px auto",
+                  display: "block"
                 }}
               >
-                Create, own, and monetize your content on the world's first{" "}
-                <span
-                  style={{
-                    color: "#667eea",
-                    fontWeight: 700,
-                    background: "linear-gradient(135deg, #667eea, #764ba2)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text"
-                  }}
-                >
-                  gasless Web3 video platform
-                </span>
-                . Built for creators who demand freedom, ownership, and fair
-                compensation.
+                The first gasless video platform where creators truly own their
+                content. Upload to IPFS, mint as NFTs, and earn directly from
+                your audience.
               </Text>
 
               {/* Key Features Pills */}
               <div
                 style={{
                   display: "flex",
-                  gap: "16px",
+                  gap: "12px",
                   alignItems: "center",
                   justifyContent: "center",
                   flexWrap: "wrap",
-                  margin: "40px 0 50px 0",
-                  animation: "fadeIn 1s ease-out 0.8s both"
+                  margin: "32px 0 40px 0"
                 }}
               >
                 {[
-                  { label: "100% Creator Ownership", color: "#10b981" },
-                  { label: "Zero Platform Fees", color: "#8b5cf6" },
-                  { label: "NFT Monetization", color: "#f59e0b" }
+                  { label: "Zero Gas Fees", color: "#10b981", icon: "⚡" },
+                  { label: "Social Login", color: "#8b5cf6", icon: "🔐" },
+                  { label: "NFT Ownership", color: "#f59e0b", icon: "🎨" }
                 ].map((item, index) => (
                   <div
                     key={index}
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "10px",
-                      background: "rgba(255, 255, 255, 0.7)",
+                      gap: "8px",
+                      background: "rgba(255, 255, 255, 0.8)",
                       backdropFilter: "blur(10px)",
                       border: `1px solid ${item.color}30`,
                       borderRadius: "50px",
-                      padding: "12px 20px",
+                      padding: "10px 16px",
                       transition: "all 0.3s ease",
                       cursor: "default"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = "translateY(-2px)";
+                      e.currentTarget.style.transform =
+                        "translateY(-3px) scale(1.05)";
                       e.currentTarget.style.boxShadow = `0 8px 25px ${item.color}40`;
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.transform =
+                        "translateY(0) scale(1)";
                       e.currentTarget.style.boxShadow = "none";
                     }}
                   >
-                    <div
-                      style={{
-                        width: "12px",
-                        height: "12px",
-                        borderRadius: "50%",
-                        background: item.color,
-                        boxShadow: `0 0 12px ${item.color}60`
-                      }}
-                    />
+                    <span style={{ fontSize: "14px" }}>{item.icon}</span>
                     <Text
                       style={{
                         color: "#374151",
                         fontWeight: 600,
-                        fontSize: "14px",
+                        fontSize: "13px",
                         margin: 0
                       }}
                     >
@@ -381,9 +339,9 @@ export default function Home() {
               <Space
                 size="large"
                 wrap
+                className="animate-hero-buttons"
                 style={{
-                  justifyContent: "center",
-                  animation: "slideUp 0.8s ease-out 1s both"
+                  justifyContent: "center"
                 }}
               >
                 <Link href="/upload">
@@ -392,40 +350,42 @@ export default function Home() {
                     size="large"
                     shape="round"
                     icon={<VideoCameraOutlined />}
+                    className=""
                     style={{
-                      height: "60px",
-                      padding: "0 48px",
-                      fontSize: "18px",
+                      height: "56px",
+                      padding: "0 40px",
+                      fontSize: "16px",
                       fontWeight: 700,
                       background:
                         "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                       border: "none",
-                      boxShadow: "0 16px 40px rgba(102, 126, 234, 0.4)",
+                      boxShadow: "0 12px 30px rgba(102, 126, 234, 0.4)",
                       letterSpacing: "0.5px",
                       transition: "all 0.3s ease"
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.transform = "translateY(-3px) scale(1.05)";
                       e.target.style.boxShadow =
-                        "0 20px 50px rgba(102, 126, 234, 0.5)";
+                        "0 16px 40px rgba(102, 126, 234, 0.5)";
                     }}
                     onMouseLeave={(e) => {
                       e.target.style.transform = "translateY(0) scale(1)";
                       e.target.style.boxShadow =
-                        "0 16px 40px rgba(102, 126, 234, 0.4)";
+                        "0 12px 30px rgba(102, 126, 234, 0.4)";
                     }}
                   >
-                    Start Creating Now
+                    Start Creating
                   </Button>
                 </Link>
                 <Link href="#features">
                   <Button
                     size="large"
                     shape="round"
+                    className=""
                     style={{
-                      height: "60px",
-                      padding: "0 40px",
-                      fontSize: "16px",
+                      height: "56px",
+                      padding: "0 32px",
+                      fontSize: "15px",
                       fontWeight: 600,
                       background: "rgba(255, 255, 255, 0.9)",
                       backdropFilter: "blur(15px)",
@@ -436,15 +396,15 @@ export default function Home() {
                     onMouseEnter={(e) => {
                       e.target.style.borderColor = "#667eea";
                       e.target.style.background = "rgba(102, 126, 234, 0.1)";
-                      e.target.style.transform = "translateY(-2px)";
+                      e.target.style.transform = "translateY(-2px) scale(1.02)";
                     }}
                     onMouseLeave={(e) => {
                       e.target.style.borderColor = "rgba(102, 126, 234, 0.3)";
                       e.target.style.background = "rgba(255, 255, 255, 0.9)";
-                      e.target.style.transform = "translateY(0)";
+                      e.target.style.transform = "translateY(0) scale(1)";
                     }}
                   >
-                    Explore Platform
+                    Learn More
                   </Button>
                 </Link>
               </Space>
@@ -452,6 +412,119 @@ export default function Home() {
           </Card>
         </div>
       )}
+
+      {/* Stats Section */}
+      {showHero && (
+        <section
+          style={{
+            padding: "60px 0",
+            background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)",
+            margin: "0 0 40px 0"
+          }}
+        >
+          <div
+            style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}
+          >
+            <Row gutter={[24, 24]} justify="center">
+              {[
+                {
+                  number: "25K+",
+                  label: "Videos Minted",
+                  icon: "🎬",
+                  description: "NFTs Created"
+                },
+                {
+                  number: "5.2K+",
+                  label: "Active Creators",
+                  icon: "👥",
+                  description: "Building Daily"
+                },
+                {
+                  number: "$180K+",
+                  label: "Tips Received",
+                  icon: "💰",
+                  description: "Creator Earnings"
+                },
+                {
+                  number: "~5TB",
+                  label: "IPFS Storage",
+                  icon: "💾",
+                  icon: "�",
+                  description: "Decentralized Data"
+                }
+              ].map((stat, index) => (
+                <Col key={index} xs={12} sm={6}>
+                  <Card
+                    style={{
+                      textAlign: "center",
+                      background: "rgba(255, 255, 255, 0.9)",
+                      backdropFilter: "blur(15px)",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
+                      borderRadius: "20px",
+                      boxShadow: "0 8px 32px rgba(102, 126, 234, 0.1)",
+                      transition: "all 0.3s ease",
+                      height: "100%"
+                    }}
+                    bodyStyle={{ padding: "24px 16px" }}
+                    hoverable
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-8px)";
+                      e.currentTarget.style.boxShadow =
+                        "0 16px 48px rgba(102, 126, 234, 0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow =
+                        "0 8px 32px rgba(102, 126, 234, 0.1)";
+                    }}
+                  >
+                    <div style={{ fontSize: "28px", marginBottom: "12px" }}>
+                      {stat.icon}
+                    </div>
+                    <Title
+                      level={2}
+                      style={{
+                        margin: "0 0 4px 0",
+                        fontSize: "2rem",
+                        fontWeight: "900",
+                        background:
+                          "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text"
+                      }}
+                    >
+                      {stat.number}
+                    </Title>
+                    <Text
+                      style={{
+                        color: "#1a202c",
+                        fontWeight: "600",
+                        fontSize: "14px",
+                        display: "block",
+                        marginBottom: "4px"
+                      }}
+                    >
+                      {stat.label}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#6b7280",
+                        fontSize: "12px",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px"
+                      }}
+                    >
+                      {stat.description}
+                    </Text>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </section>
+      )}
+
       <Title
         level={4}
         style={{

@@ -13,24 +13,41 @@ export default function SiteLayout({ children }) {
           position: "sticky",
           top: 0,
           zIndex: 999,
-          padding: "0 16px",
+          padding: "0 24px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
+          background: "rgba(255, 255, 255, 0.98)",
+          backdropFilter: "blur(40px)",
+          WebkitBackdropFilter: "blur(40px)",
+          border: "1px solid rgba(255, 255, 255, 0.4)",
           borderTop: "none",
           borderLeft: "none",
           borderRight: "none",
-          boxShadow: "0 8px 32px rgba(31, 38, 135, 0.12)",
+          boxShadow:
+            "0 4px 32px rgba(102, 126, 234, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.3)",
           transition: "all 0.3s ease",
-          height: "70px",
-          minHeight: "70px"
+          height: "80px",
+          minHeight: "80px",
+          borderBottom: "1px solid rgba(102, 126, 234, 0.1)"
         }}
         className="header-glass"
       >
+        {/* Header Background Gradient */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              "linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, rgba(240, 147, 251, 0.02) 50%, rgba(79, 172, 254, 0.02) 100%)",
+            pointerEvents: "none",
+            zIndex: -1
+          }}
+        />
+
         <NavBar />
       </Header>
       <Content
@@ -48,44 +65,20 @@ export default function SiteLayout({ children }) {
       </Content>
       <Footer
         style={{
-          background:
-            "linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%)",
+          background: "rgba(15, 23, 42, 0.95)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          borderBottom: "none",
-          borderLeft: "none",
-          borderRight: "none",
-          padding: "60px 0 30px 0",
-          position: "relative",
-          overflow: "hidden",
-          color: "white"
+          borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+          padding: "48px 0 24px 0",
+          color: "white",
+          marginTop: "60px"
         }}
       >
-        {/* Animated Background Elements */}
         <div
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: `
-              radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 60% 40%, rgba(79, 172, 254, 0.1) 0%, transparent 50%)
-            `,
-            pointerEvents: "none"
-          }}
-        />
-
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "0 24px"
+            padding: "0 32px"
           }}
         >
           {/* Main Footer Content */}
@@ -93,8 +86,8 @@ export default function SiteLayout({ children }) {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "48px",
-              marginBottom: "48px"
+              gap: "40px",
+              marginBottom: "40px"
             }}
           >
             {/* Brand Section */}
@@ -119,114 +112,113 @@ export default function SiteLayout({ children }) {
                     justifyContent: "center",
                     fontSize: "24px",
                     fontWeight: "bold",
-                    color: "white",
-                    boxShadow: "0 10px 30px rgba(102, 126, 234, 0.4)"
+                    color: "white"
                   }}
                 >
                   V
                 </div>
-                <span
-                  style={{
-                    fontSize: "28px",
-                    fontWeight: "900",
-                    background:
-                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text"
-                  }}
-                >
-                  VidVerse
-                </span>
+                <div>
+                  <span
+                    style={{
+                      fontSize: "24px",
+                      fontWeight: "800",
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text"
+                    }}
+                  >
+                    VidVerse
+                  </span>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#94a3b8",
+                      fontWeight: "600"
+                    }}
+                  >
+                    DECENTRALIZED VIDEO PLATFORM
+                  </div>
+                </div>
               </div>
 
               <p
                 style={{
-                  color: "#94a3b8",
+                  color: "#cbd5e1",
                   fontSize: "16px",
                   lineHeight: "1.6",
                   marginBottom: "24px",
                   maxWidth: "280px"
                 }}
               >
-                The future of decentralized video sharing. Own your content,
-                earn rewards, and join the Web3 revolution.
+                Empowering creators with true ownership and direct monetization
+                in Web3.
               </p>
-            </div>
 
-            {/* Product Section */}
-            <div>
-              <h3
-                style={{
-                  color: "white",
-                  fontSize: "18px",
-                  fontWeight: "700",
-                  marginBottom: "20px",
-                  background:
-                    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text"
-                }}
-              >
-                🚀 Product
-              </h3>
+              {/* Social Links */}
               <div
                 style={{
                   display: "flex",
-                  flexDirection: "column",
                   gap: "12px"
                 }}
               >
                 {[
-                  { text: "Upload Videos", href: "/upload" },
-                  { text: "Browse Content", href: "/" },
-                  { text: "Creator Dashboard", href: "#" },
-                  { text: "Video NFTs", href: "#" },
-                  { text: "Earnings", href: "#" },
-                  { text: "Analytics", href: "#" }
-                ].map((item, idx) => (
+                  {
+                    icon: "✕",
+                    href: "#",
+                    color: "#1da1f2",
+                    label: "X (Twitter)"
+                  },
+                  { icon: "💬", href: "#", color: "#5865f2", label: "Discord" },
+                  { icon: "⚡", href: "#", color: "#24292e", label: "GitHub" },
+                  { icon: "✉️", href: "#", color: "#ea4335", label: "Email" }
+                ].map((social, idx) => (
                   <a
                     key={idx}
-                    href={item.href}
+                    href={social.href}
                     style={{
-                      color: "#cbd5e1",
+                      width: "40px",
+                      height: "40px",
+                      background: "rgba(255, 255, 255, 0.1)",
+                      borderRadius: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "16px",
                       textDecoration: "none",
-                      fontSize: "15px",
                       transition: "all 0.3s ease",
-                      padding: "4px 0"
+                      border: "1px solid rgba(255, 255, 255, 0.1)"
                     }}
                     onMouseEnter={(e) => {
-                      e.target.style.color = "#4facfe";
-                      e.target.style.paddingLeft = "8px";
+                      e.target.style.background = social.color + "20";
+                      e.target.style.borderColor = social.color + "40";
+                      e.target.style.transform = "translateY(-2px)";
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.color = "#cbd5e1";
-                      e.target.style.paddingLeft = "0";
+                      e.target.style.background = "rgba(255, 255, 255, 0.1)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                      e.target.style.transform = "translateY(0)";
                     }}
+                    title={social.label}
                   >
-                    {item.text}
+                    {social.icon}
                   </a>
                 ))}
               </div>
             </div>
 
-            {/* Community Section */}
+            {/* Quick Links */}
             <div>
               <h3
                 style={{
                   color: "white",
                   fontSize: "18px",
                   fontWeight: "700",
-                  marginBottom: "20px",
-                  background:
-                    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text"
+                  marginBottom: "20px"
                 }}
               >
-                🌟 Community
+                Quick Links
               </h3>
               <div
                 style={{
@@ -236,67 +228,10 @@ export default function SiteLayout({ children }) {
                 }}
               >
                 {[
-                  { text: "Join Discord", href: "#" },
-                  { text: "Follow Twitter", href: "#" },
-                  { text: "Creator Program", href: "#" },
-                  { text: "Bug Bounty", href: "#" },
-                  { text: "Governance", href: "#" },
-                  { text: "Forum", href: "#" }
-                ].map((item, idx) => (
-                  <a
-                    key={idx}
-                    href={item.href}
-                    style={{
-                      color: "#cbd5e1",
-                      textDecoration: "none",
-                      fontSize: "15px",
-                      transition: "all 0.3s ease",
-                      padding: "4px 0"
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = "#f093fb";
-                      e.target.style.paddingLeft = "8px";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = "#cbd5e1";
-                      e.target.style.paddingLeft = "0";
-                    }}
-                  >
-                    {item.text}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Company Section */}
-            <div>
-              <h3
-                style={{
-                  color: "white",
-                  fontSize: "18px",
-                  fontWeight: "700",
-                  marginBottom: "20px",
-                  background:
-                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text"
-                }}
-              >
-                🏢 Company
-              </h3>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "12px"
-                }}
-              >
-                {[
+                  { text: "Upload", href: "/upload" },
+                  { text: "Browse", href: "/" },
+                  { text: "Dashboard", href: "#" },
                   { text: "About Us", href: "#" },
-                  { text: "Whitepaper", href: "#" },
-                  { text: "Tokenomics", href: "#" },
-                  { text: "Roadmap", href: "#" },
                   { text: "Privacy Policy", href: "#" },
                   { text: "Terms of Service", href: "#" }
                 ].map((item, idx) => (
@@ -304,19 +239,67 @@ export default function SiteLayout({ children }) {
                     key={idx}
                     href={item.href}
                     style={{
-                      color: "#cbd5e1",
+                      color: "#e2e8f0",
                       textDecoration: "none",
                       fontSize: "15px",
                       transition: "all 0.3s ease",
-                      padding: "4px 0"
+                      fontWeight: "500"
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.color = "#667eea";
-                      e.target.style.paddingLeft = "8px";
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.color = "#cbd5e1";
-                      e.target.style.paddingLeft = "0";
+                      e.target.style.color = "#e2e8f0";
+                    }}
+                  >
+                    {item.text}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Resources */}
+            <div>
+              <h3
+                style={{
+                  color: "white",
+                  fontSize: "18px",
+                  fontWeight: "700",
+                  marginBottom: "20px"
+                }}
+              >
+                Resources
+              </h3>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px"
+                }}
+              >
+                {[
+                  { text: "Documentation", href: "#" },
+                  { text: "API Reference", href: "#" },
+                  { text: "Developer Guide", href: "#" },
+                  { text: "Community Forum", href: "#" },
+                  { text: "Help Center", href: "#" },
+                  { text: "Contact Support", href: "#" }
+                ].map((item, idx) => (
+                  <a
+                    key={idx}
+                    href={item.href}
+                    style={{
+                      color: "#e2e8f0",
+                      textDecoration: "none",
+                      fontSize: "15px",
+                      transition: "all 0.3s ease",
+                      fontWeight: "500"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.color = "#667eea";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.color = "#e2e8f0";
                     }}
                   >
                     {item.text}
@@ -326,158 +309,79 @@ export default function SiteLayout({ children }) {
             </div>
           </div>
 
-          {/* Call-to-Action Section */}
+          {/* Built With Section */}
           <div
             style={{
-              background:
-                "linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: "20px",
-              padding: "32px",
-              marginBottom: "40px",
               textAlign: "center",
-              backdropFilter: "blur(10px)"
+              marginBottom: "40px",
+              padding: "24px 0"
             }}
           >
-            <h3
+            <div
               style={{
-                color: "white",
-                fontSize: "24px",
-                fontWeight: "800",
-                marginBottom: "12px"
+                fontSize: "14px",
+                color: "#94a3b8",
+                fontWeight: "600",
+                letterSpacing: "0.05em",
+                marginBottom: "20px"
               }}
             >
-              Ready to Join the Future? 🚀
-            </h3>
-            <p
-              style={{
-                color: "#cbd5e1",
-                fontSize: "16px",
-                marginBottom: "24px",
-                maxWidth: "500px",
-                margin: "0 auto 24px auto"
-              }}
-            >
-              Start earning NERO tokens for your content today. Upload, share,
-              and monetize your videos on the world's first truly decentralized
-              platform.
-            </p>
+              POWERED BY
+            </div>
             <div
               style={{
                 display: "flex",
-                gap: "16px",
                 justifyContent: "center",
+                alignItems: "center",
+                gap: "24px",
                 flexWrap: "wrap"
               }}
             >
-              <a
-                href="/upload"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                  color: "white",
-                  padding: "14px 28px",
-                  borderRadius: "12px",
-                  textDecoration: "none",
-                  fontWeight: "600",
-                  fontSize: "16px",
-                  boxShadow: "0 10px 30px rgba(102, 126, 234, 0.4)",
-                  transition: "all 0.3s ease",
-                  border: "none"
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-2px)";
-                  e.target.style.boxShadow =
-                    "0 15px 40px rgba(102, 126, 234, 0.6)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow =
-                    "0 10px 30px rgba(102, 126, 234, 0.4)";
-                }}
-              >
-                🎥 Start Creating
-              </a>
-              <a
-                href="#"
-                style={{
-                  background: "rgba(255, 255, 255, 0.1)",
-                  color: "white",
-                  padding: "14px 28px",
-                  borderRadius: "12px",
-                  textDecoration: "none",
-                  fontWeight: "600",
-                  fontSize: "16px",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  transition: "all 0.3s ease",
-                  backdropFilter: "blur(10px)"
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.2)";
-                  e.target.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.1)";
-                  e.target.style.transform = "translateY(0)";
-                }}
-              >
-                📄 Learn More
-              </a>
+              {[
+                { name: "NERO Chain", color: "#667eea", icon: "⚡" },
+                { name: "IPFS", color: "#4facfe", icon: "🔗" },
+                { name: "TheGraph", color: "#f093fb", icon: "🌐" },
+                { name: "Reown AppKit", color: "#48bb78", icon: "🔐" },
+                { name: "Next.js", color: "#000000", icon: "▲" }
+              ].map((tech, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    background: "rgba(255, 255, 255, 0.06)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    padding: "8px 16px",
+                    borderRadius: "12px",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    color: "#e2e8f0",
+                    transition: "all 0.3s ease",
+                    cursor: "default"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = "rgba(255, 255, 255, 0.12)";
+                    e.target.style.borderColor = tech.color + "40";
+                    e.target.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = "rgba(255, 255, 255, 0.06)";
+                    e.target.style.borderColor = "rgba(255, 255, 255, 0.12)";
+                    e.target.style.transform = "translateY(0)";
+                  }}
+                >
+                  <span style={{ fontSize: "16px" }}>{tech.icon}</span>
+                  <span style={{ color: tech.color }}>{tech.name}</span>
+                </div>
+              ))}
             </div>
-          </div>
-
-          {/* Technology Badges */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "20px",
-              marginBottom: "32px",
-              flexWrap: "wrap"
-            }}
-          >
-            {[
-              { icon: "🔗", text: "Decentralized", color: "#4facfe" },
-              { icon: "⚡", text: "NERO Chain", color: "#667eea" },
-              { icon: "🌐", text: "TheGraph", color: "#f093fb" },
-              { icon: "💰", text: "DeFi Ready", color: "#48bb78" },
-              { icon: "🔒", text: "Web3 Secure", color: "#ed8936" }
-            ].map((tech, idx) => (
-              <div
-                key={idx}
-                style={{
-                  background: "rgba(255, 255, 255, 0.1)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  padding: "8px 16px",
-                  borderRadius: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  color: tech.color,
-                  backdropFilter: "blur(10px)",
-                  transition: "all 0.3s ease"
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.15)";
-                  e.target.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "rgba(255, 255, 255, 0.1)";
-                  e.target.style.transform = "translateY(0)";
-                }}
-              >
-                <span>{tech.icon}</span>
-                <span>{tech.text}</span>
-              </div>
-            ))}
           </div>
 
           {/* Bottom Section */}
           <div
             style={{
-              borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+              borderTop: "1px solid rgba(255, 255, 255, 0.15)",
               paddingTop: "24px",
               display: "flex",
               justifyContent: "space-between",
@@ -490,65 +394,82 @@ export default function SiteLayout({ children }) {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "20px",
+                gap: "24px",
                 flexWrap: "wrap"
               }}
             >
+              <div
+                style={{
+                  color: "#94a3b8",
+                  fontSize: "14px",
+                  fontWeight: "500"
+                }}
+              >
+                ©{new Date().getFullYear()} VidVerse. All rights reserved.
+              </div>
+
               <a
                 href="https://github.com/Salmandabbakuti"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  fontWeight: "600",
-                  fontSize: "16px",
+                  color: "#94a3b8",
                   textDecoration: "none",
+                  fontSize: "14px",
+                  fontWeight: "500",
                   transition: "all 0.3s ease"
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.color = "#667eea";
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0)";
+                  e.target.style.color = "#94a3b8";
                 }}
               >
-                ©{new Date().getFullYear()} VidVerse
+                🔗 Open Source
               </a>
-              <span
-                style={{
-                  fontSize: "14px",
-                  color: "#64748b",
-                  fontWeight: "500"
-                }}
-              >
-                Built with ❤️ for the decentralized future
-              </span>
             </div>
 
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "16px"
+                gap: "16px",
+                fontSize: "12px",
+                color: "#64748b"
               }}
             >
               <span
                 style={{
-                  fontSize: "14px",
+                  fontSize: "12px",
                   color: "#94a3b8",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  padding: "6px 12px",
-                  borderRadius: "12px",
+                  background: "rgba(255, 255, 255, 0.08)",
+                  padding: "4px 8px",
+                  borderRadius: "8px",
                   fontWeight: "600",
-                  border: "1px solid rgba(255, 255, 255, 0.2)"
+                  border: "1px solid rgba(255, 255, 255, 0.15)"
                 }}
               >
-                v0.4.2
+                v0.4.3
               </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px"
+                }}
+              >
+                <div
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    background: "#10b981",
+                    borderRadius: "50%",
+                    boxShadow: "0 0 8px #10b981"
+                  }}
+                />
+                <span>All systems operational</span>
+              </div>
             </div>
           </div>
         </div>
