@@ -322,7 +322,8 @@ a {
   }
 }
 
-.ant-btn-primary {
+.ant-btn-primary,
+.ant-input-search-button {
   background: var(--primary-gradient) !important;
   border: none !important;
   color: #fff !important;

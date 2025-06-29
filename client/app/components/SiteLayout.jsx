@@ -313,7 +313,7 @@ export default function SiteLayout({ children }) {
           <div
             style={{
               textAlign: "center",
-              marginBottom: "40px",
+              marginBottom: "2px",
               padding: "24px 0"
             }}
           >
@@ -339,7 +339,7 @@ export default function SiteLayout({ children }) {
             >
               {[
                 { name: "NERO Chain", color: "#667eea", icon: "⚡" },
-                { name: "IPFS", color: "#4facfe", icon: "🔗" },
+                { name: "Pinata", color: "#4facfe", icon: "🔗" },
                 { name: "TheGraph", color: "#f093fb", icon: "🌐" },
                 { name: "Reown AppKit", color: "#48bb78", icon: "🔐" },
                 { name: "Next.js", color: "#000000", icon: "▲" }

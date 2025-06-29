@@ -448,8 +448,7 @@ export default function Home() {
                 {
                   number: "~5TB",
                   label: "IPFS Storage",
-                  icon: "💾",
-                  icon: "�",
+                  icon: "🗄️",
                   description: "Decentralized Data"
                 }
               ].map((stat, index) => (
