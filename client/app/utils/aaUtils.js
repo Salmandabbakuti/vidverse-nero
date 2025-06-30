@@ -91,21 +91,8 @@ export const executeOperation = async (
 
   // Send the user operation
   console.log("Sending UserOperation to bundler");
-  const res = await client.sendUserOperation(userOp);
+  const userOpTx = await client.sendUserOperation(userOp);
 
-  console.log("UserOperation sent with hash:", res.userOpHash);
-
-  // Wait for the transaction to be included
-  const receipt = await res.wait();
-
-  // Log transaction hash when available
-  if (receipt && receipt.transactionHash) {
-    console.log("Transaction mined:", receipt.transactionHash);
-  }
-  // Return operation results
-  return {
-    userOpHash: res.userOpHash,
-    transactionHash: receipt?.transactionHash || "",
-    receipt: receipt
-  };
+  console.log("UserOperation sent with hash:", userOpTx.userOpHash);
+  return userOpTx;
 };

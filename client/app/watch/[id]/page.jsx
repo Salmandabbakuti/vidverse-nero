@@ -26,12 +26,16 @@ import {
   DollarCircleOutlined,
   CommentOutlined,
   ExportOutlined,
-  LikeFilled
+  LikeFilled,
+  SyncOutlined
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { toEther } from "thirdweb";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
+import {
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitState
+} from "@reown/appkit/react";
+import { BrowserProvider, formatEther } from "ethers";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -47,11 +51,14 @@ import {
   ellipsisString,
   contract,
   subgraphClient as client,
-  thirdwebClient,
   GET_VIDEOS_QUERY,
   GET_VIDEO_QUERY
 } from "@/app/utils";
-import { EXPLORER_URL, VIDVERSE_CONTRACT_ADDRESS } from "@/app/utils/constants";
+import {
+  EXPLORER_URL,
+  VIDVERSE_CONTRACT_ADDRESS,
+  IPFS_GATEWAY_URL
+} from "@/app/utils/constants";
 import { executeOperation, getAAWalletAddress } from "@/app/utils/aaUtils";
 
 const { Title, Text, Paragraph } = Typography;
@@ -67,9 +74,9 @@ export default function VideoPage({ params }) {
   const [isLiking, setIsLiking] = useState(false);
 
   const { id } = use(params);
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+  const { address: account, isConnected } = useAppKitAccount();
+  const { selectedNetworkId } = useAppKitState();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const router = useRouter();
 
@@ -126,50 +133,63 @@ export default function VideoPage({ params }) {
       });
   };
 
-  const resolveAAWalletAddress = async () => {
+  const handleRefresh = async () => {
+    console.log("Refreshing video data...");
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      fetchVideo();
+      if (aaWalletAddress) {
+        await isVideoLikedByUser();
+      }
+    } catch (error) {
+      console.error("Error refreshing video:", error);
+      message.error("Failed to refresh video. Please try again.");
+    }
+  };
+
+  const resolveAAWalletAddress = async () => {
+    if (!account || !walletProvider) return;
+    try {
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const aaWalletAddress = await getAAWalletAddress(signer);
       console.log(
         `Resolved AA Wallet Address for account ${account}: ${aaWalletAddress}`
       );
-      setAAWalletAddress(aaWalletAddress);
+      setAAWalletAddress(aaWalletAddress?.toLowerCase());
     } catch (err) {
       console.error("Error resolving AA Wallet Address:", err);
     }
   };
 
   const handleToggleLikeVideo = async () => {
-    if (!account) return message.error("Please connect your wallet first");
+    if (!isConnected) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     setIsLiking(true);
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const toggleLikeTx = await executeOperation(
         signer,
         contract.target,
         "toggleLikeVideo",
         [id]
       );
-
-      console.log("Transaction successful:", toggleLikeTx);
+      console.log("toggleLike tx submitted:", toggleLikeTx);
       // Update local state to reflect the like
+      setIsLiking(false);
       setIsVideoLiked((prev) => !prev);
+      setVideo((prev) => ({
+        ...prev,
+        likeCount: isVideoLiked ? prev.likeCount - 1 : prev.likeCount + 1
+      }));
       message.success(
         `Video ${isVideoLiked ? "unliked" : "liked"} successfully!`
       );
     } catch (error) {
+      setIsLiking(false);
       console.error("Error liking video:", error);
       message.error("Failed to like video. Please try again.");
-    } finally {
-      setIsLiking(false);
     }
   };
 
@@ -188,17 +208,17 @@ export default function VideoPage({ params }) {
 
   const isVideoOwner = useMemo(() => {
     if (!video || !aaWalletAddress) return false;
-    return video?.channel?.owner === aaWalletAddress?.toLowerCase();
+    return video?.channel?.owner === aaWalletAddress;
   }, [video, aaWalletAddress]);
 
   useEffect(() => {
     fetchVideo();
     fetchRelatedVideos(id);
-    if (account) {
+    if (account && walletProvider) {
       resolveAAWalletAddress();
       isVideoLikedByUser();
     }
-  }, [account]);
+  }, [account, walletProvider]);
 
   if (!loading && (!video?.videoHash || video?.isRemoved)) {
     return (
@@ -273,7 +293,7 @@ export default function VideoPage({ params }) {
                   type: "video",
                   sources: [
                     {
-                      src: `https://ipfs.io/ipfs/${video?.videoHash?.trim()}`,
+                      src: `${IPFS_GATEWAY_URL}/ipfs/${video?.videoHash?.trim()}`,
                       type: "video/mp4"
                     }
                   ]
@@ -309,10 +329,7 @@ export default function VideoPage({ params }) {
                   >
                     {video?.likeCount || 0}
                   </Button>
-                  <TipModal
-                    videoData={video}
-                    aaWalletAddress={aaWalletAddress}
-                  />
+                  <TipModal videoData={video} />
                   <Button
                     type="text"
                     icon={<ShareAltOutlined />}
@@ -337,7 +354,7 @@ export default function VideoPage({ params }) {
                     }}
                   />
                   <a
-                    href={`https://ipfs.io/ipfs/${video?.videoHash?.trim()}`}
+                    href={`${IPFS_GATEWAY_URL}/ipfs/${video?.videoHash?.trim()}`}
                     target="_blank"
                     rel="noreferrer"
                     download
@@ -346,6 +363,14 @@ export default function VideoPage({ params }) {
                   </a>
                   {isVideoOwner && <VideoEditDrawer video={video} />}
                   <ReportVideoModal videoId={video?.id} />
+                  <Button
+                    type="text"
+                    shape="circle"
+                    loading={loading}
+                    icon={<SyncOutlined spin={loading} />}
+                    onClick={handleRefresh}
+                    title="Refresh"
+                  />
                 </Space>
               </Space>
 
@@ -499,7 +524,7 @@ export default function VideoPage({ params }) {
                                 </a>
                               </Space>
                             }
-                            description={`Tipped ${toEther(
+                            description={`Tipped ${formatEther(
                               item?.amount || 0n
                             )} NERO`}
                           />

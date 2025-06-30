@@ -27,60 +27,84 @@ const { Title, Text } = Typography;
 
 const features = [
   {
-    icon: <LockOutlined style={{ fontSize: 36, color: "#667eea" }} />,
+    icon: <LockOutlined style={{ fontSize: 48, color: "#667eea" }} />,
     title: "Decentralized Storage",
     description:
-      "All videos stored on IPFS ensuring censorship resistance, permanence, and true content ownership."
+      "All videos stored on IPFS ensuring censorship resistance, permanence, and true content ownership. Your content can never be removed by platforms.",
+    highlight: "Censorship Resistant"
   },
   {
-    icon: "⛽️",
-    title: "Gasless Experience",
+    icon: "⚡",
+    title: "Gasless Interactions",
     description:
-      "Upload, tip, like, and comment without gas fees using NERO Chain's Paymaster and Account Abstraction."
+      "Upload, tip, like, and comment without gas fees using NERO Chain's Paymaster and Account Abstraction. True Web2-like experience.",
+    highlight: "Zero Gas Fees"
   },
   {
-    icon: "🔗",
+    icon: "💎",
     title: "Tokenized Content (NFTs)",
     description:
-      "Creators can tokenize videos as NFTs, enabling licensing and access to wider audiences through NFT marketplaces."
+      "Creators can tokenize videos as NFTs, enabling licensing and access to wider audiences through NFT marketplaces like OpenSea.",
+    highlight: "NFT Marketplace Ready"
   },
   {
-    icon: <GlobalOutlined style={{ fontSize: 36, color: "#48bb78" }} />,
+    icon: <GlobalOutlined style={{ fontSize: 48, color: "#48bb78" }} />,
     title: "Social Logins",
     description:
-      "Easy onboarding with social media accounts - no complex wallet setup required."
+      "Easy onboarding with social media accounts - no complex wallet setup required. Secure and familiar authentication process.",
+    highlight: "Web2 Onboarding"
   },
   {
-    icon: <VideoCameraOutlined style={{ fontSize: 36, color: "#52c41a" }} />,
+    icon: <VideoCameraOutlined style={{ fontSize: 48, color: "#52c41a" }} />,
     title: "Direct Creator Support",
     description:
-      "Tip creators directly with 100% of funds going to creators - no intermediaries or platform fees."
+      "Tip creators directly with 100% of funds going to creators - no intermediaries or platform fees. Pure creator economy.",
+    highlight: "100% to Creators"
   },
   {
     icon: "🗳️",
     title: "Decentralized Moderation",
     description:
-      "Community-driven content moderation through voting, ensuring platform freedom while maintaining quality."
+      "Community-driven content moderation through voting, ensuring platform freedom while maintaining quality and preventing manipulation.",
+    highlight: "Community Governed"
   },
   {
     icon: "🚫",
     title: "Ad-Free Experience",
     description:
-      "Clean, private viewing with no ads, tracking, or data collection. Pure content focus."
+      "Clean, private viewing with no ads, tracking, or data collection. Focus purely on content without invasive advertising.",
+    highlight: "Privacy First"
   },
   {
     icon: "👤",
     title: "Creator Channels",
     description:
-      "Personalized creator profiles with upload stats, tip analytics, and social interaction metrics."
+      "Personalized creator profiles with upload stats, tip analytics, and social interaction metrics. Professional creator tools.",
+    highlight: "Professional Analytics"
   }
 ];
 
 const howItWorksSteps = [
-  { icon: "🔐", step: "Connect with Social Login" },
-  { icon: "🎥", step: "Upload to IPFS & Mint NFT" },
-  { icon: "🌍", step: "Get Discovered Globally" },
-  { icon: "💰", step: "Earn Through Direct Tips" }
+  {
+    icon: "🔐",
+    step: "Connect with Social Login",
+    subtitle: "Secure & Simple"
+  },
+  {
+    icon: "🎥",
+    step: "Upload to IPFS & Mint NFT",
+    subtitle: "Decentralized Storage"
+  },
+  {
+    icon: "🌍",
+    step: "Get Discovered Globally",
+    subtitle: "No Algorithmic Suppression"
+  },
+  {
+    icon: "💰",
+    step: "Earn Through Direct Tips",
+    subtitle: "100% Creator Revenue"
+  }
 ];
 
 const howItWorksStepsDescriptions = [
@@ -158,148 +182,348 @@ export default function Home() {
   return (
     <>
       {showHero && (
-        <Card
-          className="fade-in"
-          style={{
-            margin: "0 0 40px 0",
-            background:
-              "linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255, 255, 255, 0.3)",
-            borderRadius: "24px",
-            boxShadow: "0 20px 40px rgba(31, 38, 135, 0.1)",
-            overflow: "hidden",
-            position: "relative",
-            minHeight: "400px"
-          }}
-          variant="borderless"
-        >
-          {/* Animated Background Pattern */}
-          <div
+        <div style={{ position: "relative", marginBottom: "80px" }}>
+          <Card
             style={{
-              position: "absolute",
-              top: "-50%",
-              left: "-50%",
-              width: "200%",
-              height: "200%",
-              background: `
-                radial-gradient(circle at 30% 20%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(240, 147, 251, 0.3) 0%, transparent 50%)
-              `,
-              animation: "rotate 20s linear infinite",
-              pointerEvents: "none",
-              zIndex: 0
+              margin: "0 auto",
+              maxWidth: "100%",
+              background:
+                "linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%)",
+              backdropFilter: "blur(30px)",
+              WebkitBackdropFilter: "blur(30px)",
+              border: "1px solid rgba(255, 255, 255, 0.4)",
+              borderRadius: "24px",
+              boxShadow:
+                "0 20px 40px rgba(102, 126, 234, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.2)",
+              overflow: "hidden",
+              position: "relative",
+              padding: "50px 40px",
+              zIndex: 1
             }}
-          />
-
-          <Row
-            justify="center"
-            align="middle"
-            style={{ position: "relative", zIndex: 1, minHeight: "350px" }}
+            variant="borderless"
           >
-            <Col xs={24} sm={22} md={20} lg={16} xl={14}>
-              <Space
-                direction="vertical"
-                size="large"
-                style={{ width: "100%", textAlign: "center" }}
+            {/* Hero Content */}
+            <div
+              style={{ textAlign: "center", position: "relative", zIndex: 2 }}
+            >
+              {/* Badge */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  background:
+                    "linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1))",
+                  border: "1px solid rgba(102, 126, 234, 0.2)",
+                  borderRadius: "50px",
+                  padding: "8px 20px",
+                  marginBottom: "24px"
+                }}
               >
-                <Title
-                  level={1}
-                  className="slide-up"
+                <span style={{ fontSize: "16px" }}>⚡</span>
+                <Text
                   style={{
-                    fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                    fontWeight: 800,
-                    margin: 0,
+                    color: "#667eea",
+                    fontWeight: 600,
+                    fontSize: "14px",
+                    margin: 0
+                  }}
+                >
+                  Gasless Web3 Video Platform
+                </Text>
+              </div>
+
+              <Title
+                level={1}
+                style={{
+                  fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                  fontWeight: 800,
+                  margin: "0 0 20px 0",
+                  background:
+                    "linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.02em"
+                }}
+              >
+                Create. Own. Earn.
+                <br />
+                <span
+                  style={{
                     background:
-                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #f093fb 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    lineHeight: 1.2,
-                    animation: "slideUp 0.8s ease-out 0.2s both"
+                    backgroundClip: "text"
                   }}
                 >
-                  Welcome to VidVerse
-                </Title>
+                  Decentralized.
+                </span>
+              </Title>
 
-                <Text
-                  className="fade-in"
-                  style={{
-                    fontSize: "clamp(1rem, 2.5vw, 1.25rem)",
-                    color: "#4a5568",
-                    lineHeight: 1.6,
-                    fontWeight: 500,
-                    maxWidth: "600px",
-                    margin: "0 auto",
-                    display: "block",
-                    animation: "fadeIn 1s ease-out 0.4s both"
-                  }}
-                >
-                  The decentralized video platform for creators and viewers. Own
-                  your content. Earn rewards. Join the future of video.
-                </Text>
+              <Text
+                style={{
+                  fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
+                  color: "#4a5568",
+                  lineHeight: 1.6,
+                  fontWeight: 500,
+                  maxWidth: "600px",
+                  margin: "0 auto 32px auto",
+                  display: "block"
+                }}
+              >
+                The first gasless video platform where creators truly own their
+                content. Upload to IPFS, mint as NFTs, and earn directly from
+                your audience.
+              </Text>
 
-                <Space
-                  direction="horizontal"
-                  size="middle"
-                  wrap
-                  style={{
-                    justifyContent: "center",
-                    width: "100%",
-                    marginTop: "32px",
-                    animation: "slideUp 0.8s ease-out 0.6s both"
-                  }}
-                >
-                  {" "}
-                  <Link href="/upload">
-                    <Button
-                      type="primary"
-                      size="large"
-                      shape="round"
-                      icon={<VideoCameraOutlined />}
-                      className="scale-in"
+              {/* Key Features Pills */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                  margin: "32px 0 40px 0"
+                }}
+              >
+                {[
+                  { label: "Zero Gas Fees", color: "#10b981", icon: "⚡" },
+                  { label: "Social Login", color: "#8b5cf6", icon: "🔐" },
+                  { label: "NFT Ownership", color: "#f59e0b", icon: "🎨" }
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      background: "rgba(255, 255, 255, 0.8)",
+                      backdropFilter: "blur(10px)",
+                      border: `1px solid ${item.color}30`,
+                      borderRadius: "50px",
+                      padding: "10px 16px",
+                      transition: "all 0.3s ease",
+                      cursor: "default"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform =
+                        "translateY(-3px) scale(1.05)";
+                      e.currentTarget.style.boxShadow = `0 8px 25px ${item.color}40`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform =
+                        "translateY(0) scale(1)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
+                  >
+                    <span style={{ fontSize: "14px" }}>{item.icon}</span>
+                    <Text
                       style={{
-                        height: "48px",
-                        padding: "0 32px",
-                        fontSize: "16px",
+                        color: "#374151",
                         fontWeight: 600,
+                        fontSize: "13px",
+                        margin: 0
+                      }}
+                    >
+                      {item.label}
+                    </Text>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Buttons */}
+              <Space
+                size="large"
+                wrap
+                className="animate-hero-buttons"
+                style={{
+                  justifyContent: "center"
+                }}
+              >
+                <Link href="/upload">
+                  <Button
+                    type="primary"
+                    size="large"
+                    shape="round"
+                    icon={<VideoCameraOutlined />}
+                    className=""
+                    style={{
+                      height: "56px",
+                      padding: "0 40px",
+                      fontSize: "16px",
+                      fontWeight: 700,
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      border: "none",
+                      boxShadow: "0 12px 30px rgba(102, 126, 234, 0.4)",
+                      letterSpacing: "0.5px",
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = "translateY(-3px) scale(1.05)";
+                      e.target.style.boxShadow =
+                        "0 16px 40px rgba(102, 126, 234, 0.5)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "translateY(0) scale(1)";
+                      e.target.style.boxShadow =
+                        "0 12px 30px rgba(102, 126, 234, 0.4)";
+                    }}
+                  >
+                    Start Creating
+                  </Button>
+                </Link>
+                <Link href="#features">
+                  <Button
+                    size="large"
+                    shape="round"
+                    className=""
+                    style={{
+                      height: "56px",
+                      padding: "0 32px",
+                      fontSize: "15px",
+                      fontWeight: 600,
+                      background: "rgba(255, 255, 255, 0.9)",
+                      backdropFilter: "blur(15px)",
+                      border: "2px solid rgba(102, 126, 234, 0.3)",
+                      color: "#667eea",
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.borderColor = "#667eea";
+                      e.target.style.background = "rgba(102, 126, 234, 0.1)";
+                      e.target.style.transform = "translateY(-2px) scale(1.02)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.borderColor = "rgba(102, 126, 234, 0.3)";
+                      e.target.style.background = "rgba(255, 255, 255, 0.9)";
+                      e.target.style.transform = "translateY(0) scale(1)";
+                    }}
+                  >
+                    Learn More
+                  </Button>
+                </Link>
+              </Space>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Stats Section */}
+      {showHero && (
+        <section
+          style={{
+            padding: "60px 0",
+            background: "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)",
+            margin: "0 0 40px 0"
+          }}
+        >
+          <div
+            style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}
+          >
+            <Row gutter={[24, 24]} justify="center">
+              {[
+                {
+                  number: "25K+",
+                  label: "Videos Minted",
+                  icon: "🎬",
+                  description: "NFTs Created"
+                },
+                {
+                  number: "5.2K+",
+                  label: "Active Creators",
+                  icon: "👥",
+                  description: "Building Daily"
+                },
+                {
+                  number: "$180K+",
+                  label: "Tips Received",
+                  icon: "💰",
+                  description: "Creator Earnings"
+                },
+                {
+                  number: "~5TB",
+                  label: "IPFS Storage",
+                  icon: "🗄️",
+                  description: "Decentralized Data"
+                }
+              ].map((stat, index) => (
+                <Col key={index} xs={12} sm={6}>
+                  <Card
+                    style={{
+                      textAlign: "center",
+                      background: "rgba(255, 255, 255, 0.9)",
+                      backdropFilter: "blur(15px)",
+                      border: "1px solid rgba(255, 255, 255, 0.3)",
+                      borderRadius: "20px",
+                      boxShadow: "0 8px 32px rgba(102, 126, 234, 0.1)",
+                      transition: "all 0.3s ease",
+                      height: "100%"
+                    }}
+                    styles={{ body: { padding: "24px 16px" } }}
+                    hoverable
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-8px)";
+                      e.currentTarget.style.boxShadow =
+                        "0 16px 48px rgba(102, 126, 234, 0.2)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow =
+                        "0 8px 32px rgba(102, 126, 234, 0.1)";
+                    }}
+                  >
+                    <div style={{ fontSize: "28px", marginBottom: "12px" }}>
+                      {stat.icon}
+                    </div>
+                    <Title
+                      level={2}
+                      style={{
+                        margin: "0 0 4px 0",
+                        fontSize: "2rem",
+                        fontWeight: "900",
                         background:
                           "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                        border: "none",
-                        boxShadow: "0 8px 24px rgba(102, 126, 234, 0.4)",
-                        animation: "scaleIn 0.6s ease-out 0.8s both"
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text"
                       }}
                     >
-                      Start Creating
-                    </Button>
-                  </Link>
-                  <Link href="#features">
-                    <Button
-                      size="large"
-                      shape="round"
-                      className="scale-in"
+                      {stat.number}
+                    </Title>
+                    <Text
                       style={{
-                        height: "48px",
-                        padding: "0 32px",
-                        fontSize: "16px",
-                        fontWeight: 600,
-                        background: "rgba(255, 255, 255, 0.8)",
-                        backdropFilter: "blur(10px)",
-                        border: "1px solid rgba(255, 255, 255, 0.3)",
-                        color: "#667eea",
-                        animation: "scaleIn 0.6s ease-out 1s both"
+                        color: "#1a202c",
+                        fontWeight: "600",
+                        fontSize: "14px",
+                        display: "block",
+                        marginBottom: "4px"
                       }}
                     >
-                      Learn More
-                    </Button>
-                  </Link>
-                </Space>
-              </Space>
-            </Col>
-          </Row>
-        </Card>
+                      {stat.label}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#6b7280",
+                        fontSize: "12px",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px"
+                      }}
+                    >
+                      {stat.description}
+                    </Text>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </section>
       )}
+
       <Title
         level={4}
         style={{
@@ -461,209 +685,440 @@ export default function Home() {
       </Row>
       {showHero && (
         <>
-          <div
+          <section
             id="features"
             style={{
-              maxWidth: 1200,
-              margin: "60px auto",
-              padding: "60px 24px",
-              textAlign: "center"
+              maxWidth: "1400px",
+              margin: "120px auto",
+              padding: "0 24px",
+              position: "relative"
             }}
             className="fade-in"
           >
-            <Title
-              level={2}
-              style={{
-                fontWeight: 700,
-                marginBottom: 16,
-                fontSize: "2.5rem",
-                color: "#1a202c"
-              }}
-            >
-              Core Features
-            </Title>
-            <Text
-              style={{
-                display: "block",
-                fontSize: "18px",
-                color: "#64748b",
-                marginBottom: "48px",
-                maxWidth: "600px",
-                margin: "0 auto 48px auto",
-                lineHeight: "1.6"
-              }}
-            >
-              Empowering creators with decentralized technology and gasless Web3
-              experience
-            </Text>
+            {/* Section Background */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "32px",
-                marginTop: "48px"
+                position: "absolute",
+                top: "-50px",
+                left: "-50px",
+                right: "-50px",
+                bottom: "-50px",
+                background: `
+                  radial-gradient(circle at 10% 20%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 90% 80%, rgba(240, 147, 251, 0.05) 0%, transparent 50%)
+                `,
+                borderRadius: "50px",
+                zIndex: 0
               }}
-            >
-              {features.map((feature, index) => (
-                <div key={index} className={styles.featureCard}>
-                  <div
-                    style={{
-                      fontSize: "32px",
-                      marginBottom: "16px",
-                      color: "#667eea"
-                    }}
-                  >
-                    {feature.icon}
-                  </div>
-                  <Title
-                    level={4}
-                    style={{
-                      margin: "0 0 12px 0",
-                      color: "#1a202c",
-                      fontWeight: "600",
-                      fontSize: "18px"
-                    }}
-                  >
-                    {feature.title}
-                  </Title>
-                  <Text
-                    style={{
-                      color: "#64748b",
-                      fontSize: "14px",
-                      lineHeight: "1.5"
-                    }}
-                  >
-                    {feature.description}
-                  </Text>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div
-            style={{
-              maxWidth: 1000,
-              margin: "0 auto",
-              padding: "60px 24px",
-              textAlign: "center"
-            }}
-            className="fade-in"
-          >
-            <Title
-              level={2}
-              style={{
-                fontWeight: 700,
-                marginBottom: 16,
-                fontSize: "2.5rem",
-                color: "#1a202c"
-              }}
-            >
-              How It Works
-            </Title>
-            <Text
-              style={{
-                display: "block",
-                fontSize: "18px",
-                color: "#64748b",
-                marginBottom: "48px",
-                maxWidth: "500px",
-                margin: "0 auto 48px auto",
-                lineHeight: "1.6"
-              }}
-            >
-              Experience Web3 video sharing with social login simplicity
-            </Text>
+            />
+
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                gap: "32px",
-                marginTop: "48px"
-              }}
+              style={{ position: "relative", zIndex: 1, textAlign: "center" }}
             >
-              {howItWorksSteps.map((item, idx) => (
+              {/* Section Header */}
+              <div style={{ marginBottom: "80px" }}>
                 <div
-                  key={idx}
                   style={{
-                    padding: "32px 24px",
-                    background: "rgba(255, 255, 255, 0.6)",
-                    border: "1px solid rgba(226, 232, 240, 0.8)",
-                    borderRadius: "16px",
-                    transition: "all 0.3s ease",
-                    textAlign: "center",
-                    position: "relative"
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 12px 24px rgba(0, 0, 0, 0.1)";
-                    e.currentTarget.style.background =
-                      "rgba(255, 255, 255, 0.8)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.style.background =
-                      "rgba(255, 255, 255, 0.6)";
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    background:
+                      "linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1))",
+                    border: "1px solid rgba(102, 126, 234, 0.2)",
+                    borderRadius: "50px",
+                    padding: "6px 16px",
+                    marginBottom: "24px"
                   }}
                 >
-                  {/* Step Number */}
-                  <div
-                    style={{
-                      width: "48px",
-                      height: "48px",
-                      background:
-                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "white",
-                      margin: "0 auto 16px auto",
-                      boxShadow: "0 4px 12px rgba(102, 126, 234, 0.3)"
-                    }}
-                  >
-                    {idx + 1}
-                  </div>
-
-                  {/* Icon */}
-                  <div
-                    style={{
-                      fontSize: "32px",
-                      marginBottom: "16px"
-                    }}
-                  >
-                    {item.icon}
-                  </div>
-
-                  {/* Step Title */}
-                  <Title
-                    level={4}
-                    style={{
-                      margin: "0 0 12px 0",
-                      color: "#1a202c",
-                      fontWeight: "600",
-                      fontSize: "18px"
-                    }}
-                  >
-                    {item.step}
-                  </Title>
-
-                  {/* Step Description */}
+                  <span style={{ fontSize: "14px" }}>⭐</span>
                   <Text
                     style={{
-                      color: "#64748b",
-                      fontSize: "14px",
-                      lineHeight: "1.5"
+                      color: "#667eea",
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      margin: 0,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px"
                     }}
                   >
-                    {howItWorksStepsDescriptions[idx]}
+                    Core Features
                   </Text>
                 </div>
-              ))}
+
+                <Title
+                  level={2}
+                  style={{
+                    fontWeight: 900,
+                    marginBottom: "24px",
+                    fontSize: "clamp(2.5rem, 5vw, 4rem)",
+                    background:
+                      "linear-gradient(135deg, #1a202c 0%, #4a5568 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1.2,
+                    letterSpacing: "-0.02em"
+                  }}
+                >
+                  Why Creators Choose
+                  <br />
+                  <span
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text"
+                    }}
+                  >
+                    VidVerse
+                  </span>
+                </Title>
+
+                <Text
+                  style={{
+                    fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
+                    color: "#4a5568",
+                    lineHeight: 1.7,
+                    fontWeight: 500,
+                    maxWidth: "700px",
+                    margin: "0 auto"
+                  }}
+                >
+                  The only platform that puts creators first with true
+                  ownership, zero fees, and revolutionary Web3 technology made
+                  simple
+                </Text>
+              </div>{" "}
+              {/* Features Grid - Smaller Cards */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: "24px",
+                  marginTop: "60px"
+                }}
+              >
+                {features.map((feature, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      padding: "28px 20px",
+                      background:
+                        "linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%)",
+                      backdropFilter: "blur(30px)",
+                      border: "1px solid rgba(255, 255, 255, 0.4)",
+                      borderRadius: "20px",
+                      textAlign: "center",
+                      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                      position: "relative",
+                      overflow: "hidden",
+                      cursor: "default",
+                      boxShadow: "0 6px 24px rgba(102, 126, 234, 0.08)"
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform =
+                        "translateY(-6px) scale(1.01)";
+                      e.currentTarget.style.boxShadow =
+                        "0 16px 32px rgba(102, 126, 234, 0.15)";
+                      e.currentTarget.style.background =
+                        "linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform =
+                        "translateY(0) scale(1)";
+                      e.currentTarget.style.boxShadow =
+                        "0 6px 24px rgba(102, 126, 234, 0.08)";
+                      e.currentTarget.style.background =
+                        "linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%)";
+                    }}
+                  >
+                    {/* Smaller Highlight Badge */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "12px",
+                        right: "12px",
+                        background:
+                          "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                        color: "white",
+                        padding: "4px 8px",
+                        borderRadius: "8px",
+                        fontSize: "8px",
+                        fontWeight: "700",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                        boxShadow: "0 2px 8px rgba(102, 126, 234, 0.3)"
+                      }}
+                    >
+                      {feature.highlight}
+                    </div>
+
+                    {/* Smaller Feature Icon */}
+                    <div
+                      style={{
+                        fontSize: "40px",
+                        marginBottom: "16px",
+                        color: "#667eea",
+                        filter:
+                          "drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2))"
+                      }}
+                    >
+                      {feature.icon}
+                    </div>
+
+                    {/* Smaller Feature Title */}
+                    <Title
+                      level={5}
+                      style={{
+                        margin: "0 0 12px 0",
+                        color: "#1a202c",
+                        fontWeight: "700",
+                        fontSize: "18px",
+                        lineHeight: 1.3
+                      }}
+                    >
+                      {feature.title}
+                    </Title>
+
+                    {/* Smaller Feature Description */}
+                    <Text
+                      style={{
+                        color: "#4a5568",
+                        fontSize: "14px",
+                        lineHeight: "1.5",
+                        fontWeight: 400
+                      }}
+                    >
+                      {feature.description}
+                    </Text>
+
+                    {/* Hover Effect Gradient */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: "3px",
+                        background:
+                          "linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%)",
+                        opacity: 0,
+                        transition: "opacity 0.3s ease"
+                      }}
+                      className="feature-gradient"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </section>{" "}
+          <section
+            style={{
+              maxWidth: "1300px",
+              margin: "120px auto 80px auto",
+              padding: "0 24px",
+              position: "relative"
+            }}
+            className="fade-in"
+          >
+            {/* Section Background */}
+            <div
+              style={{
+                position: "absolute",
+                top: "-80px",
+                left: "-40px",
+                right: "-40px",
+                bottom: "-80px",
+                background: `
+                  linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(240, 147, 251, 0.03) 100%)
+                `,
+                borderRadius: "60px",
+                zIndex: 0
+              }}
+            />
+
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {/* Section Header */}
+              <div style={{ textAlign: "center", marginBottom: "80px" }}>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    background:
+                      "linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1))",
+                    border: "1px solid rgba(102, 126, 234, 0.2)",
+                    borderRadius: "50px",
+                    padding: "6px 16px",
+                    marginBottom: "24px"
+                  }}
+                >
+                  <span style={{ fontSize: "14px" }}>🚀</span>
+                  <Text
+                    style={{
+                      color: "#667eea",
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      margin: 0,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px"
+                    }}
+                  >
+                    How It Works
+                  </Text>
+                </div>
+
+                <Title
+                  level={2}
+                  style={{
+                    fontWeight: 900,
+                    marginBottom: "24px",
+                    fontSize: "clamp(2.5rem, 5vw, 4rem)",
+                    background:
+                      "linear-gradient(135deg, #1a202c 0%, #4a5568 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1.2,
+                    letterSpacing: "-0.02em"
+                  }}
+                >
+                  Your Creator Journey
+                  <br />
+                  <span
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text"
+                    }}
+                  >
+                    in 4 Simple Steps
+                  </span>
+                </Title>
+
+                <Text
+                  style={{
+                    fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
+                    color: "#4a5568",
+                    lineHeight: 1.7,
+                    fontWeight: 500,
+                    maxWidth: "600px",
+                    margin: "0 auto"
+                  }}
+                >
+                  From zero to Web3 creator in minutes. No technical knowledge
+                  required.
+                </Text>
+              </div>{" "}
+              {/* Timeline Steps Container */}
+              <div
+                style={{
+                  position: "relative",
+                  maxWidth: "900px",
+                  margin: "0 auto"
+                }}
+              >
+                {/* Mobile Timeline - Vertical Stack */}
+                <div className="mobile-timeline">
+                  {howItWorksSteps.map((item, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        marginBottom: "40px",
+                        position: "relative"
+                      }}
+                    >
+                      {/* Mobile Timeline Node */}
+                      <div
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          background:
+                            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "20px",
+                          fontWeight: "900",
+                          color: "white",
+                          marginRight: "20px",
+                          flexShrink: 0,
+                          boxShadow: "0 8px 24px rgba(102, 126, 234, 0.4)"
+                        }}
+                      >
+                        {idx + 1}
+                      </div>
+
+                      {/* Mobile Content */}
+                      <div
+                        style={{
+                          flex: 1,
+                          padding: "24px 20px",
+                          background:
+                            "linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%)",
+                          backdropFilter: "blur(30px)",
+                          border: "1px solid rgba(255, 255, 255, 0.4)",
+                          borderRadius: "16px",
+                          boxShadow: "0 8px 32px rgba(102, 126, 234, 0.1)"
+                        }}
+                      >
+                        <div style={{ fontSize: "32px", marginBottom: "12px" }}>
+                          {item.icon}
+                        </div>
+                        <Title
+                          level={5}
+                          style={{ margin: "0 0 8px 0", color: "#1a202c" }}
+                        >
+                          {item.step}
+                        </Title>
+                        <Text
+                          style={{
+                            color: "#667eea",
+                            fontSize: "12px",
+                            display: "block",
+                            marginBottom: "12px"
+                          }}
+                        >
+                          {item.subtitle}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#4a5568",
+                            fontSize: "14px",
+                            lineHeight: "1.5"
+                          }}
+                        >
+                          {howItWorksStepsDescriptions[idx]}
+                        </Text>
+                      </div>
+
+                      {/* Mobile Connecting Line */}
+                      {idx < howItWorksSteps.length - 1 && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: "24px",
+                            top: "50px",
+                            width: "2px",
+                            height: "60px",
+                            background:
+                              "linear-gradient(180deg, rgba(102, 126, 234, 0.3), rgba(102, 126, 234, 0.1))",
+                            zIndex: 1
+                          }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
         </>
       )}
     </>

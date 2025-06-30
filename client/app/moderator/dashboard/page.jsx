@@ -19,8 +19,12 @@ import {
   SyncOutlined,
   FileExclamationTwoTone
 } from "@ant-design/icons";
-import { useActiveAccount, useActiveWalletChain } from "thirdweb/react";
-import { ethers6Adapter } from "thirdweb/adapters/ethers6";
+import {
+  useAppKitProvider,
+  useAppKitAccount,
+  useAppKitState
+} from "@reown/appkit/react";
+import { BrowserProvider } from "ethers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
@@ -28,9 +32,9 @@ import {
   subgraphClient as client,
   GET_VIDEOS_WITH_REPORTS,
   contract,
-  thirdwebClient,
   ellipsisString
 } from "@/app/utils";
+import { IPFS_GATEWAY_URL } from "@/app/utils/constants";
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -43,9 +47,9 @@ export default function ModeratorDashboard() {
   const [loading, setLoading] = useState(false);
   const [moderator, setModerator] = useState("");
 
-  const accountObj = useActiveAccount() || {};
-  const account = accountObj?.address?.toLowerCase();
-  const activeChain = useActiveWalletChain();
+  const { address: account, isConnected } = useAppKitAccount();
+  const { selectedNetworkId } = useAppKitState();
+  const { walletProvider } = useAppKitProvider("eip155");
 
   const fetchVideosWithReports = async (searchQuery = "") => {
     // Reset state to avoid stale data
@@ -58,12 +62,12 @@ export default function ModeratorDashboard() {
       const moderator = await contract.moderator();
       console.log("Current moderator:", moderator);
       setModerator(moderator);
-      // if (account !== moderator?.toLowerCase()) {
-      //   message.error(
-      //     "Only moderator can access this dashboard. Please connect as moderator wallet."
-      //   );
-      //   return;
-      // }
+      if (account?.toLowerCase() !== moderator?.toLowerCase()) {
+        message.error(
+          "Only moderator can access this dashboard. Please connect as moderator wallet."
+        );
+        return;
+      }
       console.log("Fetching videos with reports...");
       const data = await client.request(GET_VIDEOS_WITH_REPORTS, {
         first: 100,
@@ -85,7 +89,7 @@ export default function ModeratorDashboard() {
                 ]
               : [])
           ]
-        }, // Only fetch videos with reports, also you can add more filters here e.g isFlagged: true
+        },
         reports_first: 50,
         reports_skip: 0,
         reports_orderBy: "createdAt",
@@ -107,16 +111,15 @@ export default function ModeratorDashboard() {
   }, [account]);
 
   const handleClearVideoFlag = async (videoId) => {
-    if (!account) return message.error("Please connect your wallet first");
+    if (!isConnected) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     if (!videoId) return message.error("Invalid video ID");
     console.log("Unflag video", videoId);
     setLoading(true);
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
 
       const unflagTx = await contract.connect(signer).clearVideoFlag(videoId);
       console.log("Unflag transaction:", unflagTx);
@@ -131,17 +134,15 @@ export default function ModeratorDashboard() {
       setLoading(false);
     }
   };
-
   const handleRemoveVideo = async (videoId) => {
-    if (!account) return message.error("Please connect your wallet first");
+    if (!isConnected) return message.error("Please connect your wallet first");
+    if (selectedNetworkId !== "eip155:689")
+      return message.error("Please switch to NERO Testnet");
     if (!videoId) return message.error("Invalid video ID");
     setLoading(true);
     try {
-      const signer = ethers6Adapter.signer.toEthers({
-        client: thirdwebClient,
-        chain: activeChain,
-        account: accountObj
-      });
+      const provider = new BrowserProvider(walletProvider);
+      const signer = await provider.getSigner();
       const removeVideoTx = await contract.connect(signer).removeVideo(videoId);
       console.log("removeVideoTx", removeVideoTx);
       await removeVideoTx.wait();
@@ -212,7 +213,7 @@ export default function ModeratorDashboard() {
                     <Avatar
                       shape="square"
                       size="large"
-                      src={`https://ipfs.io/ipfs/${video.thumbnailHash}`}
+                      src={`${IPFS_GATEWAY_URL}/ipfs/${video.thumbnailHash}`}
                       alt={video.title}
                       style={{ width: 120, height: 90 }}
                     />

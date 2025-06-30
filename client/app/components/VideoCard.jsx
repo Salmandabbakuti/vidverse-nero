@@ -5,10 +5,11 @@ import {
   MessageOutlined,
   DollarCircleOutlined
 } from "@ant-design/icons";
-import { toEther } from "thirdweb";
+import { formatEther } from "ethers";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import styles from "./VideoCard.module.css";
+import { IPFS_GATEWAY_URL } from "@/app/utils/constants";
 
 dayjs.extend(relativeTime);
 
@@ -43,7 +44,7 @@ export default function VideoCard({ video }) {
         >
           <img
             alt={video?.title}
-            src={`https://ipfs.io/ipfs/${video?.thumbnailHash}`}
+            src={`${IPFS_GATEWAY_URL}/ipfs/${video?.thumbnailHash}`}
             className={styles.thumbnail}
             style={{
               width: "100%",
@@ -139,7 +140,7 @@ export default function VideoCard({ video }) {
               <MessageOutlined style={{ color: "#4299e1" }} />
               {video?.commentCount || 0}
               <DollarCircleOutlined style={{ color: "#f56565" }} />
-              {toEther(video?.tipAmount || 0n) + " NERO"}
+              {formatEther(video?.tipAmount || 0n) + " NERO"}
             </Space>
           </div>
         }

@@ -14,7 +14,7 @@ import {
   List,
   Button
 } from "antd";
-import { toEther } from "thirdweb";
+import { formatEther } from "ethers";
 import {
   CheckCircleTwoTone,
   ShareAltOutlined,
@@ -29,7 +29,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { subgraphClient as client, GET_CHANNEL_QUERY } from "@/app/utils";
-import { EXPLORER_URL } from "@/app/utils/constants";
+import { EXPLORER_URL, IPFS_GATEWAY_URL } from "@/app/utils/constants";
 import VideoCard from "@/app/components/VideoCard";
 import styles from "./page.module.css";
 
@@ -109,7 +109,7 @@ export default function Channel({ params }) {
           <Image
             preview={false}
             alt={id}
-            src={`https://picsum.photos/seed/${id}/200/30`}
+            src={`https://picsum.photos/seed/${id}/1200/200`}
             className={styles.thumbnail}
           />
         }
@@ -281,7 +281,7 @@ export default function Channel({ params }) {
                               width: 120,
                               height: 90
                             }}
-                            src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
+                            src={`${IPFS_GATEWAY_URL}/ipfs/${item?.video?.thumbnailHash}`}
                           />
                         }
                         title={
@@ -337,14 +337,14 @@ export default function Channel({ params }) {
                               width: 120,
                               height: 90
                             }}
-                            src={`https://ipfs.io/ipfs/${item?.video?.thumbnailHash}`}
+                            src={`${IPFS_GATEWAY_URL}/ipfs/${item?.video?.thumbnailHash}`}
                           />
                         </Link>
                       }
                       title={
                         <Space>
                           <Typography.Text strong>
-                            {`Tipped ${toEther(item?.amount || 0n)} NERO`}
+                            {`Tipped ${formatEther(item?.amount || 0n)} NERO`}
                           </Typography.Text>
                           <Typography.Text type="secondary">
                             {dayjs(item?.createdAt * 1000).format(

@@ -38,7 +38,6 @@ export default function NavBar() {
         padding: "0 8px"
       }}
     >
-      {" "}
       {/* Logo Section - Natural Design */}
       <Link href="/">
         <div
