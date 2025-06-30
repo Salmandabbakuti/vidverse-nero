@@ -22,7 +22,7 @@ export default function CommentSection({
   const [commentInput, setCommentInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { address: account, isConnected } = useAppKitAccount();
+  const { address: account } = useAppKitAccount();
   const { selectedNetworkId } = useAppKitState();
   const { walletProvider } = useAppKitProvider("eip155");
 
@@ -42,9 +42,11 @@ export default function CommentSection({
         "commentVideo",
         [videoId, commentInput]
       );
-      setCommentInput("");
       console.log("addCommentTx", addCommentTx);
+      setCommentInput("");
+      setLoading(false);
       // add comment to state
+      // hacky way to update comments
       comments.unshift({
         id: comments.length + 1,
         content: commentInput,
@@ -53,10 +55,9 @@ export default function CommentSection({
       });
       message.success("Comment added!");
     } catch (error) {
+      setLoading(false);
       console.error(error);
       message.error("Failed to add comment. Please try again.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -70,6 +71,7 @@ export default function CommentSection({
         value={commentInput}
         onChange={(e) => setCommentInput(e.target.value)}
         style={{ marginBottom: "10px" }}
+        onPressEnter={handleAddComment}
         addonAfter={
           commentInput && (
             <Space>

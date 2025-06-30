@@ -26,7 +26,8 @@ import {
   DollarCircleOutlined,
   CommentOutlined,
   ExportOutlined,
-  LikeFilled
+  LikeFilled,
+  SyncOutlined
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import {
@@ -131,6 +132,24 @@ export default function VideoPage({ params }) {
         setLoading(false);
       });
   };
+
+  const handleRefresh = () => {
+    setLoading(true);
+    console.log("Refreshing video data...");
+    try {
+      setLoading(true);
+      fetchVideo();
+      if (aaWalletAddress) {
+        isVideoLikedByUser();
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error refreshing video:", error);
+      message.error("Failed to refresh video. Please try again.");
+    }
+  };
+
   const resolveAAWalletAddress = async () => {
     if (!account || !walletProvider) return;
     try {
@@ -160,18 +179,21 @@ export default function VideoPage({ params }) {
         "toggleLikeVideo",
         [id]
       );
-
-      console.log("Transaction successful:", toggleLikeTx);
+      console.log("toggleLike tx submitted:", toggleLikeTx);
       // Update local state to reflect the like
+      setIsLiking(false);
       setIsVideoLiked((prev) => !prev);
+      setVideo((prev) => ({
+        ...prev,
+        likeCount: isVideoLiked ? prev.likeCount - 1 : prev.likeCount + 1
+      }));
       message.success(
         `Video ${isVideoLiked ? "unliked" : "liked"} successfully!`
       );
     } catch (error) {
+      setIsLiking(false);
       console.error("Error liking video:", error);
       message.error("Failed to like video. Please try again.");
-    } finally {
-      setIsLiking(false);
     }
   };
 
@@ -311,10 +333,7 @@ export default function VideoPage({ params }) {
                   >
                     {video?.likeCount || 0}
                   </Button>
-                  <TipModal
-                    videoData={video}
-                    aaWalletAddress={aaWalletAddress}
-                  />
+                  <TipModal videoData={video} />
                   <Button
                     type="text"
                     icon={<ShareAltOutlined />}
@@ -348,6 +367,14 @@ export default function VideoPage({ params }) {
                   </a>
                   {isVideoOwner && <VideoEditDrawer video={video} />}
                   <ReportVideoModal videoId={video?.id} />
+                  <Button
+                    type="text"
+                    shape="circle"
+                    loading={loading}
+                    icon={<SyncOutlined spin={loading} />}
+                    onClick={handleRefresh}
+                    title="Refresh"
+                  />
                 </Space>
               </Space>
 

@@ -94,6 +94,7 @@ export default function UploadPage() {
         ]
       );
       console.log("addVideoTx", addVideoTx);
+      await addVideoTx.wait(); // Wait for the transaction to be mined
       message.success(
         "Video uploaded successfully. Redirecting to home page..."
       );

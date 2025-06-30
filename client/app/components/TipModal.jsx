@@ -9,7 +9,7 @@ import {
 } from "@reown/appkit/react";
 import { contract } from "@/app/utils";
 
-export default function TipModal({ videoData, aaWalletAddress }) {
+export default function TipModal({ videoData }) {
   const [tipAmountInput, setTipAmountInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -37,7 +37,6 @@ export default function TipModal({ videoData, aaWalletAddress }) {
           value: tipAmountinWei
         });
       console.log("tipTx", tipTx);
-      await tipTx.wait();
       message.success("Thank you for supporting the creator!");
       setOpenModal(false);
       setTipAmountInput("");
