@@ -133,18 +133,14 @@ export default function VideoPage({ params }) {
       });
   };
 
-  const handleRefresh = () => {
-    setLoading(true);
+  const handleRefresh = async () => {
     console.log("Refreshing video data...");
     try {
-      setLoading(true);
       fetchVideo();
       if (aaWalletAddress) {
-        isVideoLikedByUser();
+        await isVideoLikedByUser();
       }
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error("Error refreshing video:", error);
       message.error("Failed to refresh video. Please try again.");
     }

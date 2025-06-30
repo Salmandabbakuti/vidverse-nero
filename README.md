@@ -131,6 +131,14 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ### v0.4.0
 
+- Added support for uploading video assets to IPFS via Pinata with improved error handling and file size validation.
+- Introduced enhanced wallet integration using AppKit and ethers.js for all blockchain interactions.
+- Optimistic UI updates and immediate feedback on video interactions — likes, comments, reports, and tips.
+- Added a new Footer component with branding, social links, navigation, and system status display.
+- Redesigned homepage with updated hero, stats, core features, and how-it-works sections for improved clarity and interactivity.
+- Migrated all wallet, signer, and network management from Thirdweb to AppKit and ethers.js.
+- Added stricter validation for network selection and file size during uploads, Enforced moderator access control on dashboard actions.
+
 ### v0.3.0
 
 - Added dedicated video upload page with live video and thumbnail preview while uploading.
