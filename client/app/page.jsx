@@ -464,7 +464,7 @@ export default function Home() {
                       transition: "all 0.3s ease",
                       height: "100%"
                     }}
-                    bodyStyle={{ padding: "24px 16px" }}
+                    styles={{ body: { padding: "24px 16px" } }}
                     hoverable
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = "translateY(-8px)";
