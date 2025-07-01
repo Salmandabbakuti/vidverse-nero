@@ -33,8 +33,8 @@ export default function VideoEditDrawer({ video: videoData }) {
 
   const handleSubmit = async (values) => {
     if (!isConnected) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     console.log("thumbnail", thumbnailFileInput);
     if (thumbnailFileInput && thumbnailFileInput.size > 5 * 1024 * 1024)
       return message.error("Thumbnail file size exceeds 5MB limit");

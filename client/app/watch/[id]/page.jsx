@@ -163,8 +163,8 @@ export default function VideoPage({ params }) {
 
   const handleToggleLikeVideo = async () => {
     if (!isConnected) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     setIsLiking(true);
     try {
       const provider = new BrowserProvider(walletProvider);

@@ -112,8 +112,8 @@ export default function ModeratorDashboard() {
 
   const handleClearVideoFlag = async (videoId) => {
     if (!isConnected) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     if (!videoId) return message.error("Invalid video ID");
     console.log("Unflag video", videoId);
     setLoading(true);
@@ -136,8 +136,8 @@ export default function ModeratorDashboard() {
   };
   const handleRemoveVideo = async (videoId) => {
     if (!isConnected) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     if (!videoId) return message.error("Invalid video ID");
     setLoading(true);
     try {

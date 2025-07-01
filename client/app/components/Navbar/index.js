@@ -1,13 +1,8 @@
 "use client";
-import { Input, Button, Space, Dropdown } from "antd";
+import { Input, Button, Space, Tag } from "antd";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  SearchOutlined,
-  PlayCircleOutlined,
-  VideoCameraAddOutlined,
-  MenuOutlined
-} from "@ant-design/icons";
+import { PlayCircleOutlined, VideoCameraAddOutlined } from "@ant-design/icons";
 import UserDrawer from "./UserDrawer";
 import "antd/dist/reset.css";
 
@@ -100,6 +95,23 @@ export default function NavBar() {
           >
             VidVerse
           </span>
+          {/* Subtitle with Tag */}
+          <Tag
+            color="green"
+            title="Mainnet Deployment"
+            style={{
+              fontSize: "9px",
+              height: "16px",
+              lineHeight: "12px",
+              padding: "0 4px",
+              borderRadius: "6px",
+              margin: 0,
+              left: "-10px",
+              position: "relative"
+            }}
+          >
+            Beta
+          </Tag>
         </div>
       </Link>
       {/* Search Box - Enhanced & Responsive */}

@@ -48,8 +48,8 @@ export default function UploadPage() {
 
   const handleSubmit = async (values) => {
     if (!isConnected) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     if (!thumbnailFileInput || !videoFileInput) {
       message.error("Please upload a video and thumbnail");
       return;
@@ -100,7 +100,7 @@ export default function UploadPage() {
       );
       // setDrawerOpen(false);
       // Refresh the page to show the new video after 5 seconds
-      setTimeout(() => router.push("/"), 5000);
+      setTimeout(() => router.push(`/?c=${values.category}`), 5000);
     } catch (error) {
       console.error(error);
       message.error("Failed to upload video. Please try again.");
@@ -142,7 +142,7 @@ export default function UploadPage() {
                   label={
                     <span>
                       Video{" "}
-                      <InfoCircleOutlined title="MP4, MOV, AVI, max 200MB" />
+                      <InfoCircleOutlined title="MP4, MOV, AVI, max 90MB" />
                     </span>
                   }
                   rules={[{ required: true, message: "Please upload a video" }]}

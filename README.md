@@ -58,7 +58,7 @@ npm install
 
 npx hardhat compile
 
-npx hardhat ignition deploy ./ignition/modules/VidVerse.ts --network neroTestnet
+npx hardhat ignition deploy ./ignition/modules/VidVerse.ts --network neroMainnet
 ```
 
 ### 2. Deploying Subgraph
@@ -108,8 +108,8 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ### Deployed Resources
 
-- [VidVerse Contract](https://testnet.neroscan.io/address/0x7d9daBF118482B47ea6D900f0221aB1ECDb19a7a)
-- [VidVerse Subgraph](https://subgraph.testnet.nero.metaborong.com/subgraphs/name/vidverse-nero)
+- [VidVerse Contract](https://neroscan.io/address/0x90b2059d43fe50d04d45b5d24eaadd94e89d6e19)
+- [VidVerse Subgraph](https://subgraph.mainnet.nero.metaborong.com/subgraphs/name/vidverse-nero)
 - [VidVerse Client](https://vidverse-nero.vercel.app/)
 
 ## Architecture
@@ -129,7 +129,7 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 
 ## Changelog
 
-### v0.4.0
+### v0.4.0 (Mainnet Deployment)
 
 - Added support for uploading video assets to IPFS via Pinata with improved error handling and file size validation.
 - Introduced enhanced wallet integration using AppKit and ethers.js for all blockchain interactions.
@@ -138,6 +138,7 @@ Interaction flow is demonstrated in [adding a video](https://github.com/Salmanda
 - Redesigned homepage with updated hero, stats, core features, and how-it-works sections for improved clarity and interactivity.
 - Migrated all wallet, signer, and network management from Thirdweb to AppKit and ethers.js.
 - Added stricter validation for network selection and file size during uploads, Enforced moderator access control on dashboard actions.
+- Mainnet deployment of smart contracts and subgraph, with updated client configuration for production use.
 
 ### v0.3.0
 

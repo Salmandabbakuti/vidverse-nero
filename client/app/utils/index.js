@@ -21,7 +21,7 @@ export const neroTestnetChain = defineChain({
     }
   },
   blockExplorers: {
-    default: { name: "Explorer", url: "https://testnet.neroscan.io/" }
+    default: { name: "Explorer", url: "https://testnet.neroscan.io" }
   }
 });
 
@@ -42,17 +42,14 @@ export const neroMainnetChain = defineChain({
     }
   },
   blockExplorers: {
-    default: { name: "Explorer", url: "https://neroscan.io/" }
+    default: { name: "Explorer", url: "https://neroscan.io" }
   }
 });
 
-export const defaultProvider = new JsonRpcProvider(
-  "https://rpc-testnet.nerochain.io",
-  689,
-  {
-    staticNetwork: true
-  }
-);
+// Default provider for Nero Mainnet
+const defaultProvider = new JsonRpcProvider("https://rpc.nerochain.io", 1689, {
+  staticNetwork: true
+});
 
 const abi = [
   "function addVideo(string _title, string _description, string _category, string _location, string _thumbnailHash, string _videoHash, address _eoa)",
@@ -78,7 +75,7 @@ export const ellipsisString = (str = "", first, last) =>
 
 const subgraphUrl =
   process.env.NEXT_PUBLIC_SUBGRAPH_API_URL ||
-  "https://subgraph.testnet.nero.metaborong.com/subgraphs/name/vidverse-nero";
+  "https://subgraph.mainnet.nero.metaborong.com/subgraphs/name/vidverse-nero";
 
 export const subgraphClient = new GraphQLClient(subgraphUrl);
 

@@ -6,8 +6,6 @@ import {
   LinkedinOutlined,
   HeartFilled,
   RocketOutlined,
-  VideoCameraOutlined,
-  GlobalOutlined,
   PlayCircleOutlined
 } from "@ant-design/icons";
 import Link from "next/link";
@@ -207,8 +205,8 @@ export default function Footer() {
                   >
                     <PlayCircleOutlined />
                     Empowering creators with{" "}
-                    <HeartFilled style={{ color: "var(--error-color)" }} /> for the
-                    decentralized web
+                    <HeartFilled style={{ color: "var(--error-color)" }} /> for
+                    the decentralized web
                   </Text>
                 </div>
               </Space>
@@ -277,7 +275,7 @@ export default function Footer() {
                   fontWeight: "var(--font-weight-medium)"
                 }}
               >
-                v0.4.3 • All systems operational
+                v0.4.4 • All systems operational
               </Text>
             </div>
           </Col>

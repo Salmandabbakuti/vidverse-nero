@@ -29,8 +29,8 @@ export default function CommentSection({
   const handleAddComment = async () => {
     console.log("commentInput", commentInput);
     if (!account) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     if (!commentInput) return message.error("Comment cannot be empty");
     setLoading(true);
     try {

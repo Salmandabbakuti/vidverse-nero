@@ -36,8 +36,8 @@ export default function ReportVideoModal({ videoId }) {
 
   const handleFinish = async (values) => {
     if (!account) return message.error("Please connect your wallet first");
-    if (selectedNetworkId !== "eip155:689")
-      return message.error("Please switch to NERO Testnet");
+    if (selectedNetworkId !== "eip155:1689")
+      return message.error("Please switch to NERO Mainnet");
     if (!videoId) return message.error("Video ID is required to report");
     console.log("Report data:", values);
     setLoading(true);

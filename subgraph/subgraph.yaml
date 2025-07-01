@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: VidVerse
-    network: nero-evm-testnet
+    network: nero-evm-mainnet
     source:
-      address: "0x7d9daBF118482B47ea6D900f0221aB1ECDb19a7a"
+      address: "0x90B2059d43fE50D04D45B5d24eaadD94e89d6E19"
       abi: VidVerse
-      startBlock: 7144920
+      startBlock: 6503387
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
