@@ -181,7 +181,9 @@ export default function VideoPage({ params }) {
       setIsVideoLiked((prev) => !prev);
       setVideo((prev) => ({
         ...prev,
-        likeCount: isVideoLiked ? prev.likeCount - 1 : prev.likeCount + 1
+        likeCount: isVideoLiked
+          ? parseInt(prev.likeCount) - 1
+          : parseInt(prev.likeCount) + 1
       }));
       message.success(
         `Video ${isVideoLiked ? "unliked" : "liked"} successfully!`
