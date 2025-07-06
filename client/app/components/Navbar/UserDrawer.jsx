@@ -72,6 +72,7 @@ export default function UserDrawer() {
         }
       >
         <Menu
+          onClick={() => setDrawerOpen(false)}
           items={[
             ...(aaWalletAddress
               ? [
