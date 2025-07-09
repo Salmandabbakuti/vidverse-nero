@@ -242,6 +242,7 @@ export const GET_CHANNEL_QUERY = gql`
           id
           title
           category
+          location
           likeCount
           commentCount
           thumbnailHash

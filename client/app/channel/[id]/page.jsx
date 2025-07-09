@@ -285,16 +285,21 @@ export default function Channel({ params }) {
                           />
                         }
                         title={
-                          <Space>
-                            <Typography.Text strong>
-                              {`“${item?.content}”`}
-                            </Typography.Text>
+                          <Space wrap>
                             <Typography.Text type="secondary">
-                              {dayjs(item?.createdAt * 1000).fromNow()}
+                              Commented on{" "}
+                              <Link href={`/watch/${item?.video?.id}`}>
+                                “{item?.video?.title}”
+                              </Link>{" "}
+                              {dayjs(item?.video?.createdAt * 1000).fromNow()}
                             </Typography.Text>
                           </Space>
                         }
-                        description={`Commented on “${item?.video?.title}”`}
+                        description={
+                          <Typography.Text strong>
+                            {`“${item?.content}”`}
+                          </Typography.Text>
+                        }
                       />
                     </List.Item>
                   </Link>
