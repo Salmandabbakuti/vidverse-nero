@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Drawer, Menu, Avatar, message, Button, Badge } from "antd";
+import { Drawer, Menu, Avatar, message, Button, Badge, Tag } from "antd";
 import {
   PlayCircleOutlined,
   SettingOutlined,
   QuestionCircleOutlined,
   LikeOutlined,
   UserOutlined,
-  BellOutlined
+  BellOutlined,
+  SafetyCertificateOutlined
 } from "@ant-design/icons";
 import { useAppKitProvider, useAppKitAccount } from "@reown/appkit/react";
 import { BrowserProvider } from "ethers";
 import { getAAWalletAddress } from "@/app/utils/aaUtils";
+import { contract } from "@/app/utils";
 
 export default function UserDrawer() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [aaWalletAddress, setAAWalletAddress] = useState(null);
+  const [isModerator, setIsModerator] = useState(false);
 
   const { address: account } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider("eip155");
@@ -35,11 +38,77 @@ export default function UserDrawer() {
     }
   };
 
+  const checkIfModerator = async () => {
+    if (!account) return;
+    try {
+      const moderator = await contract.moderator();
+      console.log("Current moderator:", moderator);
+      const isCurrentUserModerator =
+        account?.toLowerCase() === moderator?.toLowerCase();
+      setIsModerator(isCurrentUserModerator);
+    } catch (err) {
+      console.error("Error checking moderator status:", err);
+    }
+  };
+
   useEffect(() => {
     if (account && walletProvider) {
       resolveAAWalletAddress();
+      checkIfModerator();
     }
   }, [account, walletProvider]);
+
+  const getMenuItems = () => {
+    const menuItems = [];
+
+    // Moderator Dashboard - Highest priority
+    if (isModerator) {
+      menuItems.push({
+        key: "moderator",
+        label: (
+          <Link href="/moderator/dashboard">
+            Dashboard{" "}
+            <Tag title="Moderator" color="red" size="small" bordered={false}>
+              Mod
+            </Tag>
+          </Link>
+        ),
+        icon: <SafetyCertificateOutlined />
+      });
+    }
+
+    // User specific items
+    if (aaWalletAddress) {
+      menuItems.push(
+        {
+          key: "channel",
+          label: <Link href={`/channel/${aaWalletAddress}`}>My Channel</Link>,
+          icon: <PlayCircleOutlined />
+        },
+        {
+          key: "liked",
+          label: (
+            <Link href={`/channel/${aaWalletAddress}?tab=liked`}>
+              Liked Videos
+            </Link>
+          ),
+          icon: <LikeOutlined />
+        },
+        {
+          key: "settings",
+          label: "Settings",
+          icon: <SettingOutlined />
+        }
+      );
+    }
+    // Global items - Always visible
+    menuItems.push({
+      key: "help",
+      label: "Help & FAQ",
+      icon: <QuestionCircleOutlined />
+    });
+    return menuItems;
+  };
 
   return (
     <>
@@ -71,44 +140,7 @@ export default function UserDrawer() {
           />
         }
       >
-        <Menu
-          onClick={() => setDrawerOpen(false)}
-          items={[
-            ...(aaWalletAddress
-              ? [
-                  {
-                    key: "channel",
-                    label: (
-                      <Link href={`/channel/${aaWalletAddress}`}>
-                        My Channel
-                      </Link>
-                    ),
-                    icon: <PlayCircleOutlined />
-                  },
-                  {
-                    key: "liked",
-                    label: (
-                      <Link href={`/channel/${aaWalletAddress}?tab=liked`}>
-                        Liked Videos
-                      </Link>
-                    ),
-                    icon: <LikeOutlined />
-                  },
-                  {
-                    key: "settings",
-                    label: "Settings",
-                    icon: <SettingOutlined />
-                  }
-                ]
-              : []),
-
-            {
-              key: "help",
-              label: "Help & FAQ",
-              icon: <QuestionCircleOutlined />
-            }
-          ]}
-        />
+        <Menu onClick={() => setDrawerOpen(false)} items={getMenuItems()} />
       </Drawer>
     </>
   );
