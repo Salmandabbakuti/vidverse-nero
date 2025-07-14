@@ -173,10 +173,7 @@ export default function Home() {
       });
   };
 
-  useEffect(() => {
-    const debounceTimeoutId = setTimeout(fetchVideos, 600);
-    return () => clearTimeout(debounceTimeoutId);
-  }, [searchQueryParam, categoryParam, sortOptionParam]);
+  useEffect(fetchVideos, [searchQueryParam, categoryParam, sortOptionParam]);
   const showHero = !searchQueryParam && !categoryParam && !sortOptionParam;
 
   return (
